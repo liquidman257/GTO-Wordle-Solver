@@ -442,25 +442,23 @@ function getCandidateStyle(index: number, total: number): string {
     return `
       background: linear-gradient(
         90deg,
-        rgba(61, 214, 47, 0.30) 0%,
+        hsla(120, 78%, 52%, 0.26) 0%,
         rgba(255, 255, 255, 0.98) 88%
       );
-      border-color: rgba(45, 92, 41, 0.60);
+      border-color: hsla(120, 62%, 24%, 0.62);
     `;
   }
 
   const t = index / Math.max(1, total - 1);
   const hue = 120 - 120 * t;
-  const fill = 0.10 + (1 - t) * 0.10;
-  const border = 0.24 + (1 - t) * 0.30;
 
   return `
     background: linear-gradient(
       90deg,
-      hsla(${hue.toFixed(1)}, 84%, 62%, ${fill.toFixed(3)}) 0%,
+      hsla(${hue.toFixed(1)}, 82%, 58%, 0.22) 0%,
       rgba(255, 255, 255, 0.98) 88%
     );
-    border-color: hsla(${hue.toFixed(1)}, 74%, 28%, ${border.toFixed(3)});
+    border-color: hsla(${hue.toFixed(1)}, 68%, 24%, 0.58);
   `;
 }
 
