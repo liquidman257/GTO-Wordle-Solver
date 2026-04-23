@@ -24,7 +24,6 @@ export type RankedCandidate = {
 };
 
 const ALL_GREEN_CODE = 242;
-const EXACT_RECURSIVE_LIMIT = 14;
 
 export function normalizeWord(raw: string): string {
   return raw.trim().toLowerCase();
@@ -86,7 +85,7 @@ export function getPattern(guess: string, answer: string): string {
   return result.join("");
 }
 
-function getPatternCode(guess: string, answer: string): number {
+export function getPatternCode(guess: string, answer: string): number {
   const result = [0, 0, 0, 0, 0];
   const remaining: Record<string, number> = {};
 
@@ -144,7 +143,7 @@ export function filterCandidates(solutions: string[], rows: GuessRow[]): string[
   });
 }
 
-function buildBuckets(guess: string, candidates: string[]): Map<number, string[]> {
+export function buildBuckets(guess: string, candidates: string[]): Map<number, string[]> {
   const buckets = new Map<number, string[]>();
 
   for (const answer of candidates) {
@@ -161,7 +160,7 @@ function buildBuckets(guess: string, candidates: string[]): Map<number, string[]
   return buckets;
 }
 
-function getPartitionStats(guess: string, candidates: string[]) {
+export function getPartitionStats(guess: string, candidates: string[]) {
   const buckets = buildBuckets(guess, candidates);
   const n = candidates.length;
 
@@ -193,114 +192,39 @@ function getPartitionStats(guess: string, candidates: string[]) {
   };
 }
 
-function candidateKey(candidates: string[]): string {
-  return candidates.slice().sort().join("|");
-}
+export function getPartitionStatsForList(guess: string, candidates: string[]) {
+  const buckets = buildBuckets(guess, candidates);
+  const n = candidates.length;
 
-function createExactEvaluator(allSolutionGuesses: string[]) {
-  const worstMemo = new Map<string, number>();
-  const expectedMemo = new Map<string, number>();
+  let entropy = 0;
+  let expectedRemaining = 0;
+  let worstBucket = 0;
+  let singletonCount = 0;
 
-  function valueWorst(candidates: string[]): number {
-    if (candidates.length <= 1) return 1;
+  for (const bucket of buckets.values()) {
+    const count = bucket.length;
+    const probability = count / n;
 
-    const key = candidateKey(candidates);
-    const cached = worstMemo.get(key);
+    entropy += -probability * Math.log2(probability);
+    expectedRemaining += probability * count;
+    worstBucket = Math.max(worstBucket, count);
 
-    if (cached !== undefined) return cached;
-
-    let best = Infinity;
-
-    for (const guess of allSolutionGuesses) {
-      const buckets = buildBuckets(guess, candidates);
-      let worst = 0;
-      let useless = false;
-
-      for (const [code, bucket] of buckets) {
-        let cost: number;
-
-        if (code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess) {
-          cost = 1;
-        } else {
-          if (bucket.length === candidates.length) {
-            useless = true;
-            break;
-          }
-
-          cost = 1 + valueWorst(bucket);
-        }
-
-        worst = Math.max(worst, cost);
-
-        if (worst >= best) break;
-      }
-
-      if (!useless) {
-        best = Math.min(best, worst);
-      }
+    if (count === 1) {
+      singletonCount++;
     }
-
-    if (!Number.isFinite(best)) {
-      best = candidates.length;
-    }
-
-    worstMemo.set(key, best);
-    return best;
-  }
-
-  function valueExpected(candidates: string[]): number {
-    if (candidates.length <= 1) return 1;
-
-    const key = candidateKey(candidates);
-    const cached = expectedMemo.get(key);
-
-    if (cached !== undefined) return cached;
-
-    const n = candidates.length;
-    let best = Infinity;
-
-    for (const guess of allSolutionGuesses) {
-      const buckets = buildBuckets(guess, candidates);
-      let expected = 0;
-      let useless = false;
-
-      for (const [code, bucket] of buckets) {
-        let cost: number;
-
-        if (code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess) {
-          cost = 1;
-        } else {
-          if (bucket.length === candidates.length) {
-            useless = true;
-            break;
-          }
-
-          cost = 1 + valueExpected(bucket);
-        }
-
-        expected += (bucket.length / n) * cost;
-      }
-
-      if (!useless) {
-        best = Math.min(best, expected);
-      }
-    }
-
-    if (!Number.isFinite(best)) {
-      best = candidates.length;
-    }
-
-    expectedMemo.set(key, best);
-    return best;
   }
 
   return {
-    valueWorst,
-    valueExpected,
+    buckets,
+    entropy,
+    expectedRemaining,
+    worstBucket,
+    singletonCount,
+    splitCount: buckets.size,
   };
 }
 
-function estimateTurnsFromBucketSize(size: number): number {
+export function estimateTurnsFromBucketSize(size: number): number {
   if (size <= 1) return 1;
   if (size <= 2) return 2;
   if (size <= 6) return 3;
@@ -309,12 +233,10 @@ function estimateTurnsFromBucketSize(size: number): number {
   return 6;
 }
 
-function analyzeGuess(
+export function analyzeGuessHeuristic(
   guess: string,
   candidates: string[],
-  candidateSet: Set<string>,
-  allSolutionGuesses: string[],
-  evaluator: ReturnType<typeof createExactEvaluator>
+  candidateSet: Set<string>
 ): Recommendation {
   const possibleAnswer = candidateSet.has(guess);
 
@@ -329,42 +251,21 @@ function analyzeGuess(
 
   let worstTurns = 0;
   let expectedTurns = 0;
-  const exact = candidates.length <= EXACT_RECURSIVE_LIMIT;
 
-  if (exact) {
-    for (const [code, bucket] of buckets) {
-      const cost =
-        code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess
-          ? 1
-          : 1 + evaluator.valueWorst(bucket);
+  for (const [code, bucket] of buckets) {
+    const solvedNow =
+      code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess;
 
-      worstTurns = Math.max(worstTurns, cost);
-    }
+    const cost = solvedNow ? 1 : 1 + estimateTurnsFromBucketSize(bucket.length);
 
-    for (const [code, bucket] of buckets) {
-      const cost =
-        code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess
-          ? 1
-          : 1 + evaluator.valueExpected(bucket);
-
-      expectedTurns += (bucket.length / candidates.length) * cost;
-    }
-  } else {
-    for (const [code, bucket] of buckets) {
-      const cost =
-        code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === guess
-          ? 1
-          : 1 + estimateTurnsFromBucketSize(bucket.length);
-
-      worstTurns = Math.max(worstTurns, cost);
-      expectedTurns += (bucket.length / candidates.length) * cost;
-    }
+    worstTurns = Math.max(worstTurns, cost);
+    expectedTurns += (bucket.length / candidates.length) * cost;
   }
 
   return {
     guess,
     possibleAnswer,
-    exact,
+    exact: false,
     worstTurns,
     expectedTurns,
     entropy,
@@ -391,150 +292,31 @@ export function compareRecommendations(a: Recommendation, b: Recommendation): nu
   return a.guess.localeCompare(b.guess);
 }
 
-function nearlyEqual(a: number, b: number): boolean {
-  return Math.abs(a - b) < 0.0000001;
-}
-
-export function analyzeAllGuesses(
-  candidates: string[],
-  allSolutionGuesses: string[]
-): Recommendation[] {
-  if (candidates.length === 0) return [];
-
-  const evaluator = createExactEvaluator(allSolutionGuesses);
-  const candidateSet = new Set(candidates);
-
-  return allSolutionGuesses
-    .map((guess) =>
-      analyzeGuess(guess, candidates, candidateSet, allSolutionGuesses, evaluator)
-    )
-    .sort(compareRecommendations);
-}
-
-export function selectUsefulRecommendations(
-  allRecommendations: Recommendation[],
-  candidateCount: number,
-  top = 10
-): Recommendation[] {
-  if (allRecommendations.length === 0) return [];
-
-  if (candidateCount <= 10) {
-    const best = allRecommendations[0];
-
-    return allRecommendations
-      .filter(
-        (item) =>
-          nearlyEqual(item.worstTurns, best.worstTurns) &&
-          nearlyEqual(item.expectedTurns, best.expectedTurns)
-      )
-      .slice(0, top);
+export function insertIntoTop(
+  topList: Recommendation[],
+  item: Recommendation,
+  limit: number
+): void {
+  if (topList.length === 0) {
+    topList.push(item);
+    return;
   }
 
-  return allRecommendations.slice(0, top);
-}
+  let inserted = false;
 
-function computeSolveDepthMap(
-  candidates: string[],
-  allSolutionGuesses: string[],
-  rankingMemo: Map<string, Recommendation[]>,
-  depthMemo: Map<string, Map<string, number>>
-): Map<string, number> {
-  if (candidates.length === 0) {
-    return new Map();
-  }
-
-  const key = candidateKey(candidates);
-  const cached = depthMemo.get(key);
-
-  if (cached) {
-    return cached;
-  }
-
-  if (candidates.length === 1) {
-    const result = new Map<string, number>([[candidates[0], 1]]);
-    depthMemo.set(key, result);
-    return result;
-  }
-
-  let rankings = rankingMemo.get(key);
-
-  if (!rankings) {
-    rankings = analyzeAllGuesses(candidates, allSolutionGuesses);
-    rankingMemo.set(key, rankings);
-  }
-
-  const bestGuess = rankings[0]?.guess;
-  const result = new Map<string, number>();
-
-  if (!bestGuess) {
-    for (const word of candidates) {
-      result.set(word, 1);
-    }
-
-    depthMemo.set(key, result);
-    return result;
-  }
-
-  const buckets = buildBuckets(bestGuess, candidates);
-
-  for (const [code, bucket] of buckets) {
-    if (code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === bestGuess) {
-      result.set(bestGuess, 1);
-      continue;
-    }
-
-    const childDepths = computeSolveDepthMap(
-      bucket,
-      allSolutionGuesses,
-      rankingMemo,
-      depthMemo
-    );
-
-    for (const [word, depth] of childDepths) {
-      result.set(word, depth + 1);
+  for (let i = 0; i < topList.length; i++) {
+    if (compareRecommendations(item, topList[i]) < 0) {
+      topList.splice(i, 0, item);
+      inserted = true;
+      break;
     }
   }
 
-  depthMemo.set(key, result);
-  return result;
-}
-
-export function rankRemainingCandidatesBySolveDepth(
-  candidates: string[],
-  allSolutionGuesses: string[],
-  rootRankings?: Recommendation[]
-): RankedCandidate[] {
-  if (candidates.length === 0) return [];
-
-  const rankingMemo = new Map<string, Recommendation[]>();
-  const depthMemo = new Map<string, Map<string, number>>();
-  const rootKey = candidateKey(candidates);
-
-  if (rootRankings) {
-    rankingMemo.set(rootKey, rootRankings);
+  if (!inserted && topList.length < limit) {
+    topList.push(item);
   }
 
-  const depthMap = computeSolveDepthMap(
-    candidates,
-    allSolutionGuesses,
-    rankingMemo,
-    depthMemo
-  );
-
-  const rootRecommendations =
-    rootRankings ?? analyzeAllGuesses(candidates, allSolutionGuesses);
-
-  return rootRecommendations
-    .filter((item) => item.possibleAnswer)
-    .map((recommendation) => ({
-      recommendation,
-      solveDepth: depthMap.get(recommendation.guess) ?? recommendation.worstTurns,
-    }))
-    .sort((a, b) => {
-      if (a.solveDepth !== b.solveDepth) {
-        return a.solveDepth - b.solveDepth;
-      }
-
-      return compareRecommendations(a.recommendation, b.recommendation);
-    });
+  if (topList.length > limit) {
+    topList.length = limit;
+  }
 }

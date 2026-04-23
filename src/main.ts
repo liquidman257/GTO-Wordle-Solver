@@ -5,12 +5,10 @@ import {
   type RankedCandidate,
   type Recommendation,
   type TileMark,
-  analyzeAllGuesses,
+  compareRecommendations,
   filterCandidates,
   loadWords,
   normalizeWord,
-  rankRemainingCandidatesBySolveDepth,
-  selectUsefulRecommendations,
 } from "./wordle";
 
 type GridCell = {
@@ -25,41 +23,96 @@ type SolverMessage = {
 
 type AppState = {
   solutions: string[];
+  guesses: string[];
   grid: GridCell[][];
   selectedRow: number;
   selectedCol: number;
   controlsOpen: boolean;
   candidates: string[];
   rankedCandidates: RankedCandidate[];
-  allRankings: Recommendation[];
   recommendations: Recommendation[];
   messages: SolverMessage[];
   loading: boolean;
   calculating: boolean;
+  progressProcessed: number;
+  progressTotal: number;
+  progressLabel: string;
   error: string;
   hasCalculated: boolean;
 };
 
-const TOP_GUESSES = 10;
+type WorkerHeuristicProgressMessage = {
+  type: "heuristic_progress";
+  processed: number;
+  total: number;
+  topRecommendations: Recommendation[];
+};
+
+type WorkerHeuristicDoneMessage = {
+  type: "heuristic_done";
+  topRecommendations: Recommendation[];
+};
+
+type WorkerRefineProgressMessage = {
+  type: "refine_progress";
+  rootGuess: string;
+  processedBuckets: number;
+  totalBuckets: number;
+  recommendation: Recommendation;
+};
+
+type WorkerRefineDoneMessage = {
+  type: "refine_done";
+  rootGuess: string;
+  recommendation: Recommendation;
+  rankedCandidates: RankedCandidate[];
+};
+
+type WorkerErrorMessage = {
+  type: "error";
+  error: string;
+};
+
+type WorkerToMainMessage =
+  | WorkerHeuristicProgressMessage
+  | WorkerHeuristicDoneMessage
+  | WorkerRefineProgressMessage
+  | WorkerRefineDoneMessage
+  | WorkerErrorMessage;
+
+const DISPLAY_GUESSES = 30;
 const ROWS = 6;
 const COLS = 5;
 
 const state: AppState = {
   solutions: [],
+  guesses: [],
   grid: createEmptyGrid(),
   selectedRow: 0,
   selectedCol: 0,
   controlsOpen: false,
   candidates: [],
   rankedCandidates: [],
-  allRankings: [],
   recommendations: [],
   messages: [],
   loading: true,
   calculating: false,
+  progressProcessed: 0,
+  progressTotal: 0,
+  progressLabel: "",
   error: "",
   hasCalculated: false,
 };
+
+let calculationRunId = 0;
+let heuristicWorker: Worker | null = null;
+let refineWorkers: Worker[] = [];
+let rootRecommendationMap = new Map<string, Recommendation>();
+let rootDepthMap = new Map<string, RankedCandidate[]>();
+let refineQueue: string[] = [];
+let activeRefineProgress = new Map<string, number>();
+let heuristicProcessedCount = 0;
+let completedRoots = 0;
 
 const appElement = document.querySelector<HTMLDivElement>("#app");
 
@@ -103,6 +156,166 @@ function escapeHtml(value: string): string {
         return char;
     }
   });
+}
+
+function cleanupWorkers(): void {
+  if (heuristicWorker) {
+    heuristicWorker.terminate();
+    heuristicWorker = null;
+  }
+
+  for (const worker of refineWorkers) {
+    worker.terminate();
+  }
+
+  refineWorkers = [];
+}
+
+function rebuildRecommendations(): void {
+  state.recommendations = [...rootRecommendationMap.values()].sort(compareRecommendations);
+}
+
+function updateRankedCandidatesFromBestRefinedRoot(): void {
+  const sorted = [...rootRecommendationMap.values()].sort(compareRecommendations);
+
+  for (const rec of sorted) {
+    const ranked = rootDepthMap.get(rec.guess);
+
+    if (ranked) {
+      state.rankedCandidates = ranked;
+      return;
+    }
+  }
+
+  state.rankedCandidates = [];
+}
+
+function updateProgressDisplay(): void {
+  const activeFraction = [...activeRefineProgress.values()].reduce((sum, value) => sum + value, 0);
+
+  state.progressProcessed = heuristicProcessedCount + completedRoots + activeFraction;
+  state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
+}
+
+function startNextRefineJob(worker: Worker, runId: number): void {
+  const nextRoot = refineQueue.shift();
+
+  if (!nextRoot) {
+    return;
+  }
+
+  activeRefineProgress.set(nextRoot, 0);
+  updateProgressDisplay();
+  state.progressLabel = `Refining ${nextRoot.toUpperCase()}...`;
+  render();
+
+  worker.postMessage({
+    type: "refine",
+    candidates: state.candidates,
+    guesses: state.guesses,
+    rootGuess: nextRoot,
+  });
+
+  worker.onmessage = (event: MessageEvent<WorkerToMainMessage>) => {
+    if (runId !== calculationRunId) {
+      return;
+    }
+
+    const message = event.data;
+
+    if (message.type === "refine_progress") {
+      rootRecommendationMap.set(message.rootGuess, message.recommendation);
+
+      const fraction =
+        message.totalBuckets > 0 ? message.processedBuckets / message.totalBuckets : 0;
+
+      activeRefineProgress.set(message.rootGuess, fraction);
+      rebuildRecommendations();
+      updateRankedCandidatesFromBestRefinedRoot();
+      updateProgressDisplay();
+      state.progressLabel = `Refining ${message.rootGuess.toUpperCase()}...`;
+      render();
+      return;
+    }
+
+    if (message.type === "refine_done") {
+      rootRecommendationMap.set(message.rootGuess, message.recommendation);
+      rootDepthMap.set(message.rootGuess, message.rankedCandidates);
+      activeRefineProgress.delete(message.rootGuess);
+      completedRoots++;
+
+      rebuildRecommendations();
+      updateRankedCandidatesFromBestRefinedRoot();
+      updateProgressDisplay();
+
+      if (refineQueue.length > 0) {
+        state.progressLabel = `Refined ${message.rootGuess.toUpperCase()}. Continuing...`;
+        render();
+        startNextRefineJob(worker, runId);
+      } else {
+        const allIdle =
+          completedRoots >= Math.min(DISPLAY_GUESSES, rootRecommendationMap.size);
+
+        if (allIdle) {
+          state.progressLabel = "Done";
+          state.calculating = false;
+          activeRefineProgress.clear();
+          updateProgressDisplay();
+          render();
+        } else {
+          render();
+        }
+      }
+
+      return;
+    }
+
+    if (message.type === "error") {
+      state.error = message.error;
+      state.calculating = false;
+      cleanupWorkers();
+      render();
+    }
+  };
+
+  worker.onerror = (event) => {
+    if (runId !== calculationRunId) {
+      return;
+    }
+
+    state.error = event.message || "Worker error";
+    state.calculating = false;
+    cleanupWorkers();
+    render();
+  };
+}
+
+function startRefinePool(shortlisted: Recommendation[], runId: number): void {
+  refineQueue = shortlisted.map((item) => item.guess);
+  completedRoots = 0;
+  activeRefineProgress.clear();
+
+  const workerCount = Math.min(
+    refineQueue.length,
+    Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 4) - 1))
+  );
+
+  refineWorkers = Array.from({ length: workerCount }, () => {
+    return new Worker(new URL("./solverWorker.ts", import.meta.url), {
+      type: "module",
+    });
+  });
+
+  if (workerCount === 0) {
+    state.calculating = false;
+    state.progressLabel = "Done";
+    render();
+    return;
+  }
+
+  for (const worker of refineWorkers) {
+    startNextRefineJob(worker, runId);
+  }
 }
 
 function selectCell(row: number, col: number): void {
@@ -230,15 +443,29 @@ function removeLastFilledRow(): void {
 }
 
 function resetGame(): void {
+  calculationRunId++;
+  cleanupWorkers();
+
   state.grid = createEmptyGrid();
   state.selectedRow = 0;
   state.selectedCol = 0;
   state.candidates = [...state.solutions];
   state.rankedCandidates = [];
-  state.allRankings = [];
   state.recommendations = [];
   state.messages = [];
   state.hasCalculated = false;
+  state.calculating = false;
+  state.progressProcessed = 0;
+  state.progressTotal = 0;
+  state.progressLabel = "";
+  state.error = "";
+
+  rootRecommendationMap.clear();
+  rootDepthMap.clear();
+  refineQueue = [];
+  activeRefineProgress.clear();
+  heuristicProcessedCount = 0;
+  completedRoots = 0;
 
   render();
 }
@@ -302,31 +529,106 @@ function buildMessages(
 function calculateGuesses(): void {
   if (state.loading || state.calculating) return;
 
+  const runId = ++calculationRunId;
+  cleanupWorkers();
+
+  const activeRows = getActiveRows();
+  const incompleteRows = getIncompleteRowNumbers();
+
+  state.candidates = filterCandidates(state.solutions, activeRows);
+  state.messages = buildMessages(activeRows, incompleteRows, state.candidates);
+  state.rankedCandidates = [];
+  state.recommendations = [];
+  state.hasCalculated = true;
   state.calculating = true;
+  state.progressProcessed = 0;
+  state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
+  state.progressLabel = "Scanning guesses...";
+  state.error = "";
+
+  rootRecommendationMap.clear();
+  rootDepthMap.clear();
+  refineQueue = [];
+  activeRefineProgress.clear();
+  heuristicProcessedCount = 0;
+  completedRoots = 0;
+
   render();
 
-  window.setTimeout(() => {
-    const activeRows = getActiveRows();
-    const incompleteRows = getIncompleteRowNumbers();
+  const worker = new Worker(new URL("./solverWorker.ts", import.meta.url), {
+    type: "module",
+  });
 
-    state.candidates = filterCandidates(state.solutions, activeRows);
-    state.allRankings = analyzeAllGuesses(state.candidates, state.solutions);
-    state.recommendations = selectUsefulRecommendations(
-      state.allRankings,
-      state.candidates.length,
-      TOP_GUESSES
-    );
-    state.rankedCandidates = rankRemainingCandidatesBySolveDepth(
-      state.candidates,
-      state.solutions,
-      state.allRankings
-    );
-    state.messages = buildMessages(activeRows, incompleteRows, state.candidates);
-    state.hasCalculated = true;
+  heuristicWorker = worker;
+
+  worker.onmessage = (event: MessageEvent<WorkerToMainMessage>) => {
+    if (runId !== calculationRunId || worker !== heuristicWorker) {
+      return;
+    }
+
+    const message = event.data;
+
+    if (message.type === "heuristic_progress") {
+      heuristicProcessedCount = message.processed;
+
+      rootRecommendationMap.clear();
+      for (const rec of message.topRecommendations) {
+        rootRecommendationMap.set(rec.guess, rec);
+      }
+
+      rebuildRecommendations();
+      updateRankedCandidatesFromBestRefinedRoot();
+      updateProgressDisplay();
+      state.progressLabel = "Scanning guesses...";
+      render();
+      return;
+    }
+
+    if (message.type === "heuristic_done") {
+      heuristicProcessedCount = state.guesses.length;
+
+      rootRecommendationMap.clear();
+      for (const rec of message.topRecommendations) {
+        rootRecommendationMap.set(rec.guess, rec);
+      }
+
+      rebuildRecommendations();
+      updateProgressDisplay();
+      state.progressLabel = "Refining top roots...";
+      render();
+
+      worker.terminate();
+      heuristicWorker = null;
+
+      startRefinePool(message.topRecommendations, runId);
+      return;
+    }
+
+    if (message.type === "error") {
+      state.error = message.error;
+      state.calculating = false;
+      cleanupWorkers();
+      render();
+    }
+  };
+
+  worker.onerror = (event) => {
+    if (runId !== calculationRunId || worker !== heuristicWorker) {
+      return;
+    }
+
+    state.error = event.message || "Worker error";
     state.calculating = false;
-
+    cleanupWorkers();
     render();
-  }, 0);
+  };
+
+  worker.postMessage({
+    type: "heuristic",
+    candidates: state.candidates,
+    guesses: state.guesses,
+    topN: DISPLAY_GUESSES,
+  });
 }
 
 function classForMark(mark: TileMark): string {
@@ -474,6 +776,10 @@ function renderCandidatesList(): string {
     return `<div class="empty warning">No candidates remain.</div>`;
   }
 
+  if (state.rankedCandidates.length === 0) {
+    return `<div class="empty">Remaining candidates will update from the current best refined root.</div>`;
+  }
+
   const minSteps = Math.min(...state.rankedCandidates.map((item) => item.solveDepth));
   const maxSteps = Math.max(...state.rankedCandidates.map((item) => item.solveDepth));
 
@@ -498,58 +804,94 @@ function renderCandidatesList(): string {
   `;
 }
 
+function renderProgressBar(): string {
+  if (!state.calculating && state.progressTotal === 0) {
+    return "";
+  }
+
+  const total = Math.max(1, state.progressTotal);
+  const processed = Math.min(state.progressProcessed, total);
+  const percent = (processed / total) * 100;
+
+  return `
+    <div class="progress-footer">
+      <div class="progress-meta">
+        <span>${escapeHtml(state.progressLabel || (state.calculating ? "Calculating..." : "Done"))}</span>
+        <span>${processed.toFixed(processed % 1 === 0 ? 0 : 2)} / ${total.toFixed(total % 1 === 0 ? 0 : 2)}</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width: ${percent.toFixed(2)}%;"></div>
+      </div>
+    </div>
+  `;
+}
+
 function renderRecommendationsContent(): string {
-  if (!state.hasCalculated) {
+  if (!state.hasCalculated && !state.calculating) {
     return `<div class="empty">No calculation yet.</div>`;
   }
 
-  if (state.recommendations.length === 0) {
+  if (state.recommendations.length === 0 && !state.calculating) {
     return `<div class="empty">No useful guesses found.</div>`;
   }
 
   return `
-    <div class="best-table-wrap">
-      <table class="best-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Guess</th>
-            <th>Type</th>
-            <th>Worst</th>
-            <th>Exp</th>
-            <th>Info</th>
-            <th>Bucket</th>
-          </tr>
-        </thead>
+    <div class="right-panel-content">
+      <div class="best-table-wrap">
+        <table class="best-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Guess</th>
+              <th>Type</th>
+              <th>Worst</th>
+              <th>Exp</th>
+              <th>Info</th>
+              <th>Bucket</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          ${state.recommendations
-            .map(
-              (item, index) => `
-                <tr
-                  class="${index === 0 ? "recommended-row" : ""}"
-                  data-word-choice="${item.guess}"
-                >
-                  <td>${index === 0 ? "★" : index + 1}</td>
-                  <td class="best-word-cell">
-                    <span class="best-word">${item.guess.toUpperCase()}</span>
-                    ${
-                      index === 0
-                        ? `<span class="recommended-badge">Recommended</span>`
-                        : ""
-                    }
-                  </td>
-                  <td>${item.possibleAnswer ? "Ans" : "Probe"}</td>
-                  <td>${item.worstTurns.toFixed(item.exact ? 0 : 1)}</td>
-                  <td>${item.expectedTurns.toFixed(2)}</td>
-                  <td>${item.entropy.toFixed(2)}</td>
-                  <td>${item.worstBucket}</td>
-                </tr>
-              `
-            )
-            .join("")}
-        </tbody>
-      </table>
+          <tbody>
+            ${
+              state.recommendations.length > 0
+                ? state.recommendations
+                    .map(
+                      (item, index) => `
+                        <tr
+                          class="${index === 0 ? "recommended-row" : ""}"
+                          data-word-choice="${item.guess}"
+                        >
+                          <td>${index === 0 ? "★" : index + 1}</td>
+                          <td class="best-word-cell">
+                            <span class="best-word">${item.guess.toUpperCase()}</span>
+                            ${
+                              index === 0
+                                ? `<span class="recommended-badge">Recommended</span>`
+                                : ""
+                            }
+                          </td>
+                          <td>${item.possibleAnswer ? "Ans" : "Probe"}</td>
+                          <td>${Number.isFinite(item.worstTurns) ? item.worstTurns.toFixed(item.exact ? 0 : 1) : "—"}</td>
+                          <td>${Number.isFinite(item.expectedTurns) ? item.expectedTurns.toFixed(2) : "—"}</td>
+                          <td>${item.entropy.toFixed(2)}</td>
+                          <td>${item.worstBucket}</td>
+                        </tr>
+                      `
+                    )
+                    .join("")
+                : `
+                  <tr>
+                    <td colspan="7" class="empty-cell">
+                      ${state.calculating ? "Searching..." : "No useful guesses found."}
+                    </td>
+                  </tr>
+                `
+            }
+          </tbody>
+        </table>
+      </div>
+
+      ${renderProgressBar()}
     </div>
   `;
 }
@@ -606,12 +948,11 @@ function renderControlsBubble(): string {
           </div>
 
           <div class="mode-description">
-            Left panel colors now show solve depth under the current policy:
-            greener words are found sooner, redder words later.
+            The app now does a fast heuristic shortlist first, then refines the top 30 roots in parallel with Web Workers. Remaining updates from the current best refined root.
           </div>
 
           <div class="fixed-top-note">
-            Guess pool: solution words only. Shows at most ${TOP_GUESSES} useful guesses.
+            Best Guesses shows all 30 shortlisted roots live.
           </div>
 
           <div class="popover-buttons">
@@ -642,7 +983,7 @@ function render(): void {
         </aside>
 
         <section class="center-game">
-          ${state.loading ? `<div class="status-line">Loading solution list...</div>` : ""}
+          ${state.loading ? `<div class="status-line">Loading word lists...</div>` : ""}
           ${state.error ? `<div class="status-line error">${escapeHtml(state.error)}</div>` : ""}
           ${renderMessages()}
           ${renderWordleBoard()}
@@ -653,7 +994,7 @@ function render(): void {
         <aside class="side-panel right-side">
           <div class="side-header">
             <h2>Best Guesses</h2>
-            <span>GTO</span>
+            <span>30 Live</span>
           </div>
           ${renderRecommendationsContent()}
         </aside>
@@ -839,11 +1180,16 @@ async function init(): Promise<void> {
   render();
 
   try {
-    const solutions = await loadWords("/wordlists/valid_wordle_solutions.txt");
+    const [solutions, guesses] = await Promise.all([
+      loadWords("/wordlists/valid_wordle_solutions.txt"),
+      loadWords("/wordlists/valid_wordle_guesses.txt"),
+    ]);
 
     state.solutions = solutions;
+    state.guesses = [...new Set([...guesses, ...solutions])].sort();
     state.candidates = [...solutions];
     state.loading = false;
+    state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
 
     render();
   } catch (error) {
@@ -853,4 +1199,4 @@ async function init(): Promise<void> {
   }
 }
 
-init();
+void init();

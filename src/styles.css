@@ -6,19 +6,20 @@
   --line-dark: #353636;
 
   --empty: #ffffff;
-  --absent: #8a8a8a;
-  --present: #fcd93f;
-  --present-border: #80712e;
+  --absent: #b8b8b8;
+  --present: #fcba3f;
+  --present-border: #ca7f0e;
   --correct: #3dd62f;
-  --correct-border: #2d5c29;
-  --calculate: #e79121;
+  --correct-border: #1a9c0e;
+  --calculate: #87c9ff;
+  --reset: #ff7a7a;
 
   --key: #d3d6da;
   --panel: #ffffff;
   --panel-soft: #b7bbbe;
 
   --shadow: rgba(0, 0, 0, 0.12);
-  --radius-soft: 8px;
+  --radius-soft: 10px;
 }
 
 * {
@@ -63,13 +64,13 @@ button:disabled {
 
 .app-title {
   margin: 0;
-  height: 56px;
+  margin-top: 18px;
+  height: 64px;
   display: grid;
   place-items: center;
-  border-bottom: 1px solid var(--line);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 32px;
-  font-weight: 900;
+  font-size: 48px;
+  font-weight: 1200;
   letter-spacing: 0.04em;
   line-height: 1;
 }
@@ -78,20 +79,22 @@ button:disabled {
   height: calc(100vh - 56px);
   display: grid;
   grid-template-columns:
-    minmax(260px, 330px)
-    minmax(360px, 1fr)
-    minmax(260px, 330px);
+    minmax(260px, 1fr)
+    max-content
+    minmax(260px, 1fr);
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 16px;
   padding: 10px 16px;
   overflow: hidden;
-  max-width: 1280px;
+  max-width: min(1800px, calc(100vw - 32px));
   width: 100%;
   margin: 0 auto;
 }
 
 .center-game {
+  width: max-content;
+  max-width: 100%;
   height: min(100%, 720px);
   min-height: 0;
   display: grid;
@@ -99,9 +102,13 @@ button:disabled {
   align-content: center;
   justify-items: center;
   gap: 10px;
+  padding: 16px;
+  justify-self: center;
 }
 
 .side-panel {
+  width: 100%;
+  min-width: 0;
   height: min(100%, 720px);
   min-height: 0;
   border: 1px solid var(--line);
@@ -110,6 +117,11 @@ button:disabled {
   display: grid;
   grid-template-rows: 38px 1fr;
   overflow: hidden;
+}
+
+.left-side,
+.right-side {
+  justify-self: stretch;
 }
 
 .side-header {
@@ -240,8 +252,9 @@ button:disabled {
 }
 
 .selected-tile {
-  outline: 2px solid rgba(0, 0, 0, 0.78);
-  outline-offset: 2px;
+  border: 3px dashed rgba(0, 0, 0, 0.78);
+  outline: 0;
+  outline-offset: 0;
 }
 
 .input-board-tile:hover {
@@ -301,7 +314,7 @@ button:disabled {
 }
 
 .reset-key {
-  background: #ececec;
+  background: var(--reset);
 }
 
 .calculate-key {
@@ -366,15 +379,23 @@ button:disabled {
   filter: brightness(0.97);
 }
 
-.best-table-wrap {
-  overflow: auto;
+.right-panel-content {
   min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+}
+
+.best-table-wrap {
+  min-height: 0;
+  overflow: auto;
 }
 
 .best-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  table-layout: fixed;
 }
 
 .best-table th,
@@ -383,6 +404,8 @@ button:disabled {
   padding: 7px 6px;
   text-align: left;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .best-table th {
@@ -394,6 +417,32 @@ button:disabled {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.best-table th:nth-child(1),
+.best-table td:nth-child(1) {
+  width: 34px;
+}
+
+.best-table th:nth-child(2),
+.best-table td:nth-child(2) {
+  width: 108px;
+}
+
+.best-table th:nth-child(3),
+.best-table td:nth-child(3) {
+  width: 54px;
+}
+
+.best-table th:nth-child(4),
+.best-table td:nth-child(4),
+.best-table th:nth-child(5),
+.best-table td:nth-child(5),
+.best-table th:nth-child(6),
+.best-table td:nth-child(6),
+.best-table th:nth-child(7),
+.best-table td:nth-child(7) {
+  width: 56px;
 }
 
 .best-table tbody tr {
@@ -449,6 +498,40 @@ button:disabled {
   color: var(--muted);
   padding: 12px;
   font-size: 13px;
+}
+
+.empty-cell {
+  color: var(--muted);
+  text-align: center;
+}
+
+.progress-footer {
+  border-top: 1px solid var(--line);
+  padding: 8px 10px 10px;
+  background: #fafafa;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e7e7e7;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e79121, #3dd62f);
+  transition: width 0.12s linear;
 }
 
 .controls-shell {
@@ -571,9 +654,9 @@ button:disabled {
 @media (max-width: 1220px) {
   .solver-layout {
     grid-template-columns:
-      minmax(210px, 280px)
-      minmax(340px, 1fr)
-      minmax(210px, 280px);
+      minmax(220px, 1fr)
+      max-content
+      minmax(220px, 1fr);
     gap: 10px;
   }
 
@@ -645,6 +728,8 @@ button:disabled {
 
   .center-game {
     order: 1;
+    width: 100%;
+    justify-self: center;
   }
 
   .left-side,
