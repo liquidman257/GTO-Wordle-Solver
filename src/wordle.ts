@@ -8,16 +8,19 @@ export type GuessRow = {
 export type Recommendation = {
   guess: string;
   possibleAnswer: boolean;
-
   exact: boolean;
   worstTurns: number;
   expectedTurns: number;
-
   entropy: number;
   expectedRemaining: number;
   worstBucket: number;
   singletonCount: number;
   splitCount: number;
+};
+
+export type RankedCandidate = {
+  recommendation: Recommendation;
+  solveDepth: number;
 };
 
 const ALL_GREEN_CODE = 242;
@@ -428,4 +431,110 @@ export function selectUsefulRecommendations(
   }
 
   return allRecommendations.slice(0, top);
+}
+
+function computeSolveDepthMap(
+  candidates: string[],
+  allSolutionGuesses: string[],
+  rankingMemo: Map<string, Recommendation[]>,
+  depthMemo: Map<string, Map<string, number>>
+): Map<string, number> {
+  if (candidates.length === 0) {
+    return new Map();
+  }
+
+  const key = candidateKey(candidates);
+  const cached = depthMemo.get(key);
+
+  if (cached) {
+    return cached;
+  }
+
+  if (candidates.length === 1) {
+    const result = new Map<string, number>([[candidates[0], 1]]);
+    depthMemo.set(key, result);
+    return result;
+  }
+
+  let rankings = rankingMemo.get(key);
+
+  if (!rankings) {
+    rankings = analyzeAllGuesses(candidates, allSolutionGuesses);
+    rankingMemo.set(key, rankings);
+  }
+
+  const bestGuess = rankings[0]?.guess;
+  const result = new Map<string, number>();
+
+  if (!bestGuess) {
+    for (const word of candidates) {
+      result.set(word, 1);
+    }
+
+    depthMemo.set(key, result);
+    return result;
+  }
+
+  const buckets = buildBuckets(bestGuess, candidates);
+
+  for (const [code, bucket] of buckets) {
+    if (code === ALL_GREEN_CODE && bucket.length === 1 && bucket[0] === bestGuess) {
+      result.set(bestGuess, 1);
+      continue;
+    }
+
+    const childDepths = computeSolveDepthMap(
+      bucket,
+      allSolutionGuesses,
+      rankingMemo,
+      depthMemo
+    );
+
+    for (const [word, depth] of childDepths) {
+      result.set(word, depth + 1);
+    }
+  }
+
+  depthMemo.set(key, result);
+  return result;
+}
+
+export function rankRemainingCandidatesBySolveDepth(
+  candidates: string[],
+  allSolutionGuesses: string[],
+  rootRankings?: Recommendation[]
+): RankedCandidate[] {
+  if (candidates.length === 0) return [];
+
+  const rankingMemo = new Map<string, Recommendation[]>();
+  const depthMemo = new Map<string, Map<string, number>>();
+  const rootKey = candidateKey(candidates);
+
+  if (rootRankings) {
+    rankingMemo.set(rootKey, rootRankings);
+  }
+
+  const depthMap = computeSolveDepthMap(
+    candidates,
+    allSolutionGuesses,
+    rankingMemo,
+    depthMemo
+  );
+
+  const rootRecommendations =
+    rootRankings ?? analyzeAllGuesses(candidates, allSolutionGuesses);
+
+  return rootRecommendations
+    .filter((item) => item.possibleAnswer)
+    .map((recommendation) => ({
+      recommendation,
+      solveDepth: depthMap.get(recommendation.guess) ?? recommendation.worstTurns,
+    }))
+    .sort((a, b) => {
+      if (a.solveDepth !== b.solveDepth) {
+        return a.solveDepth - b.solveDepth;
+      }
+
+      return compareRecommendations(a.recommendation, b.recommendation);
+    });
 }

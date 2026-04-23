@@ -329,7 +329,7 @@ button:disabled {
 
 .ranked-word-pill {
   display: grid;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 24px 1fr 28px;
   align-items: center;
   gap: 8px;
   text-align: left;
@@ -347,6 +347,19 @@ button:disabled {
 
 .candidate-word {
   color: var(--text);
+}
+
+.candidate-depth {
+  justify-self: end;
+  min-width: 20px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.72);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 1px 5px;
 }
 
 .word-pill:hover {

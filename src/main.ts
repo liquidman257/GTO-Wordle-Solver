@@ -2,13 +2,14 @@ import "./styles.css";
 
 import {
   type GuessRow,
+  type RankedCandidate,
   type Recommendation,
   type TileMark,
   analyzeAllGuesses,
-  compareRecommendations,
   filterCandidates,
   loadWords,
   normalizeWord,
+  rankRemainingCandidatesBySolveDepth,
   selectUsefulRecommendations,
 } from "./wordle";
 
@@ -29,7 +30,7 @@ type AppState = {
   selectedCol: number;
   controlsOpen: boolean;
   candidates: string[];
-  rankedCandidates: Recommendation[];
+  rankedCandidates: RankedCandidate[];
   allRankings: Recommendation[];
   recommendations: Recommendation[];
   messages: SolverMessage[];
@@ -315,9 +316,11 @@ function calculateGuesses(): void {
       state.candidates.length,
       TOP_GUESSES
     );
-    state.rankedCandidates = state.allRankings
-      .filter((item) => item.possibleAnswer)
-      .sort(compareRecommendations);
+    state.rankedCandidates = rankRemainingCandidatesBySolveDepth(
+      state.candidates,
+      state.solutions,
+      state.allRankings
+    );
     state.messages = buildMessages(activeRows, incompleteRows, state.candidates);
     state.hasCalculated = true;
     state.calculating = false;
@@ -447,19 +450,9 @@ function renderKeyboard(): string {
   `;
 }
 
-function getCandidateStyle(index: number, total: number): string {
-  if (total <= 1) {
-    return `
-      background: linear-gradient(
-        90deg,
-        hsla(120, 78%, 52%, 0.26) 0%,
-        rgba(255, 255, 255, 0.98) 88%
-      );
-      border-color: hsla(120, 62%, 24%, 0.62);
-    `;
-  }
-
-  const t = index / Math.max(1, total - 1);
+function getCandidateStyle(steps: number, minSteps: number, maxSteps: number): string {
+  const range = Math.max(1, maxSteps - minSteps);
+  const t = (steps - minSteps) / range;
   const hue = 120 - 120 * t;
 
   return `
@@ -481,6 +474,9 @@ function renderCandidatesList(): string {
     return `<div class="empty warning">No candidates remain.</div>`;
   }
 
+  const minSteps = Math.min(...state.rankedCandidates.map((item) => item.solveDepth));
+  const maxSteps = Math.max(...state.rankedCandidates.map((item) => item.solveDepth));
+
   return `
     <div class="side-list">
       ${state.rankedCandidates
@@ -488,11 +484,12 @@ function renderCandidatesList(): string {
           (item, index) => `
             <button
               class="word-pill ranked-word-pill ${index === 0 ? "top-ranked-word" : ""}"
-              data-word-choice="${item.guess}"
-              style="${getCandidateStyle(index, state.rankedCandidates.length)}"
+              data-word-choice="${item.recommendation.guess}"
+              style="${getCandidateStyle(item.solveDepth, minSteps, maxSteps)}"
             >
               <span class="candidate-rank">${index + 1}</span>
-              <span class="candidate-word">${item.guess.toUpperCase()}</span>
+              <span class="candidate-word">${item.recommendation.guess.toUpperCase()}</span>
+              <span class="candidate-depth">${item.solveDepth}</span>
             </button>
           `
         )
@@ -609,9 +606,8 @@ function renderControlsBubble(): string {
           </div>
 
           <div class="mode-description">
-            Uses one GTO-style ranking: minimize worst-case turns, then expected turns,
-            then worst bucket, expected remaining candidates, entropy, singleton splits,
-            and answer-word preference.
+            Left panel colors now show solve depth under the current policy:
+            greener words are found sooner, redder words later.
           </div>
 
           <div class="fixed-top-note">
