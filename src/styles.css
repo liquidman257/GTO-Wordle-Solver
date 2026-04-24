@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;800;900&display=swap");
+
 :root {
   --bg: #ffffff;
   --text: #1a1a1b;
@@ -14,12 +16,209 @@
   --calculate: #87c9ff;
   --reset: #ff7a7a;
 
+  --pos-1: #4561ff;
+  --pos-2: #ff9c40;
+  --pos-3: #ff5656;
+  --pos-4: #6eff51;
+  --pos-5: #d54bff;
+
   --key: #d3d6da;
   --panel: #ffffff;
   --panel-soft: #b7bbbe;
 
   --shadow: rgba(0, 0, 0, 0.12);
   --radius-soft: 10px;
+}
+
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Noto Sans", Arial, sans-serif;
+}
+
+.app-title {
+  font-family: "Noto Sans", Arial, sans-serif;
+}
+
+.letter-chart-grid {
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 8px;
+}
+
+.letter-chart-y-axis {
+  min-height: 260px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  align-items: stretch;
+}
+
+.letter-chart-y-tick {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.letter-chart-y-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  transform: translateY(-50%);
+}
+
+.letter-chart-plot {
+  position: relative;
+  min-height: 260px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.letter-chart-grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.letter-chart {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  min-height: 260px;
+  display: grid;
+  grid-template-columns: repeat(26, minmax(12px, 1fr));
+  gap: 6px;
+  align-items: end;
+}
+
+.letter-bar {
+  cursor: default;
+}
+
+.letter-bar-segment {
+  width: 100%;
+  cursor: pointer;
+}
+
+.chart-tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  max-width: 220px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(26, 26, 27, 0.94);
+  color: white;
+  font-size: 11px;
+  line-height: 1.25;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.08s ease, transform 0.08s ease;
+}
+
+.chart-tooltip-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter-chart-grid {
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 8px;
+}
+
+.letter-chart-y-axis {
+  min-height: 260px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  align-items: stretch;
+}
+
+.letter-chart-y-tick {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.letter-chart-y-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  transform: translateY(-50%);
+}
+
+.letter-chart-plot {
+  position: relative;
+  min-height: 260px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.letter-chart-grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.letter-chart {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  min-height: 260px;
+  display: grid;
+  grid-template-columns: repeat(26, minmax(12px, 1fr));
+  gap: 6px;
+  align-items: stretch;
+}
+
+.letter-chart-item {
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 6px;
+}
+
+.letter-bar-shell {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.letter-bar-stack {
+  width: min(100%, 22px);
+  min-width: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  background: #eef0f2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.letter-bar-segment {
+  width: 100%;
+  cursor: pointer;
 }
 
 * {
@@ -720,6 +919,175 @@ button:disabled {
 .inspect-stats {
   display: grid;
   gap: 2px;
+}
+
+.left-panel-content {
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+.panel-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid var(--line);
+  background: white;
+}
+
+.panel-tab {
+  height: 32px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: #f6f7f8;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel-tab-active {
+  background: white;
+  color: var(--text);
+}
+
+.left-panel-body {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.left-panel-tab-content {
+  min-height: 0;
+  height: 100%;
+}
+
+.letter-chart-wrap {
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+.letter-chart-legend {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.letter-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex: 0 0 10px;
+}
+
+.legend-pos-1 {
+  background: var(--pos-1);
+}
+
+.legend-pos-2 {
+  background: var(--pos-2);
+}
+
+.legend-pos-3 {
+  background:var(--pos-3);
+}
+
+.legend-pos-4 {
+  background: var(--pos-4);
+}
+
+.legend-pos-5 {
+  background: var(--pos-5);
+}
+
+.letter-chart-scroll {
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: 4px;
+}
+
+.letter-chart {
+  height: 100%;
+  min-height: 260px;
+  display: grid;
+  grid-template-columns: repeat(26, minmax(12px, 1fr));
+  gap: 6px;
+  align-items: end;
+}
+
+.letter-chart-item {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 6px;
+}
+
+.letter-bar-shell {
+  min-height: 220px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.letter-bar {
+  width: min(100%, 22px);
+  min-width: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  background: #eef0f2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.letter-bar-segment {
+  width: 100%;
+}
+
+.segment-pos-1 {
+  background: var(--pos-1);
+}
+
+.segment-pos-2 {
+  background: var(--pos-2);
+}
+
+.segment-pos-3 {
+  background: var(--pos-3);
+}
+
+.segment-pos-4 {
+  background: var(--pos-4);
+}
+
+.segment-pos-5 {
+  background: var(--pos-5);
+}
+
+.letter-bar-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
 }
 
 @media (max-width: 1220px) {

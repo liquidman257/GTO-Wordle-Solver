@@ -45,6 +45,7 @@ type AppState = {
   inspectLoading: boolean;
   inspectError: string;
   inspectStats: InspectStats | null;
+  activeLeftTab: LeftPanelTab;
 };
 
 type WorkerHeuristicProgressMessage = {
@@ -93,6 +94,15 @@ type WorkerToMainMessage =
   | WorkerInspectDoneMessage
   | WorkerErrorMessage;
 
+type LeftPanelTab = "remaining" | "letter_positions";
+
+type LetterPositionEntry = {
+  letter: string;
+  positions: [number, number, number, number, number];
+  occurrenceTotal: number;
+  wordCount: number;
+};
+
 const DISPLAY_GUESSES = 30;
 const ROWS = 6;
 const COLS = 5;
@@ -120,6 +130,7 @@ const state: AppState = {
   inspectLoading: false,
   inspectError: "",
   inspectStats: null,
+  activeLeftTab: "remaining",
 };
 
 let calculationRunId = 0;
@@ -811,6 +822,22 @@ function labelForMark(mark: TileMark): string {
   return "unknown";
 }
 
+function getNiceChartTicks(maxValue: number): number[] {
+  if (maxValue <= 0) {
+    return [0, 1];
+  }
+
+  const rawTicks = [
+    0,
+    Math.round(maxValue * 0.25),
+    Math.round(maxValue * 0.5),
+    Math.round(maxValue * 0.75),
+    maxValue,
+  ];
+
+  return [...new Set(rawTicks)].sort((a, b) => a - b);
+}
+
 function renderMessages(): string {
   if (state.messages.length === 0) return "";
 
@@ -933,6 +960,191 @@ function getCandidateStyle(steps: number, minSteps: number, maxSteps: number): s
   `;
 }
 
+function getLetterPositionEntries(words: string[]): LetterPositionEntry[] {
+  const positionCounts = Array.from({ length: 26 }, () => [0, 0, 0, 0, 0] as [
+    number,
+    number,
+    number,
+    number,
+    number
+  ]);
+  const wordCounts = Array.from({ length: 26 }, () => 0);
+
+  for (const word of words) {
+    const seenInWord = new Set<number>();
+
+    for (let i = 0; i < 5 && i < word.length; i++) {
+      const code = word.charCodeAt(i) - 97;
+
+      if (code >= 0 && code < 26) {
+        positionCounts[code][i]++;
+        seenInWord.add(code);
+      }
+    }
+
+    for (const code of seenInWord) {
+      wordCounts[code]++;
+    }
+  }
+
+  return positionCounts.map((positions, index) => ({
+    letter: String.fromCharCode(65 + index),
+    positions,
+    occurrenceTotal: positions.reduce((sum, value) => sum + value, 0),
+    wordCount: wordCounts[index],
+  }));
+}
+
+function renderLetterPositionChart(): string {
+  if (state.candidates.length === 0) {
+    return `<div class="empty warning">No candidates remain.</div>`;
+  }
+
+  const entries = getLetterPositionEntries(state.candidates);
+  const totalWords = Math.max(1, state.candidates.length);
+  const chartMax = totalWords;
+  const ticks = getNiceChartTicks(chartMax);
+
+  const makeSegment = (
+    count: number,
+    className: string,
+    wordCount: number
+  ): string => {
+    if (count <= 0 || wordCount <= 0) {
+      return "";
+    }
+
+    const percentOfWordsWithLetter = ((count / wordCount) * 100).toFixed(2);
+
+    return `
+      <div
+        class="letter-bar-segment ${className}"
+        style="flex: ${count}"
+        data-chart-tooltip="${escapeHtml(`${percentOfWordsWithLetter}%`)}"
+      ></div>
+    `;
+  };
+
+  return `
+    <div class="left-panel-tab-content letter-chart-wrap">
+      <div class="letter-chart-legend">
+        <div class="letter-chart-legend-item">
+          <span class="legend-swatch legend-pos-1"></span>
+          <span>1st</span>
+        </div>
+        <div class="letter-chart-legend-item">
+          <span class="legend-swatch legend-pos-2"></span>
+          <span>2nd</span>
+        </div>
+        <div class="letter-chart-legend-item">
+          <span class="legend-swatch legend-pos-3"></span>
+          <span>3rd</span>
+        </div>
+        <div class="letter-chart-legend-item">
+          <span class="legend-swatch legend-pos-4"></span>
+          <span>4th</span>
+        </div>
+        <div class="letter-chart-legend-item">
+          <span class="legend-swatch legend-pos-5"></span>
+          <span>5th</span>
+        </div>
+      </div>
+
+      <div class="letter-chart-scroll">
+        <div class="letter-chart-grid">
+          <div class="letter-chart-y-axis">
+            ${ticks
+              .slice()
+              .reverse()
+              .map(
+                (tick) => `
+                  <div class="letter-chart-y-tick">
+                    <span class="letter-chart-y-label">${tick}</span>
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
+
+          <div class="letter-chart-plot">
+            ${ticks
+              .slice()
+              .reverse()
+              .map(
+                (tick) => `
+                  <div
+                    class="letter-chart-grid-line"
+                    style="bottom: ${(tick / chartMax) * 100}%"
+                  ></div>
+                `
+              )
+              .join("")}
+
+            <div class="letter-chart">
+              ${entries
+                .map((entry) => {
+                  const barHeight = (entry.wordCount / chartMax) * 100;
+
+                  return `
+                    <div class="letter-chart-item">
+                      <div class="letter-bar-shell">
+                        <div
+                          class="letter-bar-stack"
+                          style="height: ${barHeight.toFixed(2)}%"
+                          aria-label="${escapeHtml(
+                            `${entry.letter}: ${entry.wordCount}/${totalWords}`
+                          )}"
+                        >
+                          ${makeSegment(entry.positions[0], "segment-pos-1", entry.wordCount)}
+                          ${makeSegment(entry.positions[1], "segment-pos-2", entry.wordCount)}
+                          ${makeSegment(entry.positions[2], "segment-pos-3", entry.wordCount)}
+                          ${makeSegment(entry.positions[3], "segment-pos-4", entry.wordCount)}
+                          ${makeSegment(entry.positions[4], "segment-pos-5", entry.wordCount)}
+                        </div>
+                      </div>
+                      <div class="letter-bar-label">${entry.letter}</div>
+                    </div>
+                  `;
+                })
+                .join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLeftPanelContent(): string {
+  return `
+    <div class="left-panel-content">
+      <div class="panel-tabs">
+        <button
+          class="panel-tab ${state.activeLeftTab === "remaining" ? "panel-tab-active" : ""}"
+          data-left-tab="remaining"
+        >
+          Words Remaining
+        </button>
+
+        <button
+          class="panel-tab ${state.activeLeftTab === "letter_positions" ? "panel-tab-active" : ""}"
+          data-left-tab="letter_positions"
+        >
+          Letter Positions
+        </button>
+      </div>
+
+      <div class="left-panel-body">
+        ${
+          state.activeLeftTab === "remaining"
+            ? renderCandidatesList()
+            : renderLetterPositionChart()
+        }
+      </div>
+    </div>
+  `;
+}
+
 function renderCandidatesList(): string {
   if (!state.hasCalculated) {
     return `<div class="empty">Press Calculate Guesses after entering your known rows.</div>`;
@@ -943,7 +1155,24 @@ function renderCandidatesList(): string {
   }
 
   if (state.rankedCandidates.length === 0) {
-    return `<div class="empty">Remaining candidates will update from the current best refined root.</div>`;
+    return `
+      <div class="side-list">
+        ${state.candidates
+          .map(
+            (word, index) => `
+              <button
+                class="word-pill ranked-word-pill"
+                data-word-choice="${word}"
+              >
+                <span class="candidate-rank">${index + 1}</span>
+                <span class="candidate-word">${word.toUpperCase()}</span>
+                <span class="candidate-depth">—</span>
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+    `;
   }
 
   const minSteps = Math.min(...state.rankedCandidates.map((item) => item.solveDepth));
@@ -1220,9 +1449,9 @@ function render(): void {
         <aside class="side-panel left-side">
           <div class="side-header">
             <h2>Remaining</h2>
-            <span>${state.hasCalculated ? state.candidates.length : "—"}</span>
+            <span>${state.loading ? "—" : state.candidates.length}</span>
           </div>
-          ${renderCandidatesList()}
+          ${renderLeftPanelContent()}
         </aside>
 
         <section class="center-game">
@@ -1243,11 +1472,45 @@ function render(): void {
         </aside>
       </section>
 
-      ${renderControlsBubble()}
+            ${renderControlsBubble()}
     </main>
+
+    <div id="chart-tooltip" class="chart-tooltip"></div>
   `;
 
   attachEvents();
+}
+
+function attachChartTooltipEvents(): void {
+  const tooltip = document.querySelector<HTMLDivElement>("#chart-tooltip");
+
+  if (!tooltip) {
+    return;
+  }
+
+  const hideTooltip = () => {
+    tooltip.classList.remove("chart-tooltip-visible");
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-chart-tooltip]").forEach((element) => {
+    const moveTooltip = (event: MouseEvent) => {
+      const text = element.dataset.chartTooltip;
+
+      if (!text) {
+        hideTooltip();
+        return;
+      }
+
+      tooltip.textContent = text;
+      tooltip.style.left = `${event.clientX + 12}px`;
+      tooltip.style.top = `${event.clientY + 12}px`;
+      tooltip.classList.add("chart-tooltip-visible");
+    };
+
+    element.addEventListener("mouseenter", moveTooltip);
+    element.addEventListener("mousemove", moveTooltip);
+    element.addEventListener("mouseleave", hideTooltip);
+  });
 }
 
 function attachEvents(): void {
@@ -1297,6 +1560,17 @@ function attachEvents(): void {
       if (getCell(row, col).letter) {
         cycleMark(row, col, event.deltaY > 0 ? 1 : -1);
       } else {
+        render();
+      }
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-left-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const tab = button.dataset.leftTab;
+
+      if (tab === "remaining" || tab === "letter_positions") {
+        state.activeLeftTab = tab;
         render();
       }
     });
@@ -1375,8 +1649,19 @@ function attachEvents(): void {
   document
     .querySelector<HTMLButtonElement>("#undo-button")
     ?.addEventListener("click", removeLastFilledRow);
-}
 
+  attachChartTooltipEvents();
+}
+document.querySelectorAll<HTMLButtonElement>("[data-left-tab]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const tab = button.dataset.leftTab;
+
+    if (tab === "remaining" || tab === "letter_positions") {
+      state.activeLeftTab = tab;
+      render();
+    }
+  });
+});
 document.addEventListener("keydown", (event) => {
   const target = event.target;
 
