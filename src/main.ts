@@ -1285,13 +1285,6 @@ function renderInspectorPanel(): string {
 }
 
 function renderRecommendationsContent(): string {
-  const bestHeader =
-    state.hasCalculated &&
-    getActiveRows().length === 0 &&
-    state.openingBook.length > 0
-      ? "Opening Book"
-      : "Best Guesses";
-
   return `
     <div class="right-panel-content">
       <div class="best-table-wrap">
@@ -1319,13 +1312,15 @@ function renderRecommendationsContent(): string {
                           data-word-choice="${item.guess}"
                         >
                           <td>${index === 0 ? "★" : index + 1}</td>
-                          <td class="best-word-cell">
-                            <span class="best-word">${item.guess.toUpperCase()}</span>
-                            ${
-                              index === 0
-                                ? `<span class="recommended-badge">Recommended</span>`
-                                : ""
-                            }
+                          <td>
+                            <div class="best-word-cell">
+                              <span class="best-word">${item.guess.toUpperCase()}</span>
+                              ${
+                                index === 0
+                                  ? `<span class="recommended-badge">Recommended</span>`
+                                  : ""
+                              }
+                            </div>
                           </td>
                           <td>${item.possibleAnswer ? "Ans" : "Probe"}</td>
                           <td>${Number.isFinite(item.worstTurns) ? item.worstTurns.toFixed(item.exact ? 0 : 1) : "—"}</td>
@@ -1403,20 +1398,6 @@ function renderControlsBubble(): string {
 
             <div><span class="sample-dot unknown-dot"></span> Enter</div>
             <div>Calculate guesses</div>
-          </div>
-
-          <div class="mode-description">
-            Empty-board calculations now use a precomputed opening book. Non-empty states still use the dynamic worker pipeline.
-          </div>
-
-          <div class="fixed-top-note">
-            Check Word is collapsible and uses the current candidate set.
-          </div>
-
-          <div class="popover-buttons">
-            <button class="secondary-button" id="clear-current-button">Clear Selected Row Marks</button>
-            <button class="secondary-button" id="undo-button">Clear Last Filled Row</button>
-            <button class="danger-button" id="clear-all-button">Reset Game</button>
           </div>
         </div>
       `
@@ -1652,16 +1633,6 @@ function attachEvents(): void {
 
   attachChartTooltipEvents();
 }
-document.querySelectorAll<HTMLButtonElement>("[data-left-tab]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const tab = button.dataset.leftTab;
-
-    if (tab === "remaining" || tab === "letter_positions") {
-      state.activeLeftTab = tab;
-      render();
-    }
-  });
-});
 document.addEventListener("keydown", (event) => {
   const target = event.target;
 
