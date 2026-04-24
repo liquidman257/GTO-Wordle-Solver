@@ -23,6 +23,22 @@ export type RankedCandidate = {
   solveDepth: number;
 };
 
+export type InspectStats = {
+  guess: string;
+  candidateCount: number;
+  possibleAnswer: boolean;
+  entropy: number;
+  expectedRemaining: number;
+  worstBucket: number;
+  singletonCount: number;
+  splitCount: number;
+  heuristicWorst: number;
+  heuristicExpected: number;
+  refinedWorst: number;
+  refinedExpected: number;
+  topBucketSizes: number[];
+};
+
 const ALL_GREEN_CODE = 242;
 
 export function normalizeWord(raw: string): string {
@@ -161,38 +177,6 @@ export function buildBuckets(guess: string, candidates: string[]): Map<number, s
 }
 
 export function getPartitionStats(guess: string, candidates: string[]) {
-  const buckets = buildBuckets(guess, candidates);
-  const n = candidates.length;
-
-  let entropy = 0;
-  let expectedRemaining = 0;
-  let worstBucket = 0;
-  let singletonCount = 0;
-
-  for (const bucket of buckets.values()) {
-    const count = bucket.length;
-    const probability = count / n;
-
-    entropy += -probability * Math.log2(probability);
-    expectedRemaining += probability * count;
-    worstBucket = Math.max(worstBucket, count);
-
-    if (count === 1) {
-      singletonCount++;
-    }
-  }
-
-  return {
-    buckets,
-    entropy,
-    expectedRemaining,
-    worstBucket,
-    singletonCount,
-    splitCount: buckets.size,
-  };
-}
-
-export function getPartitionStatsForList(guess: string, candidates: string[]) {
   const buckets = buildBuckets(guess, candidates);
   const n = candidates.length;
 

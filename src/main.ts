@@ -2,6 +2,7 @@ import "./styles.css";
 
 import {
   type GuessRow,
+  type InspectStats,
   type RankedCandidate,
   type Recommendation,
   type TileMark,
@@ -24,6 +25,7 @@ type SolverMessage = {
 type AppState = {
   solutions: string[];
   guesses: string[];
+  openingBook: Recommendation[];
   grid: GridCell[][];
   selectedRow: number;
   selectedCol: number;
@@ -39,6 +41,10 @@ type AppState = {
   progressLabel: string;
   error: string;
   hasCalculated: boolean;
+  inspectWord: string;
+  inspectLoading: boolean;
+  inspectError: string;
+  inspectStats: InspectStats | null;
 };
 
 type WorkerHeuristicProgressMessage = {
@@ -59,6 +65,7 @@ type WorkerRefineProgressMessage = {
   processedBuckets: number;
   totalBuckets: number;
   recommendation: Recommendation;
+  rankedCandidates: RankedCandidate[];
 };
 
 type WorkerRefineDoneMessage = {
@@ -66,6 +73,11 @@ type WorkerRefineDoneMessage = {
   rootGuess: string;
   recommendation: Recommendation;
   rankedCandidates: RankedCandidate[];
+};
+
+type WorkerInspectDoneMessage = {
+  type: "inspect_done";
+  stats: InspectStats;
 };
 
 type WorkerErrorMessage = {
@@ -78,6 +90,7 @@ type WorkerToMainMessage =
   | WorkerHeuristicDoneMessage
   | WorkerRefineProgressMessage
   | WorkerRefineDoneMessage
+  | WorkerInspectDoneMessage
   | WorkerErrorMessage;
 
 const DISPLAY_GUESSES = 30;
@@ -87,6 +100,7 @@ const COLS = 5;
 const state: AppState = {
   solutions: [],
   guesses: [],
+  openingBook: [],
   grid: createEmptyGrid(),
   selectedRow: 0,
   selectedCol: 0,
@@ -102,11 +116,19 @@ const state: AppState = {
   progressLabel: "",
   error: "",
   hasCalculated: false,
+  inspectWord: "",
+  inspectLoading: false,
+  inspectError: "",
+  inspectStats: null,
 };
 
 let calculationRunId = 0;
+let inspectRunId = 0;
+
 let heuristicWorker: Worker | null = null;
 let refineWorkers: Worker[] = [];
+let inspectWorker: Worker | null = null;
+
 let rootRecommendationMap = new Map<string, Recommendation>();
 let rootDepthMap = new Map<string, RankedCandidate[]>();
 let refineQueue: string[] = [];
@@ -158,6 +180,42 @@ function escapeHtml(value: string): string {
   });
 }
 
+async function loadOpeningBook(): Promise<Recommendation[]> {
+  try {
+    const response = await fetch("/opening-book.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = (await response.json()) as unknown;
+
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data.filter((item): item is Recommendation => {
+      if (!item || typeof item !== "object") return false;
+      const value = item as Record<string, unknown>;
+
+      return (
+        typeof value.guess === "string" &&
+        typeof value.possibleAnswer === "boolean" &&
+        typeof value.exact === "boolean" &&
+        typeof value.worstTurns === "number" &&
+        typeof value.expectedTurns === "number" &&
+        typeof value.entropy === "number" &&
+        typeof value.expectedRemaining === "number" &&
+        typeof value.worstBucket === "number" &&
+        typeof value.singletonCount === "number" &&
+        typeof value.splitCount === "number"
+      );
+    });
+  } catch {
+    return [];
+  }
+}
+
 function cleanupWorkers(): void {
   if (heuristicWorker) {
     heuristicWorker.terminate();
@@ -169,6 +227,13 @@ function cleanupWorkers(): void {
   }
 
   refineWorkers = [];
+}
+
+function cleanupInspectWorker(): void {
+  if (inspectWorker) {
+    inspectWorker.terminate();
+    inspectWorker = null;
+  }
 }
 
 function rebuildRecommendations(): void {
@@ -192,7 +257,6 @@ function updateRankedCandidatesFromBestRefinedRoot(): void {
 
 function updateProgressDisplay(): void {
   const activeFraction = [...activeRefineProgress.values()].reduce((sum, value) => sum + value, 0);
-
   state.progressProcessed = heuristicProcessedCount + completedRoots + activeFraction;
   state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
 }
@@ -225,11 +289,13 @@ function startNextRefineJob(worker: Worker, runId: number): void {
 
     if (message.type === "refine_progress") {
       rootRecommendationMap.set(message.rootGuess, message.recommendation);
+      rootDepthMap.set(message.rootGuess, message.rankedCandidates);
 
       const fraction =
         message.totalBuckets > 0 ? message.processedBuckets / message.totalBuckets : 0;
 
       activeRefineProgress.set(message.rootGuess, fraction);
+
       rebuildRecommendations();
       updateRankedCandidatesFromBestRefinedRoot();
       updateProgressDisplay();
@@ -253,10 +319,10 @@ function startNextRefineJob(worker: Worker, runId: number): void {
         render();
         startNextRefineJob(worker, runId);
       } else {
-        const allIdle =
+        const allDone =
           completedRoots >= Math.min(DISPLAY_GUESSES, rootRecommendationMap.size);
 
-        if (allIdle) {
+        if (allDone) {
           state.progressLabel = "Done";
           state.calculating = false;
           activeRefineProgress.clear();
@@ -526,6 +592,24 @@ function buildMessages(
   return messages;
 }
 
+function buildOpeningBookMessages(incompleteRows: number[]): SolverMessage[] {
+  const messages: SolverMessage[] = [];
+
+  if (incompleteRows.length > 0) {
+    messages.push({
+      type: "warning",
+      text: `Incomplete rows are ignored until all 5 letters are filled: ${incompleteRows.join(", ")}.`,
+    });
+  }
+
+  messages.push({
+    type: "info",
+    text: "Showing precomputed opening book for the empty board.",
+  });
+
+  return messages;
+}
+
 function calculateGuesses(): void {
   if (state.loading || state.calculating) return;
 
@@ -536,6 +620,21 @@ function calculateGuesses(): void {
   const incompleteRows = getIncompleteRowNumbers();
 
   state.candidates = filterCandidates(state.solutions, activeRows);
+  state.error = "";
+
+  if (activeRows.length === 0 && state.openingBook.length > 0) {
+    state.messages = buildOpeningBookMessages(incompleteRows);
+    state.recommendations = [...state.openingBook];
+    state.rankedCandidates = [];
+    state.hasCalculated = true;
+    state.calculating = false;
+    state.progressProcessed = 0;
+    state.progressTotal = 0;
+    state.progressLabel = "";
+    render();
+    return;
+  }
+
   state.messages = buildMessages(activeRows, incompleteRows, state.candidates);
   state.rankedCandidates = [];
   state.recommendations = [];
@@ -544,7 +643,6 @@ function calculateGuesses(): void {
   state.progressProcessed = 0;
   state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
   state.progressLabel = "Scanning guesses...";
-  state.error = "";
 
   rootRecommendationMap.clear();
   rootDepthMap.clear();
@@ -628,6 +726,74 @@ function calculateGuesses(): void {
     candidates: state.candidates,
     guesses: state.guesses,
     topN: DISPLAY_GUESSES,
+  });
+}
+
+function inspectWordStats(): void {
+  if (state.loading) return;
+
+  const runId = ++inspectRunId;
+  cleanupInspectWorker();
+
+  const guess = normalizeWord(state.inspectWord).replace(/[^a-z]/g, "").slice(0, 5);
+  state.inspectWord = guess;
+  state.inspectError = "";
+  state.inspectStats = null;
+
+  if (!/^[a-z]{5}$/.test(guess)) {
+    state.inspectError = "Enter a 5-letter word.";
+    render();
+    return;
+  }
+
+  state.inspectLoading = true;
+  render();
+
+  const worker = new Worker(new URL("./solverWorker.ts", import.meta.url), {
+    type: "module",
+  });
+
+  inspectWorker = worker;
+
+  worker.onmessage = (event: MessageEvent<WorkerToMainMessage>) => {
+    if (runId !== inspectRunId || worker !== inspectWorker) {
+      return;
+    }
+
+    const message = event.data;
+
+    if (message.type === "inspect_done") {
+      state.inspectStats = message.stats;
+      state.inspectLoading = false;
+      cleanupInspectWorker();
+      render();
+      return;
+    }
+
+    if (message.type === "error") {
+      state.inspectError = message.error;
+      state.inspectLoading = false;
+      cleanupInspectWorker();
+      render();
+    }
+  };
+
+  worker.onerror = (event) => {
+    if (runId !== inspectRunId || worker !== inspectWorker) {
+      return;
+    }
+
+    state.inspectError = event.message || "Inspector worker error";
+    state.inspectLoading = false;
+    cleanupInspectWorker();
+    render();
+  };
+
+  worker.postMessage({
+    type: "inspect",
+    candidates: state.hasCalculated ? state.candidates : state.solutions,
+    guesses: state.guesses,
+    guess,
   });
 }
 
@@ -826,14 +992,76 @@ function renderProgressBar(): string {
   `;
 }
 
-function renderRecommendationsContent(): string {
-  if (!state.hasCalculated && !state.calculating) {
-    return `<div class="empty">No calculation yet.</div>`;
-  }
+function renderInspectorPanel(): string {
+  const stats = state.inspectStats;
+  const shouldOpen = state.inspectLoading || Boolean(state.inspectError) || Boolean(stats);
 
-  if (state.recommendations.length === 0 && !state.calculating) {
-    return `<div class="empty">No useful guesses found.</div>`;
-  }
+  return `
+    <details class="inspect-panel" ${shouldOpen ? "open" : ""}>
+      <summary class="inspect-summary">Check Word</summary>
+      <div class="inspect-panel-body">
+        <div class="inspect-controls">
+          <input
+            id="inspect-word-input"
+            class="inspect-input"
+            type="text"
+            maxlength="5"
+            spellcheck="false"
+            autocomplete="off"
+            value="${escapeHtml(state.inspectWord)}"
+            placeholder="SOARE"
+          />
+          <button
+            id="inspect-word-button"
+            class="inspect-button"
+            ${state.inspectLoading ? "disabled" : ""}
+          >
+            ${state.inspectLoading ? "Checking..." : "Check"}
+          </button>
+        </div>
+
+        ${
+          state.inspectError
+            ? `<div class="inspect-error">${escapeHtml(state.inspectError)}</div>`
+            : ""
+        }
+
+        ${
+          stats
+            ? `
+          <div class="inspect-stats">
+            <div><strong>${stats.guess.toUpperCase()}</strong> on ${stats.candidateCount} candidates</div>
+            <div>Type: ${stats.possibleAnswer ? "Answer candidate" : "Probe only"}</div>
+            <div>Entropy: ${stats.entropy.toFixed(4)}</div>
+            <div>Expected remaining: ${stats.expectedRemaining.toFixed(2)}</div>
+            <div>Worst bucket: ${stats.worstBucket}</div>
+            <div>Singletons: ${stats.singletonCount}</div>
+            <div>Splits: ${stats.splitCount}</div>
+            <div>Heuristic worst: ${stats.heuristicWorst.toFixed(2)}</div>
+            <div>Heuristic expected: ${stats.heuristicExpected.toFixed(2)}</div>
+            <div>Refined worst: ${stats.refinedWorst.toFixed(2)}</div>
+            <div>Refined expected: ${stats.refinedExpected.toFixed(2)}</div>
+            <div>Largest buckets: ${stats.topBucketSizes.join(", ")}</div>
+          </div>
+        `
+            : `
+          <div class="inspect-note">
+            Compare any first word directly against the current candidate set.
+          </div>
+        `
+        }
+      </div>
+    </details>
+  `;
+}
+
+function renderRecommendationsContent(): string {
+  const bestHeader =
+    state.hasCalculated &&
+    getActiveRows().length === 0 &&
+    state.openingBook.length > 0
+      ? "Opening Book"
+      : "Best Guesses";
 
   return `
     <div class="right-panel-content">
@@ -891,7 +1119,8 @@ function renderRecommendationsContent(): string {
         </table>
       </div>
 
-      ${renderProgressBar()}
+      ${state.calculating ? renderProgressBar() : ""}
+      ${renderInspectorPanel()}
     </div>
   `;
 }
@@ -948,11 +1177,11 @@ function renderControlsBubble(): string {
           </div>
 
           <div class="mode-description">
-            The app now does a fast heuristic shortlist first, then refines the top 30 roots in parallel with Web Workers. Remaining updates from the current best refined root.
+            Empty-board calculations now use a precomputed opening book. Non-empty states still use the dynamic worker pipeline.
           </div>
 
           <div class="fixed-top-note">
-            Best Guesses shows all 30 shortlisted roots live.
+            Check Word is collapsible and uses the current candidate set.
           </div>
 
           <div class="popover-buttons">
@@ -969,6 +1198,20 @@ function renderControlsBubble(): string {
 }
 
 function render(): void {
+  const bestPanelLabel =
+    state.hasCalculated &&
+    getActiveRows().length === 0 &&
+    state.openingBook.length > 0
+      ? "Opening Book"
+      : "Best Guesses";
+
+  const bestPanelBadge =
+    state.hasCalculated &&
+    getActiveRows().length === 0 &&
+    state.openingBook.length > 0
+      ? "Precomputed"
+      : "30 Live";
+
   app.innerHTML = `
     <main class="app-shell">
       <h1 class="app-title">Wordle Solver</h1>
@@ -993,8 +1236,8 @@ function render(): void {
 
         <aside class="side-panel right-side">
           <div class="side-header">
-            <h2>Best Guesses</h2>
-            <span>30 Live</span>
+            <h2>${bestPanelLabel}</h2>
+            <span>${bestPanelBadge}</span>
           </div>
           ${renderRecommendationsContent()}
         </aside>
@@ -1078,6 +1321,26 @@ function attachEvents(): void {
       }
     });
   });
+
+  document
+    .querySelector<HTMLInputElement>("#inspect-word-input")
+    ?.addEventListener("input", (event) => {
+      const target = event.target as HTMLInputElement;
+      state.inspectWord = normalizeWord(target.value).replace(/[^a-z]/g, "").slice(0, 5);
+    });
+
+  document
+    .querySelector<HTMLInputElement>("#inspect-word-input")
+    ?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        inspectWordStats();
+      }
+    });
+
+  document
+    .querySelector<HTMLButtonElement>("#inspect-word-button")
+    ?.addEventListener("click", inspectWordStats);
 
   document
     .querySelector<HTMLButtonElement>("#calculate-button")
@@ -1180,13 +1443,15 @@ async function init(): Promise<void> {
   render();
 
   try {
-    const [solutions, guesses] = await Promise.all([
+    const [solutions, guesses, openingBook] = await Promise.all([
       loadWords("/wordlists/valid_wordle_solutions.txt"),
       loadWords("/wordlists/valid_wordle_guesses.txt"),
+      loadOpeningBook(),
     ]);
 
     state.solutions = solutions;
     state.guesses = [...new Set([...guesses, ...solutions])].sort();
+    state.openingBook = openingBook;
     state.candidates = [...solutions];
     state.loading = false;
     state.progressTotal = state.guesses.length + DISPLAY_GUESSES;

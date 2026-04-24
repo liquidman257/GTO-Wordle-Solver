@@ -1,14 +1,14 @@
 /// <reference lib="webworker" />
-// 
-/// <reference lib="webworker" />
 
 import {
+  type InspectStats,
   type RankedCandidate,
   type Recommendation,
   analyzeGuessHeuristic,
   buildBuckets,
   compareRecommendations,
   estimateTurnsFromBucketSize,
+  getPartitionStats,
   insertIntoTop,
 } from "./wordle";
 
@@ -26,7 +26,17 @@ type RefineStartMessage = {
   rootGuess: string;
 };
 
-type WorkerStartMessage = HeuristicStartMessage | RefineStartMessage;
+type InspectStartMessage = {
+  type: "inspect";
+  candidates: string[];
+  guesses: string[];
+  guess: string;
+};
+
+type WorkerStartMessage =
+  | HeuristicStartMessage
+  | RefineStartMessage
+  | InspectStartMessage;
 
 type HeuristicProgressMessage = {
   type: "heuristic_progress";
@@ -46,6 +56,7 @@ type RefineProgressMessage = {
   processedBuckets: number;
   totalBuckets: number;
   recommendation: Recommendation;
+  rankedCandidates: RankedCandidate[];
 };
 
 type RefineDoneMessage = {
@@ -53,6 +64,11 @@ type RefineDoneMessage = {
   rootGuess: string;
   recommendation: Recommendation;
   rankedCandidates: RankedCandidate[];
+};
+
+type InspectDoneMessage = {
+  type: "inspect_done";
+  stats: InspectStats;
 };
 
 type WorkerErrorMessage = {
@@ -63,7 +79,7 @@ type WorkerErrorMessage = {
 const ctx = self as DedicatedWorkerGlobalScope;
 
 const HEURISTIC_CHUNK = 128;
-const REFINE_YIELD_EVERY = 16;
+const REFINE_PROGRESS_EVERY = 4;
 
 function nextTick(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
@@ -84,8 +100,8 @@ function computeBestChildHeuristic(
     }
   }
 
-  if (!best) {
-    return {
+  return (
+    best ?? {
       guess: bucketCandidates[0],
       possibleAnswer: true,
       exact: false,
@@ -96,10 +112,8 @@ function computeBestChildHeuristic(
       worstBucket: 1,
       singletonCount: 1,
       splitCount: 1,
-    };
-  }
-
-  return best;
+    }
+  );
 }
 
 function buildRankedCandidates(
@@ -135,39 +149,20 @@ function buildRankedCandidates(
     });
 }
 
-async function runHeuristicJob(message: HeuristicStartMessage): Promise<void> {
-  const { candidates, guesses, topN } = message;
-  const candidateSet = new Set(candidates);
-  const topList: Recommendation[] = [];
-
-  for (let start = 0; start < guesses.length; start += HEURISTIC_CHUNK) {
-    const end = Math.min(guesses.length, start + HEURISTIC_CHUNK);
-
-    for (let i = start; i < end; i++) {
-      const guess = guesses[i];
-      const rec = analyzeGuessHeuristic(guess, candidates, candidateSet);
-      insertIntoTop(topList, rec, topN);
-    }
-
-    ctx.postMessage({
-      type: "heuristic_progress",
-      processed: end,
-      total: guesses.length,
-      topRecommendations: [...topList],
-    } satisfies HeuristicProgressMessage);
-
-    await nextTick();
-  }
-
-  ctx.postMessage({
-    type: "heuristic_done",
-    topRecommendations: [...topList],
-  } satisfies HeuristicDoneMessage);
-}
-
-async function runRefineJob(message: RefineStartMessage): Promise<void> {
-  const { candidates, guesses, rootGuess } = message;
-
+function refineRootGuess(
+  candidates: string[],
+  guesses: string[],
+  rootGuess: string,
+  onProgress?: (
+    recommendation: Recommendation,
+    rankedCandidates: RankedCandidate[],
+    processedBuckets: number,
+    totalBuckets: number
+  ) => void
+): {
+  recommendation: Recommendation;
+  rankedCandidates: RankedCandidate[];
+} {
   const rootHeuristic = analyzeGuessHeuristic(rootGuess, candidates, new Set(candidates));
   const buckets = [...buildBuckets(rootGuess, candidates).entries()].sort(
     (a, b) => b[1].length - a[1].length
@@ -180,7 +175,6 @@ async function runRefineJob(message: RefineStartMessage): Promise<void> {
   let processedWeight = 0;
   let rootWorst = 0;
   let rootExpected = 0;
-  let heartbeat = 0;
 
   for (const [code, bucket] of buckets) {
     const solvedByRoot =
@@ -223,40 +217,123 @@ async function runRefineJob(message: RefineStartMessage): Promise<void> {
       processedWeight += bucket.length / totalCandidates;
     }
 
-    heartbeat++;
-
-    if (heartbeat % REFINE_YIELD_EVERY === 0 || processedBuckets === buckets.length) {
+    if (onProgress && (processedBuckets % REFINE_PROGRESS_EVERY === 0 || processedBuckets === buckets.length)) {
       const remainingWeight = Math.max(0, 1 - processedWeight);
-      const progressRecommendation: Recommendation = {
-        ...rootHeuristic,
-        worstTurns: Math.max(rootWorst, rootHeuristic.worstTurns),
-        expectedTurns: rootExpected + remainingWeight * rootHeuristic.expectedTurns,
-      };
 
+      onProgress(
+        {
+          ...rootHeuristic,
+          worstTurns: Math.max(rootWorst, rootHeuristic.worstTurns),
+          expectedTurns: rootExpected + remainingWeight * rootHeuristic.expectedTurns,
+        },
+        buildRankedCandidates(candidates, depthMap),
+        processedBuckets,
+        buckets.length
+      );
+    }
+  }
+
+  return {
+    recommendation: {
+      ...rootHeuristic,
+      worstTurns: rootWorst,
+      expectedTurns: rootExpected,
+    },
+    rankedCandidates: buildRankedCandidates(candidates, depthMap),
+  };
+}
+
+async function runHeuristicJob(message: HeuristicStartMessage): Promise<void> {
+  const { candidates, guesses, topN } = message;
+  const candidateSet = new Set(candidates);
+  const topList: Recommendation[] = [];
+
+  for (let start = 0; start < guesses.length; start += HEURISTIC_CHUNK) {
+    const end = Math.min(guesses.length, start + HEURISTIC_CHUNK);
+
+    for (let i = start; i < end; i++) {
+      const guess = guesses[i];
+      const rec = analyzeGuessHeuristic(guess, candidates, candidateSet);
+      insertIntoTop(topList, rec, topN);
+    }
+
+    ctx.postMessage({
+      type: "heuristic_progress",
+      processed: end,
+      total: guesses.length,
+      topRecommendations: [...topList],
+    } satisfies HeuristicProgressMessage);
+
+    await nextTick();
+  }
+
+  ctx.postMessage({
+    type: "heuristic_done",
+    topRecommendations: [...topList],
+  } satisfies HeuristicDoneMessage);
+}
+
+async function runRefineJob(message: RefineStartMessage): Promise<void> {
+  const { candidates, guesses, rootGuess } = message;
+
+  const result = refineRootGuess(
+    candidates,
+    guesses,
+    rootGuess,
+    (recommendation, rankedCandidates, processedBuckets, totalBuckets) => {
       ctx.postMessage({
         type: "refine_progress",
         rootGuess,
         processedBuckets,
-        totalBuckets: buckets.length,
-        recommendation: progressRecommendation,
+        totalBuckets,
+        recommendation,
+        rankedCandidates,
       } satisfies RefineProgressMessage);
-
-      await nextTick();
     }
-  }
+  );
 
-  const finalRecommendation: Recommendation = {
-    ...rootHeuristic,
-    worstTurns: rootWorst,
-    expectedTurns: rootExpected,
-  };
+  await nextTick();
 
   ctx.postMessage({
     type: "refine_done",
     rootGuess,
-    recommendation: finalRecommendation,
-    rankedCandidates: buildRankedCandidates(candidates, depthMap),
+    recommendation: result.recommendation,
+    rankedCandidates: result.rankedCandidates,
   } satisfies RefineDoneMessage);
+}
+
+async function runInspectJob(message: InspectStartMessage): Promise<void> {
+  const { candidates, guesses, guess } = message;
+
+  const stats = getPartitionStats(guess, candidates);
+  const heuristic = analyzeGuessHeuristic(guess, candidates, new Set(candidates));
+  const refined = refineRootGuess(candidates, guesses, guess);
+
+  const topBucketSizes = [...stats.buckets.values()]
+    .map((bucket) => bucket.length)
+    .sort((a, b) => b - a)
+    .slice(0, 10);
+
+  const result: InspectStats = {
+    guess,
+    candidateCount: candidates.length,
+    possibleAnswer: new Set(candidates).has(guess),
+    entropy: stats.entropy,
+    expectedRemaining: stats.expectedRemaining,
+    worstBucket: stats.worstBucket,
+    singletonCount: stats.singletonCount,
+    splitCount: stats.splitCount,
+    heuristicWorst: heuristic.worstTurns,
+    heuristicExpected: heuristic.expectedTurns,
+    refinedWorst: refined.recommendation.worstTurns,
+    refinedExpected: refined.recommendation.expectedTurns,
+    topBucketSizes,
+  };
+
+  ctx.postMessage({
+    type: "inspect_done",
+    stats: result,
+  } satisfies InspectDoneMessage);
 }
 
 ctx.onmessage = (event: MessageEvent<WorkerStartMessage>) => {
@@ -274,6 +351,16 @@ ctx.onmessage = (event: MessageEvent<WorkerStartMessage>) => {
 
   if (message.type === "refine") {
     void runRefineJob(message).catch((error: unknown) => {
+      ctx.postMessage({
+        type: "error",
+        error: error instanceof Error ? error.message : String(error),
+      } satisfies WorkerErrorMessage);
+    });
+    return;
+  }
+
+  if (message.type === "inspect") {
+    void runInspectJob(message).catch((error: unknown) => {
       ctx.postMessage({
         type: "error",
         error: error instanceof Error ? error.message : String(error),
