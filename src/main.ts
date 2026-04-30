@@ -17,7 +17,7 @@ import {
   loadStrategyTreeForWord,
   walkStrategyTree,
 } from "./strategySupport";
-import type { StrategyEntry, StrategyStatsRow, StrategyTree, StrategyTreeCache } from "./types";
+import type { StrategyChild, StrategyEntry, StrategyStatsRow, StrategyTree, StrategyTreeCache } from "./types";
 
 type GridCell = {
   letter: string;
@@ -361,6 +361,12 @@ function buildTreeRankedCandidate(word: string, solveDepth: number): RankedCandi
   };
 }
 
+function isStrategyLinkChild(
+  child: StrategyChild
+): child is Extract<StrategyChild, { to: string }> {
+  return "to" in child;
+}
+
 function findStrategyContinuationNode(
   tree: StrategyTree,
   activeRows: GuessRow[]
@@ -391,6 +397,10 @@ function findStrategyContinuationNode(
         terminal: true,
         matchedDepth: index + 1,
       };
+    }
+
+    if (!isStrategyLinkChild(child)) {
+      return null;
     }
 
     currentNodeId = child.to;

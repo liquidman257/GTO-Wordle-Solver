@@ -3,6 +3,7 @@ import type {
   FeedbackColor,
   FeedbackPattern,
   StrategyBranchPreview,
+  StrategyChild,
   StrategyEntry,
   StrategyRowInput,
   StrategyStatsRow,
@@ -185,6 +186,12 @@ export async function loadStrategyTreeForWord(
   return promise;
 }
 
+function isStrategyLinkChild(
+  child: StrategyChild
+): child is Extract<StrategyChild, { to: string }> {
+  return "to" in child;
+}
+
 function childToPreview(
   tree: StrategyTree,
   pattern: string,
@@ -196,6 +203,15 @@ function childToPreview(
       nextWord: null,
       turn: child.turn,
       terminal: true
+    };
+  }
+
+  if (!isStrategyLinkChild(child)) {
+    return {
+      pattern,
+      nextWord: null,
+      turn: child.turn,
+      terminal: false
     };
   }
 
@@ -336,6 +352,19 @@ export function walkStrategyTree(
         nextWord: null,
         terminal: true,
         error: null,
+        branchOptions: [],
+        stats: statsRow
+      };
+    }
+
+    if (!isStrategyLinkChild(child)) {
+      return {
+        source: "none",
+        rootWord: root.w,
+        matchedDepth,
+        nextWord: null,
+        terminal: false,
+        error: `Pattern ${played.pattern} from ${node.w} did not resolve to a next node.`,
         branchOptions: [],
         stats: statsRow
       };
