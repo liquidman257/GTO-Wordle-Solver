@@ -11,6 +11,13 @@ import {
   loadWords,
   normalizeWord,
 } from "./wordle";
+import {
+  buildStrategyStatsMap,
+  loadStrategyStatsCsv,
+  loadStrategyTreeForWord,
+  walkStrategyTree,
+} from "./strategySupport";
+import type { StrategyEntry, StrategyStatsRow, StrategyTree, StrategyTreeCache } from "./types";
 
 type GridCell = {
   letter: string;
@@ -25,14 +32,13 @@ type SolverMessage = {
 type AppState = {
   solutions: string[];
   guesses: string[];
-  openingBook: Recommendation[];
   grid: GridCell[][];
   selectedRow: number;
   selectedCol: number;
   controlsOpen: boolean;
   candidates: string[];
   rankedCandidates: RankedCandidate[];
-  recommendations: Recommendation[];
+  recommendations: DisplayRecommendation[];
   messages: SolverMessage[];
   loading: boolean;
   calculating: boolean;
@@ -45,6 +51,8 @@ type AppState = {
   inspectLoading: boolean;
   inspectError: string;
   inspectStats: InspectStats | null;
+  inspectSource: "solver" | "strategy_stats" | null;
+  inspectStrategyRow: StrategyStatsRow | null;
   activeLeftTab: LeftPanelTab;
 };
 
@@ -103,6 +111,14 @@ type LetterPositionEntry = {
   wordCount: number;
 };
 
+type RecommendationSource = "calculator" | "opening_stats" | "strategy_tree";
+
+type DisplayRecommendation = Recommendation & {
+  source: RecommendationSource;
+  file?: string;
+  note?: string;
+};
+
 const DISPLAY_GUESSES = 30;
 const ROWS = 6;
 const COLS = 5;
@@ -110,7 +126,6 @@ const COLS = 5;
 const state: AppState = {
   solutions: [],
   guesses: [],
-  openingBook: [],
   grid: createEmptyGrid(),
   selectedRow: 0,
   selectedCol: 0,
@@ -130,17 +145,29 @@ const state: AppState = {
   inspectLoading: false,
   inspectError: "",
   inspectStats: null,
+  inspectSource: null,
+  inspectStrategyRow: null,
   activeLeftTab: "remaining",
 };
 
 let calculationRunId = 0;
+let strategyEntries: StrategyEntry[] = [];
+let strategyStatsRows: StrategyStatsRow[] = [];
+let strategyStatsByWord = new Map<string, StrategyStatsRow>();
+const strategyTreeCache: StrategyTreeCache = new Map();
+let solutionWordSet = new Set<string>();
+
+let liveStrategyPreview: DisplayRecommendation | null = null;
+let liveStrategyPreviewSignature = "";
+let liveStrategyPreviewRunId = 0;
+
 let inspectRunId = 0;
 
 let heuristicWorker: Worker | null = null;
 let refineWorkers: Worker[] = [];
 let inspectWorker: Worker | null = null;
 
-let rootRecommendationMap = new Map<string, Recommendation>();
+let rootRecommendationMap = new Map<string, DisplayRecommendation>();
 let rootDepthMap = new Map<string, RankedCandidate[]>();
 let refineQueue: string[] = [];
 let activeRefineProgress = new Map<string, number>();
@@ -191,39 +218,435 @@ function escapeHtml(value: string): string {
   });
 }
 
-async function loadOpeningBook(): Promise<Recommendation[]> {
-  try {
-    const response = await fetch("/opening-book.json", { cache: "no-store" });
+function tileMarkToFeedbackColor(mark: TileMark): "B" | "Y" | "G" | null {
+  if (mark === "absent") return "B";
+  if (mark === "present") return "Y";
+  if (mark === "correct") return "G";
+  return null;
+}
 
-    if (!response.ok) {
-      return [];
-    }
+function guessRowToFeedbackPattern(row: GuessRow): string | null {
+  const chars = row.marks.map(tileMarkToFeedbackColor);
+  return chars.every((value) => value !== null) ? chars.join("") : null;
+}
 
-    const data = (await response.json()) as unknown;
+function makeDisplayRecommendation(
+  base: Recommendation,
+  source: RecommendationSource,
+  extras: Partial<DisplayRecommendation> = {}
+): DisplayRecommendation {
+  return {
+    ...base,
+    source,
+    ...extras,
+  };
+}
 
-    if (!Array.isArray(data)) {
-      return [];
-    }
+function makeStrategyBackedRecommendation(
+  guess: string,
+  source: RecommendationSource,
+  statsRow: StrategyStatsRow | null = null
+): DisplayRecommendation {
+  const normalized = guess.toLowerCase();
 
-    return data.filter((item): item is Recommendation => {
-      if (!item || typeof item !== "object") return false;
-      const value = item as Record<string, unknown>;
+  return {
+    guess: normalized,
+    possibleAnswer: solutionWordSet.has(normalized),
+    exact: true,
+    worstTurns:
+      typeof statsRow?.maximum_guesses === "number" ? statsRow.maximum_guesses : Number.NaN,
+    expectedTurns:
+      typeof statsRow?.expected_guesses === "number" ? statsRow.expected_guesses : Number.NaN,
+    entropy: Number.NaN,
+    expectedRemaining: Number.NaN,
+    worstBucket: Number.NaN,
+    singletonCount: 0,
+    splitCount: 0,
+    source,
+    file: typeof statsRow?.file === "string" ? statsRow.file : undefined,
+    note: statsRow ? `From ${statsRow.starting_word}` : undefined,
+  };
+}
+
+function buildOpeningStatsMessages(incompleteRows: number[]): SolverMessage[] {
+  const messages: SolverMessage[] = [];
+
+  if (incompleteRows.length > 0) {
+    messages.push({
+      type: "warning",
+      text: `Incomplete rows are ignored until all 5 letters are filled: ${incompleteRows.join(", ")}.`,
+    });
+  }
+
+  messages.push({
+    type: "info",
+    text: "Showing opening guesses ranked from strategy_stats.csv using a weighted combo of low expected and low maximum guesses.",
+  });
+
+  return messages;
+}
+
+function buildOpeningStatsRecommendations(limit = DISPLAY_GUESSES): DisplayRecommendation[] {
+  const validRows = strategyStatsRows.filter((row) => {
+    const word = typeof row.starting_word === "string" ? row.starting_word.trim() : "";
+    const expected = Number(row.expected_guesses);
+    const maximum = Number(row.maximum_guesses);
+
+    return word.length === 5 && Number.isFinite(expected) && Number.isFinite(maximum);
+  });
+
+  if (validRows.length === 0) {
+    return [];
+  }
+
+  const expectedValues = validRows.map((row) => Number(row.expected_guesses));
+  const maxValues = validRows.map((row) => Number(row.maximum_guesses));
+
+  const minExpected = Math.min(...expectedValues);
+  const maxExpected = Math.max(...expectedValues);
+  const minMax = Math.min(...maxValues);
+  const maxMax = Math.max(...maxValues);
+
+  const normalize = (value: number, min: number, max: number): number => {
+    if (max <= min) return 0;
+    return (value - min) / (max - min);
+  };
+
+  const EXPECTED_WEIGHT = 0.7;
+  const MAX_WEIGHT = 0.3;
+
+  return [...validRows]
+    .sort((a, b) => {
+      const aExpected = Number(a.expected_guesses);
+      const bExpected = Number(b.expected_guesses);
+      const aMax = Number(a.maximum_guesses);
+      const bMax = Number(b.maximum_guesses);
+
+      const aScore =
+        EXPECTED_WEIGHT * normalize(aExpected, minExpected, maxExpected) +
+        MAX_WEIGHT * normalize(aMax, minMax, maxMax);
+
+      const bScore =
+        EXPECTED_WEIGHT * normalize(bExpected, minExpected, maxExpected) +
+        MAX_WEIGHT * normalize(bMax, minMax, maxMax);
 
       return (
-        typeof value.guess === "string" &&
-        typeof value.possibleAnswer === "boolean" &&
-        typeof value.exact === "boolean" &&
-        typeof value.worstTurns === "number" &&
-        typeof value.expectedTurns === "number" &&
-        typeof value.entropy === "number" &&
-        typeof value.expectedRemaining === "number" &&
-        typeof value.worstBucket === "number" &&
-        typeof value.singletonCount === "number" &&
-        typeof value.splitCount === "number"
+        aScore - bScore ||
+        aExpected - bExpected ||
+        aMax - bMax ||
+        a.starting_word.localeCompare(b.starting_word)
       );
+    })
+    .slice(0, limit)
+    .map((row) => makeStrategyBackedRecommendation(row.starting_word, "opening_stats", row));
+}
+
+function buildTreeRankedCandidate(word: string, solveDepth: number): RankedCandidate {
+  const normalized = word.toLowerCase();
+
+  return {
+    recommendation: {
+      guess: normalized,
+      possibleAnswer: true,
+      exact: true,
+      worstTurns: solveDepth,
+      expectedTurns: solveDepth,
+      entropy: Number.NaN,
+      expectedRemaining: Number.NaN,
+      worstBucket: Number.NaN,
+      singletonCount: 0,
+      splitCount: 0,
+    },
+    solveDepth,
+  };
+}
+
+function findStrategyContinuationNode(
+  tree: StrategyTree,
+  activeRows: GuessRow[]
+): { nextNodeId: string | null; terminal: boolean; matchedDepth: number } | null {
+  if (activeRows.length === 0) {
+    return { nextNodeId: tree.rootId, terminal: false, matchedDepth: 0 };
+  }
+
+  let currentNodeId = tree.rootId;
+
+  for (let index = 0; index < activeRows.length; index++) {
+    const node = tree.nodes[currentNodeId];
+    const row = activeRows[index];
+    const pattern = guessRowToFeedbackPattern(row);
+
+    if (!node || node.w !== row.word.toUpperCase() || !pattern) {
+      return null;
+    }
+
+    const child = node.c[pattern];
+    if (!child) {
+      return null;
+    }
+
+    if ("term" in child && child.term) {
+      return {
+        nextNodeId: null,
+        terminal: true,
+        matchedDepth: index + 1,
+      };
+    }
+
+    currentNodeId = child.to;
+  }
+
+  return {
+    nextNodeId: currentNodeId,
+    terminal: false,
+    matchedDepth: activeRows.length,
+  };
+}
+
+function collectTreeContinuationState(
+  tree: StrategyTree,
+  nextNodeId: string,
+  matchedDepth: number
+): { candidates: string[]; rankedCandidates: RankedCandidate[] } {
+  const answerToDepth = new Map<string, number>();
+  const visited = new Set<string>();
+
+  function visit(nodeId: string): void {
+    if (visited.has(nodeId)) {
+      return;
+    }
+    visited.add(nodeId);
+
+    const node = tree.nodes[nodeId];
+    if (!node) {
+      return;
+    }
+
+    for (const [pattern, child] of Object.entries(node.c)) {
+      if (pattern === "GGGGG" && "term" in child && child.term) {
+        const answer = node.w.toLowerCase();
+        const relativeDepth = Math.max(1, child.turn - matchedDepth);
+        const existing = answerToDepth.get(answer);
+
+        if (existing === undefined || relativeDepth < existing) {
+          answerToDepth.set(answer, relativeDepth);
+        }
+        continue;
+      }
+
+      if ("to" in child) {
+        visit(child.to);
+      }
+    }
+  }
+
+  visit(nextNodeId);
+
+  const candidates = [...answerToDepth.keys()].sort();
+  const rankedCandidates = [...answerToDepth.entries()]
+    .map(([word, solveDepth]) => buildTreeRankedCandidate(word, solveDepth))
+    .sort((a, b) => {
+      if (a.solveDepth !== b.solveDepth) {
+        return a.solveDepth - b.solveDepth;
+      }
+
+      return a.recommendation.guess.localeCompare(b.recommendation.guess);
     });
-  } catch {
-    return [];
+
+  return { candidates, rankedCandidates };
+}
+
+async function tryStrategyTreeRecommendation(
+  activeRows: GuessRow[]
+): Promise<{
+  recommendation: DisplayRecommendation | null;
+  terminal: boolean;
+  candidates: string[] | null;
+  rankedCandidates: RankedCandidate[] | null;
+}> {
+  if (activeRows.length === 0) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  const firstGuess = activeRows[0].word.toUpperCase();
+  const statsRow = strategyStatsByWord.get(firstGuess) ?? null;
+
+  if (!statsRow || strategyEntries.length === 0) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  const patterns = activeRows.map((row) => guessRowToFeedbackPattern(row));
+  if (patterns.some((pattern) => pattern === null)) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  const tree = await loadStrategyTreeForWord(firstGuess, strategyEntries, strategyTreeCache);
+  if (!tree) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  const walk = walkStrategyTree(
+    tree,
+    activeRows.map((row, index) => ({
+      word: row.word,
+      pattern: patterns[index],
+    })),
+    statsRow
+  );
+
+  if (walk.source !== "tree" || walk.error) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  const continuation = findStrategyContinuationNode(tree, activeRows);
+  if (!continuation) {
+    return { recommendation: null, terminal: false, candidates: null, rankedCandidates: null };
+  }
+
+  if (continuation.terminal || walk.terminal || !walk.nextWord || !continuation.nextNodeId) {
+    return {
+      recommendation: null,
+      terminal: true,
+      candidates: null,
+      rankedCandidates: null,
+    };
+  }
+
+  const treeState = collectTreeContinuationState(
+    tree,
+    continuation.nextNodeId,
+    continuation.matchedDepth
+  );
+
+  return {
+    recommendation: makeStrategyBackedRecommendation(walk.nextWord, "strategy_tree", statsRow),
+    terminal: false,
+    candidates: treeState.candidates,
+    rankedCandidates: treeState.rankedCandidates,
+  };
+}
+
+function recommendationTypeLabel(item: DisplayRecommendation): string {
+  if (item.source === "opening_stats") return "Stats";
+  if (item.source === "strategy_tree") return "Tree";
+  return item.possibleAnswer ? "Ans" : "Probe";
+}
+
+function formatTurns(value: number, exact: boolean): string {
+  return Number.isFinite(value) ? value.toFixed(exact ? 0 : 1) : "—";
+}
+
+function formatFixed(value: number, digits: number): string {
+  return Number.isFinite(value) ? value.toFixed(digits) : "—";
+}
+
+function formatIntegerLike(value: number): string {
+  return Number.isFinite(value) ? String(Math.round(value)) : "—";
+}
+
+function buildStrategyEntriesFromStats(rows: StrategyStatsRow[]): StrategyEntry[] {
+  const deduped = new Map<string, StrategyEntry>();
+
+  for (const row of rows) {
+    if (typeof row.file !== "string" || !row.file.trim()) {
+      continue;
+    }
+
+    const key = row.starting_word.toUpperCase();
+    deduped.set(key, {
+      name: key,
+      file: row.file,
+      sizeBytes: 0,
+      updatedAt: "",
+    });
+  }
+
+  return [...deduped.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function buildLiveStrategyPreviewSignature(): string {
+  if (state.loading || state.calculating) {
+    return "busy";
+  }
+
+  const activeRows = getActiveRows();
+  if (activeRows.length === 0) {
+    return "";
+  }
+
+  return activeRows
+    .map((row) => {
+      const pattern = row.marks
+        .map((mark) => tileMarkToFeedbackColor(mark) ?? "U")
+        .join("");
+      return `${row.word}:${pattern}`;
+    })
+    .join("|");
+}
+
+function sameDisplayRecommendation(
+  a: DisplayRecommendation | null,
+  b: DisplayRecommendation | null
+): boolean {
+  if (a === b) return true;
+  if (!a || !b) return false;
+
+  return (
+    a.guess === b.guess &&
+    a.source === b.source &&
+    a.worstTurns === b.worstTurns &&
+    a.expectedTurns === b.expectedTurns &&
+    a.file === b.file &&
+    a.note === b.note
+  );
+}
+
+function getRenderedRecommendations(): DisplayRecommendation[] {
+  if (!liveStrategyPreview) {
+    return state.recommendations;
+  }
+
+  const remaining = state.recommendations.filter(
+    (item) => !(item.guess === liveStrategyPreview!.guess && item.source === liveStrategyPreview!.source)
+  );
+
+  return [liveStrategyPreview, ...remaining].slice(0, DISPLAY_GUESSES);
+}
+
+async function refreshLiveStrategyPreviewIfNeeded(): Promise<void> {
+  const signature = buildLiveStrategyPreviewSignature();
+
+  if (signature === liveStrategyPreviewSignature) {
+    return;
+  }
+
+  liveStrategyPreviewSignature = signature;
+  const runId = ++liveStrategyPreviewRunId;
+
+  if (!signature || signature === "busy") {
+    const hadPreview = liveStrategyPreview !== null;
+    liveStrategyPreview = null;
+    if (hadPreview) {
+      render();
+    }
+    return;
+  }
+
+  const activeRows = getActiveRows();
+  const strategyResult = await tryStrategyTreeRecommendation(activeRows);
+
+  if (runId !== liveStrategyPreviewRunId) {
+    return;
+  }
+
+  const nextPreview =
+    strategyResult.recommendation && !strategyResult.terminal
+      ? strategyResult.recommendation
+      : null;
+
+  if (!sameDisplayRecommendation(liveStrategyPreview, nextPreview)) {
+    liveStrategyPreview = nextPreview;
+    render();
   }
 }
 
@@ -299,7 +722,7 @@ function startNextRefineJob(worker: Worker, runId: number): void {
     const message = event.data;
 
     if (message.type === "refine_progress") {
-      rootRecommendationMap.set(message.rootGuess, message.recommendation);
+      rootRecommendationMap.set(message.rootGuess, makeDisplayRecommendation(message.recommendation, "calculator"));
       rootDepthMap.set(message.rootGuess, message.rankedCandidates);
 
       const fraction =
@@ -316,7 +739,7 @@ function startNextRefineJob(worker: Worker, runId: number): void {
     }
 
     if (message.type === "refine_done") {
-      rootRecommendationMap.set(message.rootGuess, message.recommendation);
+      rootRecommendationMap.set(message.rootGuess, makeDisplayRecommendation(message.recommendation, "calculator"));
       rootDepthMap.set(message.rootGuess, message.rankedCandidates);
       activeRefineProgress.delete(message.rootGuess);
       completedRoots++;
@@ -412,13 +835,28 @@ function rowIsComplete(row: GridCell[]): boolean {
   return /^[a-z]{5}$/.test(rowToWord(row));
 }
 
+function rowHasAnyLocks(row: GridCell[]): boolean {
+  return row.some((cell) => cell.mark !== "unknown");
+}
+
 function getActiveRows(): GuessRow[] {
   return state.grid
-    .filter(rowIsComplete)
+    .filter((row) => rowIsComplete(row) && rowHasAnyLocks(row))
     .map((row) => ({
       word: rowToWord(row),
       marks: row.map((cell) => cell.mark),
     }));
+}
+
+function getFirstIncompleteOrEmptyRowIndex(): number {
+  for (let rowIndex = 0; rowIndex < ROWS; rowIndex++) {
+    const filledCount = state.grid[rowIndex].filter((cell) => Boolean(cell.letter)).length;
+    if (filledCount < COLS) {
+      return rowIndex;
+    }
+  }
+
+  return ROWS - 1;
 }
 
 function getIncompleteRowNumbers(): number[] {
@@ -537,6 +975,9 @@ function resetGame(): void {
   state.progressLabel = "";
   state.error = "";
 
+  liveStrategyPreview = null;
+  liveStrategyPreviewSignature = "";
+
   rootRecommendationMap.clear();
   rootDepthMap.clear();
   refineQueue = [];
@@ -549,7 +990,7 @@ function resetGame(): void {
 
 function handleVirtualKey(key: string): void {
   if (key === "enter") {
-    calculateGuesses();
+    void calculateGuesses();
     return;
   }
 
@@ -603,7 +1044,7 @@ function buildMessages(
   return messages;
 }
 
-function buildOpeningBookMessages(incompleteRows: number[]): SolverMessage[] {
+function buildOpeningFallbackMessages(incompleteRows: number[]): SolverMessage[] {
   const messages: SolverMessage[] = [];
 
   if (incompleteRows.length > 0) {
@@ -614,18 +1055,20 @@ function buildOpeningBookMessages(incompleteRows: number[]): SolverMessage[] {
   }
 
   messages.push({
-    type: "info",
-    text: "Showing precomputed opening book for the empty board.",
+    type: "warning",
+    text: "strategy_stats.csv was not found or had no valid rows. Falling back to calculator output.",
   });
 
   return messages;
 }
 
-function calculateGuesses(): void {
+async function calculateGuesses(): Promise<void> {
   if (state.loading || state.calculating) return;
 
   const runId = ++calculationRunId;
   cleanupWorkers();
+
+  selectCell(getFirstIncompleteOrEmptyRowIndex(), 0);
 
   const activeRows = getActiveRows();
   const incompleteRows = getIncompleteRowNumbers();
@@ -633,23 +1076,88 @@ function calculateGuesses(): void {
   state.candidates = filterCandidates(state.solutions, activeRows);
   state.error = "";
 
-  if (activeRows.length === 0 && state.openingBook.length > 0) {
-    state.messages = buildOpeningBookMessages(incompleteRows);
-    state.recommendations = [...state.openingBook];
+  if (activeRows.length === 0) {
+    state.messages =
+      strategyStatsRows.length > 0
+        ? buildOpeningStatsMessages(incompleteRows)
+        : buildOpeningFallbackMessages(incompleteRows);
+
+    state.recommendations =
+      strategyStatsRows.length > 0
+        ? buildOpeningStatsRecommendations(DISPLAY_GUESSES)
+        : [];
+
     state.rankedCandidates = [];
     state.hasCalculated = true;
-    state.calculating = false;
     state.progressProcessed = 0;
     state.progressTotal = 0;
     state.progressLabel = "";
-    render();
-    return;
+
+    if (strategyStatsRows.length > 0) {
+      state.calculating = false;
+      render();
+      return;
+    }
+  }
+
+  if (activeRows.length === 0 && strategyStatsRows.length === 0) {
+    state.calculating = true;
+    state.progressProcessed = 0;
+    state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
+    state.progressLabel = "Scanning guesses...";
   }
 
   state.messages = buildMessages(activeRows, incompleteRows, state.candidates);
   state.rankedCandidates = [];
   state.recommendations = [];
   state.hasCalculated = true;
+  state.progressProcessed = 0;
+  state.progressTotal = 0;
+  state.progressLabel = "";
+
+  if (state.candidates.length === 0) {
+    state.calculating = false;
+    render();
+    return;
+  }
+
+  const strategyResult = await tryStrategyTreeRecommendation(activeRows);
+  if (runId !== calculationRunId) {
+    return;
+  }
+
+  if (strategyResult.terminal) {
+    state.messages = [
+      ...state.messages,
+      {
+        type: "info",
+        text: "Precomputed strategy tree already resolves this line.",
+      },
+    ];
+    state.candidates = strategyResult.candidates ?? state.candidates;
+    state.rankedCandidates = strategyResult.rankedCandidates ?? [];
+    state.recommendations = [];
+    state.calculating = false;
+    render();
+    return;
+  }
+
+  if (strategyResult.recommendation) {
+    state.messages = [
+      ...state.messages,
+      {
+        type: "info",
+        text: `Following precomputed strategy tree from ${activeRows[0].word.toUpperCase()}.`,
+      },
+    ];
+    state.candidates = strategyResult.candidates ?? state.candidates;
+    state.rankedCandidates = strategyResult.rankedCandidates ?? [];
+    state.recommendations = [strategyResult.recommendation];
+    state.calculating = false;
+    render();
+    return;
+  }
+
   state.calculating = true;
   state.progressProcessed = 0;
   state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
@@ -682,7 +1190,7 @@ function calculateGuesses(): void {
 
       rootRecommendationMap.clear();
       for (const rec of message.topRecommendations) {
-        rootRecommendationMap.set(rec.guess, rec);
+        rootRecommendationMap.set(rec.guess, makeDisplayRecommendation(rec, "calculator"));
       }
 
       rebuildRecommendations();
@@ -698,7 +1206,7 @@ function calculateGuesses(): void {
 
       rootRecommendationMap.clear();
       for (const rec of message.topRecommendations) {
-        rootRecommendationMap.set(rec.guess, rec);
+        rootRecommendationMap.set(rec.guess, makeDisplayRecommendation(rec, "calculator"));
       }
 
       rebuildRecommendations();
@@ -750,9 +1258,22 @@ function inspectWordStats(): void {
   state.inspectWord = guess;
   state.inspectError = "";
   state.inspectStats = null;
+  state.inspectSource = null;
+  state.inspectStrategyRow = null;
 
   if (!/^[a-z]{5}$/.test(guess)) {
     state.inspectError = "Enter a 5-letter word.";
+    render();
+    return;
+  }
+
+  const activeRows = getActiveRows();
+  const statsRow = strategyStatsByWord.get(guess.toUpperCase()) ?? null;
+
+  if (activeRows.length === 0 && statsRow) {
+    state.inspectLoading = false;
+    state.inspectSource = "strategy_stats";
+    state.inspectStrategyRow = statsRow;
     render();
     return;
   }
@@ -775,6 +1296,8 @@ function inspectWordStats(): void {
 
     if (message.type === "inspect_done") {
       state.inspectStats = message.stats;
+      state.inspectSource = "solver";
+      state.inspectStrategyRow = null;
       state.inspectLoading = false;
       cleanupInspectWorker();
       render();
@@ -1223,7 +1746,12 @@ function renderProgressBar(): string {
 
 function renderInspectorPanel(): string {
   const stats = state.inspectStats;
-  const shouldOpen = state.inspectLoading || Boolean(state.inspectError) || Boolean(stats);
+  const statsRow = state.inspectStrategyRow;
+  const shouldOpen =
+    state.inspectLoading ||
+    Boolean(state.inspectError) ||
+    Boolean(stats) ||
+    Boolean(statsRow);
 
   return `
     <details class="inspect-panel" ${shouldOpen ? "open" : ""}>
@@ -1256,26 +1784,38 @@ function renderInspectorPanel(): string {
         }
 
         ${
-          stats
+          state.inspectSource === "strategy_stats" && statsRow
             ? `
+          <div class="inspect-stats">
+            <div><strong>${statsRow.starting_word}</strong> from strategy_stats.csv</div>
+            <div>Type: ${solutionWordSet.has(statsRow.starting_word.toLowerCase()) ? "Answer candidate" : "Probe only"}</div>
+            <div>Expected guesses: ${formatFixed(Number(statsRow.expected_guesses), 4)}</div>
+            <div>Max guesses: ${formatIntegerLike(Number(statsRow.maximum_guesses))}</div>
+            <div>Min guesses: ${formatIntegerLike(Number(statsRow.minimum_guesses))}</div>
+            <div>Solutions found: ${formatIntegerLike(Number(statsRow.solutions_found))}</div>
+            <div>Strategy file: ${escapeHtml(String(statsRow.file ?? "—"))}</div>
+          </div>
+        `
+            : stats
+              ? `
           <div class="inspect-stats">
             <div><strong>${stats.guess.toUpperCase()}</strong> on ${stats.candidateCount} candidates</div>
             <div>Type: ${stats.possibleAnswer ? "Answer candidate" : "Probe only"}</div>
-            <div>Entropy: ${stats.entropy.toFixed(4)}</div>
-            <div>Expected remaining: ${stats.expectedRemaining.toFixed(2)}</div>
-            <div>Worst bucket: ${stats.worstBucket}</div>
-            <div>Singletons: ${stats.singletonCount}</div>
-            <div>Splits: ${stats.splitCount}</div>
-            <div>Heuristic worst: ${stats.heuristicWorst.toFixed(2)}</div>
-            <div>Heuristic expected: ${stats.heuristicExpected.toFixed(2)}</div>
-            <div>Refined worst: ${stats.refinedWorst.toFixed(2)}</div>
-            <div>Refined expected: ${stats.refinedExpected.toFixed(2)}</div>
+            <div>Entropy: ${formatFixed(stats.entropy, 4)}</div>
+            <div>Expected remaining: ${formatFixed(stats.expectedRemaining, 2)}</div>
+            <div>Worst bucket: ${formatIntegerLike(stats.worstBucket)}</div>
+            <div>Singletons: ${formatIntegerLike(stats.singletonCount)}</div>
+            <div>Splits: ${formatIntegerLike(stats.splitCount)}</div>
+            <div>Heuristic worst: ${formatFixed(stats.heuristicWorst, 2)}</div>
+            <div>Heuristic expected: ${formatFixed(stats.heuristicExpected, 2)}</div>
+            <div>Refined worst: ${formatFixed(stats.refinedWorst, 2)}</div>
+            <div>Refined expected: ${formatFixed(stats.refinedExpected, 2)}</div>
             <div>Largest buckets: ${stats.topBucketSizes.join(", ")}</div>
           </div>
         `
-            : `
+              : `
           <div class="inspect-note">
-            Compare any first word directly against the current candidate set.
+            On the empty board, Check Word uses strategy_stats.csv. Otherwise it compares against the current candidate set.
           </div>
         `
         }
@@ -1285,6 +1825,8 @@ function renderInspectorPanel(): string {
 }
 
 function renderRecommendationsContent(): string {
+  const displayedRecommendations = getRenderedRecommendations();
+
   return `
     <div class="right-panel-content">
       <div class="best-table-wrap">
@@ -1303,8 +1845,8 @@ function renderRecommendationsContent(): string {
 
           <tbody>
             ${
-              state.recommendations.length > 0
-                ? state.recommendations
+              displayedRecommendations.length > 0
+                ? displayedRecommendations
                     .map(
                       (item, index) => `
                         <tr
@@ -1322,11 +1864,11 @@ function renderRecommendationsContent(): string {
                               }
                             </div>
                           </td>
-                          <td>${item.possibleAnswer ? "Ans" : "Probe"}</td>
-                          <td>${Number.isFinite(item.worstTurns) ? item.worstTurns.toFixed(item.exact ? 0 : 1) : "—"}</td>
-                          <td>${Number.isFinite(item.expectedTurns) ? item.expectedTurns.toFixed(2) : "—"}</td>
-                          <td>${item.entropy.toFixed(2)}</td>
-                          <td>${item.worstBucket}</td>
+                          <td>${recommendationTypeLabel(item)}</td>
+                          <td>${formatTurns(item.worstTurns, item.exact)}</td>
+                          <td>${formatFixed(item.expectedTurns, 2)}</td>
+                          <td>${formatFixed(item.entropy, 2)}</td>
+                          <td>${formatIntegerLike(item.worstBucket)}</td>
                         </tr>
                       `
                     )
@@ -1408,19 +1950,20 @@ function renderControlsBubble(): string {
 }
 
 function render(): void {
-  const bestPanelLabel =
+  const activeRows = getActiveRows();
+  const showingOpeningStats =
+    activeRows.length === 0 &&
     state.hasCalculated &&
-    getActiveRows().length === 0 &&
-    state.openingBook.length > 0
-      ? "Opening Book"
-      : "Best Guesses";
+    strategyStatsRows.length > 0;
+
+  const bestPanelLabel = showingOpeningStats ? "Opening Stats" : "Best Guesses";
 
   const bestPanelBadge =
-    state.hasCalculated &&
-    getActiveRows().length === 0 &&
-    state.openingBook.length > 0
-      ? "Precomputed"
-      : "30 Live";
+    showingOpeningStats
+      ? "CSV Ranked"
+      : liveStrategyPreview
+        ? "Tree Preview"
+        : "30 Live";
 
   app.innerHTML = `
     <main class="app-shell">
@@ -1460,6 +2003,7 @@ function render(): void {
   `;
 
   attachEvents();
+  void refreshLiveStrategyPreviewIfNeeded();
 }
 
 function attachChartTooltipEvents(): void {
@@ -1599,7 +2143,9 @@ function attachEvents(): void {
 
   document
     .querySelector<HTMLButtonElement>("#calculate-button")
-    ?.addEventListener("click", calculateGuesses);
+    ?.addEventListener("click", () => {
+      void calculateGuesses();
+    });
 
   document
     .querySelector<HTMLButtonElement>("#reset-game-button")
@@ -1655,7 +2201,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "Enter") {
-    calculateGuesses();
+    void calculateGuesses();
     return;
   }
 
@@ -1699,18 +2245,22 @@ async function init(): Promise<void> {
   render();
 
   try {
-    const [solutions, guesses, openingBook] = await Promise.all([
+    const [solutions, guesses, statsRows] = await Promise.all([
       loadWords("/wordlists/valid_wordle_solutions.txt"),
       loadWords("/wordlists/valid_wordle_guesses.txt"),
-      loadOpeningBook(),
+      loadStrategyStatsCsv("/strategy_stats.csv"),
     ]);
 
     state.solutions = solutions;
     state.guesses = [...new Set([...guesses, ...solutions])].sort();
-    state.openingBook = openingBook;
     state.candidates = [...solutions];
     state.loading = false;
     state.progressTotal = state.guesses.length + DISPLAY_GUESSES;
+
+    solutionWordSet = new Set(solutions);
+    strategyStatsRows = statsRows;
+    strategyStatsByWord = buildStrategyStatsMap(statsRows);
+    strategyEntries = buildStrategyEntriesFromStats(statsRows);
 
     render();
   } catch (error) {

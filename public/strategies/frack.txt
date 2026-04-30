@@ -1,0 +1,2309 @@
+frack BBBBB1 stile BBBBB2 dumpy BBBBB3 bongo GGGGG4
+                                BBBBG3 bobby BGBBG4 woozy GGGGG5
+                                             BGGGG4 hobby GGGGG5
+                                             GGBBG4 boozy GGGGG5
+                                             GGBGG4 booby GGGGG5
+                                             GGGGG4
+                                BBBGG3 poppy GGGGG4
+                                BBBYB3 whoop GGGGG4
+                                BBBYG3 phony GGGGG4
+                                BBGGY3 nymph GGGGG4
+                                BBYYG3 pygmy GGGGG4
+                                BGBBG3 buggy GGBBG4 bunny GGGGG5
+                                             GGGGG4
+                                BGBGG3 guppy BGGGG4 puppy GGGGG5
+                                             GGGGG4
+                                BGGBB3 gumbo BGGGG4 jumbo GGGGG5
+                                             GGGGG4
+                                BGGBG3 gummy BGGGG4 mummy GGGGG5
+                                             GGGGG4
+                                BGGGB3 humph GGGGG4
+                                BGGGG3 jumpy GGGGG4
+                                BGYBB3 buxom GGGGG4
+                                BYBBB3 bough GGGGG4
+                                BYBBY3 young GGGGG4
+                                GBBBG3 dodgy GGBBG4 downy GGGGG5
+                                             GGGGG4
+                                             GGYBG4 dowdy GGGGG5
+                                GGGBG3 dummy GGGGG4
+                                GGGGG3
+                                GYBBB3 dough GGGGG4
+                                YBBBG3 goody BGBGG4 howdy GGGGG5
+                                             BGGGG4 woody GGGGG5
+                                             GGGGG4
+                                YBYBG3 moody GGGGG4
+                                YGBBG3 buddy GGGGG4
+                                YGBYG3 pudgy GGGGG4
+                                YGYBG3 muddy GGGGG4
+                                YYBBB3 wound BGGGG4 bound BGGGG5 hound GGGGG6
+                                                          GGGGG5
+                                             GGGGG4
+                                YYBYB3 pound GGGGG4
+                                YYYBB3 mound GGGGG4
+                   BBBBG2 hound BBBBY3 wedge GGGGG4
+                                BBBGB3 penne GGGGG4
+                                BBYBB3 queue GGGGG4
+                                BBYBY3 budge BGGGG4 judge GGGGG5
+                                             GGGGG4
+                                BBYYB3 venue GGGGG4
+                                BBYYY3 nudge GGGGG4
+                                             YYGBG4 undue GGGGG5
+                                BGBBB3 booze GGGGG4
+                                BGBBY3 dodge GGGGG4
+                                BGGBB3 gouge GGGGG4
+                                BGYBB3 vogue GGGGG4
+                                BYBGB3 ozone GGGGG4
+                                BYBYB3 gnome GGGGG4
+                                GBBBY3 hedge GGGGG4
+                                YYBGB3 phone GGGGG4
+                   BBBBY2 demon BGBBG3 begun GGGGG4
+                                BGBBY3 penny GGGGG4
+                                BGYGY3 venom GGGGG4
+                                BYBBG3 queen GGGGG4
+                                BYBGY3 enjoy GGBGG4 envoy GGGGG5
+                                             GGGGG4
+                                BYBYB3 epoxy GGGGG4
+                                             YBGBG4 gooey GGGGG5
+                                BYBYG3 woven GGGGG4
+                                BYBYY3 boney BGGGG4 honey GGGGG5
+                                             GGGGG4
+                                             YYYYG4 ebony GGGGG5
+                                BYGBG3 hymen GGGGG4
+                                BYGYG3 women GGGGG4
+                                BYYBY3 enemy GGGGG4
+                                BYYYY3 money GGGGG4
+                                GGBBB3 debug GGGGG4
+                                GGGGG3
+                                GYBYB3 dopey GGGGG4
+                                GYBYG3 dozen GGGGG4
+                                YGBBB3 weedy GGGGG4
+                                YGBBY3 needy GGGGG4
+                                YYBBY3 unwed GGGGG4
+                                YYBGY3 endow GGGGG4
+                                YYYBB3 embed GGGGG4
+                                YYYYB3 modem GGGGG4
+                   BBBGB2 gowds BBBBB3 bully GGGGG4
+                                BBBYB3 dully GGGGG4
+                                BGBBB3 holly BGBGG4 nobly GGGGG5
+                                             BGGGG4 jolly GGGGG5
+                                             GGGGG4
+                                BGBYB3 dolly GGGGG4
+                                BGGBB3 lowly GGGGG4
+                                BGYBB3 wooly GGGGG4
+                                BGYYB3 would GGGGG4
+                                BYBYB3 oddly GGGGG4
+                                GBBBB3 gully GGGGG4
+                                GGBBB3 golly GGGGG4
+                                GGBYB3 godly GGGGG4
+                   BBBGG2 boule BYBGG3 whole GGGGG4
+                                GBBGG3 belle GGGGG4
+                                GBYGG3 bugle GGGGG4
+                                GGGGG3
+                                YGBGG3 noble GGGGG4
+                   BBBGY2 whelp BBGGB3 quell GGGGG4
+                                BBYGB3 belly BGGGG4 jelly GGGGG5
+                                             GGGGG4
+                                BYYGB3 hello GGGGG4
+                                GGGGG3
+                                YBGGB3 dwell GGGGG4
+                                YBYGB3 newly GGGGG4
+                   BBBYB2 boomy BBBBG3 pulpy GGGGG4
+                                BBBBY3 glyph GGGGG4
+                                BBBGB3 plump GGGGG4
+                                BBBYG3 lumpy GGGGG4
+                                BBBYY3 lymph GGGGG4
+                                BBGBB3 ghoul GGGGG4
+                                BGBBY3 polyp GGGGG4
+                                BGBYB3 mogul GGGGG4
+                                BGBYG3 moldy GGGGG4
+                                BGGBG3 loopy GGGGG4
+                                BYBBY3 nylon GGGGG4
+                                BYGYB3 gloom GGGGG4
+                                GBGBB3 blond GGGGG4
+                                             GGGYB4 blown GGGGG5
+                                GYGBB3 blood GGGGG4
+                                GYGYB3 bloom GGGGG4
+                                YBBGB3 plumb GGGGG4
+                                YGBBG3 lobby GGGGG4
+                   BBBYG2 ledge GBBGG3 lunge GGGGG4
+                                GBGGG3 lodge GGGGG4
+                                GGGGG3
+                                YBBBG3 plume GGGGG4
+                                YBBGG3 bulge GGGGG4
+                                YBBYG3 globe GGGBG4 glove GGGGG5
+                                             GGGGG4
+                                YGBBG3 melee GGGGG4
+                                YGYBG3 delve GGGGG4
+                                YYBBG3 elope GGGGG4
+                                YYYBG3 elude GGGGG4
+                   BBBYY2 mewed BBBGB3 hovel BGGGG4 novel GGGGG5
+                                             GGGGG4
+                                BBBGY3 olden GGGGG4
+                                BBGGB3 bowel BGGGG4 vowel GGGGG5
+                                             GGGGG4
+                                BBGGY3 dowel GGGGG4
+                                BGBBB3 leggy GGGGG4
+                                BGBGB3 bevel BGGGG4 level GGGGG5
+                                             GGBGG4 bezel GGGGG5
+                                             GGGGG4
+                                BGGGB3 jewel GGGGG4
+                                BGYBB3 below GGGGG4
+                                BYBBG3 blend GGGGG4
+                                BYBGB3 bleep BYYGY4 expel GGGGG5
+                                             GGGGG4
+                                BYBGG3 bleed GGGGG4
+                                BYBYB3 elegy GGGGG4
+                                BYYBB3 elbow GGGGG4
+                                BYYGB3 wheel GGGGG4
+                                GBBGY3 model GGGGG4
+                                GGBBB3 melon GGGGG4
+                                YBBGB3 golem BBYGY4 lumen GGGGG5
+                                             GGGGG4
+                                YGBBB3 lemon GGGGG4
+                   BBGBB2 doing BBGGB3 whiny GGGGG4
+                                BBGGG3 vying GGGGG4
+                                BGGGG3 going GGGGG4
+                                BYGBB3 opium GGGGG4
+                                BYGGG3 owing GGGGG4
+                                BYGYB3 onion BGGGG4 union GGGGG5
+                                             GGGGG4
+                                GBGGG3 dying GGGGG4
+                                GGGGG3
+                                YYGBB3 idiom GGGGG4
+                   BBGBG2 opine BBGBG3 guide GGGGG4
+                                BBGGG3 whine GGGGG4
+                                GBGBG3 oxide GGGGG4
+                                GBGGG3 ovine GGGGG4
+                                GGGGG3
+                   BBGBY2 deign BGGGB3 weigh GGGGG4
+                                BGGGY3 neigh GGGGG4
+                                BGGYY3 being GGGGG4
+                                BYGYY3 eying GGGGG4
+                                GGGGG3
+                   BBGGB2 build BGGGB3 quill GGGGG4
+                                BGGGG3 guild GGGGG4
+                                GGGGG3
+                   BBGGG2 while BBGGG3 exile BBGGG4 guile GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   BBGYB2 blimp BYGBB3 lying GGGGG4
+                                GGGBB3 blind GGGGG4
+                                GGGGG3
+                   BBGYG2 elide BGGBG3 olive GGGGG4
+                                BGGGG3 glide GGGGG4
+                                GGGGG3
+                   BBGYY2 plied GGGGG3
+                   BBYBB2 dingo BGBBB3 hippy BGBGG4 wimpy GGGGG5
+                                             GGGGG4
+                                BGBBG3 hippo GGGGG4
+                                BGBGB3 piggy GGGGG4
+                                BGGBB3 minim BGGBB4 ninny GGGGG5
+                                             GGGGG4
+                                BGGGG3 bingo GGGGG4
+                                BYYBB3 unzip GGGGG4
+                                BYYBY3 inbox GGGGG4
+                                GGBBB3 dizzy GGGGG4
+                                GGGGB3 dingy GGGGG4
+                                GGGGG3
+                                YGBBB3 biddy BGYBB4 vivid GGGGG5
+                                             GGGGG4
+                                YGBBY3 widow GGGGG4
+                                YGBYB3 giddy GGGGG4
+                                YGGBB3 windy GGGGG4
+                                YYBBB3 humid GGGGG4
+                                YYBBY3 ovoid GGGGG4
+                                YYYBB3 undid GGGGG4
+                   BBYBG2 bough BBBBB3 pixie GGGGG4
+                                BBBGB3 midge GGGGG4
+                                BBBGY3 hinge GGGGG4
+                                BBBYB3 genie GGGGG4
+                                BBYBB3 pique GGGGG4
+                                BGBBB3 movie GGGGG4
+                                BYBBB3 diode GGGGG4
+                                GBBGB3 binge GGGGG4
+                                GYBBB3 biome GGGGG4
+                                YBYBB3 imbue GGGGG4
+                   BBYBY2 widen BGBGG3 given BGYGG4 vixen GGGGG5
+                                             GGGGG4
+                                BGBGY3 piney GGGGG4
+                                BGGGB3 video GGGGG4
+                                BYBYB3 equip GGGGG4
+                                BYBYG3 begin GGGGG4
+                                BYBYY3 ennui GGGGG4
+                                BYGGY3 index GGGGG4
+                                BYYYY3 denim GGGGG4
+                                GGGGG3
+                   BBYGB2 dwell BBBGB3 imply GGGGG4
+                                BBBGY3 billy BGGGG4 hilly GGGGG5
+                                             GGGGG4
+                                BYBGY3 willy GGGGG4
+                                GBBGB3 dimly GGGGG4
+                                GBBGY3 dilly GGGGG4
+                                YBBGG3 idyll GGGGG4
+                   BBYGG2 bible GGGGG3
+                   BBYGY2 wield BGGGG3 yield GGGGG4
+                                GGGGG3
+                   BBYYB2 vigil BBBGG3 pupil GGGGG4
+                                BBGGY3 login GGGGG4
+                                BGBBY3 limbo GGGGG4
+                                BGBGY3 lipid GGGGG4
+                                BGYBY3 lingo GGGGG4
+                                BYYBY3 igloo GGGGG4
+                                GGBBG3 vinyl GGGGG4
+                                GGGGG3
+                                YGBGY3 livid GGGGG4
+                   BBYYG2 belie BYYYG3 liege GGGGG4
+                                GBGYG3 bilge GGGGG4
+                                GGGGG3
+                   BBYYY2 impel GGGGG3
+                                YBBGG3 libel GGGGG4
+                                YBBGY3 linen GGGGG4
+                                YBBYG3 devil GGGGG4
+                                YBBYY3 helix GGGGG4
+                                YBYGG3 pixel GGGGG4
+                   BGBBG2 etude GGGGG3
+                   BGGGG2 utile GGGGG3
+                   BYBBB2 mouth BBYGB3 nutty BGGGG4 putty GGGGG5
+                                             GGGGG4
+                                BGBGB3 booty GGGGG4
+                                BGBGG3 booth BGGGG4 tooth GGGGG5
+                                             GGGGG4
+                                BGBYB3 toddy GGGGG4
+                                BGGGB3 pouty GGGGG4
+                                BGGGG3 youth GGGGG4
+                                BGGYB3 doubt GGGGG4
+                                BGGYG3 tough GGGGG4
+                                BGYYB3 donut GGGGG4
+                                BYBGY3 photo GGGGG4
+                                BYBYY3 thong GGGGG4
+                                BYYGB3 junto GGGGG4
+                                BYYGG3 quoth GGGGG4
+                                BYYYB3 outdo GGGBG4 outgo GGGGG5
+                                             GGGGG4
+                                BYYYY3 ought GGGGG4
+                                GGBGB3 motto GGGGG4
+                                GGBGG3 month GGGGG4
+                                GGGGG3
+                                GGGYB3 mount GGGGG4
+                                YBGYY3 thumb GGGGB4 thump GGGGG5
+                                             GGGGG4
+                   BYBBG2 thyme GBBBG3 tepee GGGGG4
+                                GGBGG3 theme GGGGG4
+                                GGGGG3
+                                YBBBG3 butte BGBGG4 quote GGGGG5
+                                             GGGGG4
+                   BYBBY2 duett BBGBG3 event GGGGG4
+                                BBGGY3 teeth GGGGG4
+                                BBGYG3 tweet GGGGG4
+                                BBYBG3 beget GGGGG4
+                                BBYGB3 empty GGGGG4
+                                BBYGY3 jetty BGGGG4 petty GGGGG5
+                                             BGYGB4 tenth GGGGG5
+                                             GGGGG4
+                                BBYYB3 tempo GGGGG4
+                                BBYYG3 tenet GGGGG4
+                                BBYYY3 totem GGGGG4
+                                BYYBG3 unmet GGGGG4
+                                GBYBG3 depot GGGGG4
+                                GBYGB3 depth GGGGG4
+                                GBYYB3 detox GGGGG4
+                                GGYBG3 duvet GGGGG4
+                                GYYBG3 debut GGGGG4
+                                YBGYB3 tweed GGGGG4
+                                YBYYB3 teddy GGGGG4
+                   BYBGB2 hotly BGYGB3 moult GGGGG4
+                                GGGGG3
+                   BYBGG2 tulle GGGGG3
+                   BYBGY2 dwelt BBYGG3 exult GGGGG4
+                                GGGGG3
+                   BYBYB2 blunt GGGGG3
+                   BYBYY2 hotel BBGGG3 betel GGGGG4
+                                BGGGG3 motel GGGGG4
+                                BGYGG3 towel GGGGG4
+                                BYGYG3 extol GGGGG4
+                                GGGGG3
+                   BYGBB2 tying GBGBB3 twixt GGGGG4
+                                GBGBY3 thigh GGGGG4
+                                GBGGG3 thing GGGGG4
+                                GGGGG3
+                                YBGBB3 idiot GGGGG4
+                                YBGGB3 joint BGGGG4 point GGGGG5
+                                             GGGGG4
+                                YYGYB3 unity GGGGG4
+                   BYGBG2 quite BBGGG3 white GGGGG4
+                                BBGYG3 twine GGGGG4
+                                BYGGG3 unite GGGGG4
+                                GGGGG3
+                   BYGBY2 deity BYGYB3 quiet GGGGG4
+                                GGGGG3
+                   BYGGB2 quilt BGGGG3 built BGGGG4 guilt GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   BYGYB2 blitz BGGYB3 glint GGGGG4
+                                GGGGG3
+                   BYGYG2 elite GGGGG3
+                   BYYBB2 nowty BBBGG3 bitty BGGGG4 ditty GGGGG5
+                                             GGGGG4
+                                BBBYB3 might BGGBG4 digit GGGGG5
+                                             BGGGG4 tight GGGGG5
+                                             GGGGG4
+                                             YGBBY4 timid GGGGG5
+                                BBBYG3 pithy GGGGG4
+                                BBYGB3 width GGGGG4
+                                BBYGG3 witty GGGGG4
+                                BBYYB3 wight GGGGG4
+                                BGBYB3 vomit GGGGG4
+                                BYBGB3 ditto GGGGG4
+                                BYBYB3 bigot BGBGG4 pivot GGGGG5
+                                             GGGGG4
+                                GBBGB3 ninth GGGGG4
+                                GBBYB3 night GGGGG4
+                                YBBGG3 minty GGGGG4
+                                YBBYB3 input GGGGG4
+                                YGBYB3 toxin GGGGG4
+                                YYBGB3 pinto GGGGG4
+                                YYBYB3 ingot GGGGG4
+                   BYYBG2 tithe BYGBG3 untie GGGGG4
+                                GGGGG3
+                   BYYBY2 piety BGYYB3 eight GGGGG4
+                                BYYYB3 debit GGGGG4
+                                GGGGG3
+                                YYGYB3 inept GGGGG4
+                                YYYYB3 tepid GGGGG4
+                   BYYGG2 title GGGGG3
+                   BYYYB2 tulip GGGGG3
+                                YBGYY3 pilot GGGGG4
+                                YBYGB3 limit GGGGG4
+                                YBYYB3 light GGGGG4
+                                YYGGB3 unlit GGGGG4
+                                YYYGB3 until GGGGG4
+                   BYYYG2 lithe GGGGG3
+                                YGYBG3 tilde GGGGG4
+                   BYYYY2 inlet GGGGG3
+                   GBBBB2 snowy GBBBB3 shush GGGGG4
+                                GBGGG3 showy GGGGG4
+                                GBGYB3 swoop GGGGG4
+                                GBYBG3 soggy GGGGG4
+                                GGGBB3 snoop GGGGG4
+                                GGGGG3
+                                GYBBG3 sunny GGGGG4
+                                GYBYB3 swung GGGGG4
+                                GYGBB3 spoon GGGGG4
+                                GYGGB3 shown GGGGG4
+                                GYGYB3 swoon GGGGG4
+                                GYYBB3 sound GGGGG4
+                                GYYBY3 synod GGGGG4
+                   GBBBG2 sense GBBBG3 shove GGGGG4
+                                GBYBG3 shone GGGGG4
+                                GGBBG3 segue GGGGG4
+                                GGGGG3
+                   GBBBY2 sweep GBGBY3 spend GGGGG4
+                                GBGGB3 sheen GGGGG4
+                                GBGGG3 sheep GGGGG4
+                                GBGGY3 speed GGGGG4
+                                GBGYB3 seedy GGGGG4
+                                GBYGB3 semen GGBGG4 seven GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GBBGB2 shyly GBBGG3 sully GGGGG4
+                                GBGGG3 slyly GGGGG4
+                                GGGGG3
+                   GBBGY2 champ BBBBB3 swell GGGGG4
+                                BBBBY3 spell GGGGG4
+                                BBBYB3 smell GGGGG4
+                                BGBBB3 shell GGGGG4
+                   GBBYB2 spool GBBBY3 slung GGGBB4 slush GGGGG5
+                                             GGGGG4
+                                GBGBY3 slosh GGGGG4
+                                GGGGG3
+                                GYBBY3 slump GGGGG4
+                                GYGGY3 sloop GGGGG4
+                   GBBYG2 slope GGGGG3
+                                GYYBG3 solve GGGGG4
+                   GBBYY2 sleep GGGGG3
+                   GBGBB2 swish GBGBB3 spiny GBGGB4 suing GGGGG5
+                                             GGGGG4
+                                GBGBY3 shiny GGGGG4
+                                GGGBB3 swing GGGGG4
+                                GGGGG3
+                   GBGBG2 spine GBGBG3 seize GGGGG4
+                                GBGGG3 shine GBGGG4 swine GGGGG5
+                                             GGGGG4
+                                GBGYG3 snide GGGGG4
+                                GGGGG3
+                                GYGYG3 snipe GGGGG4
+                   GBGBY2 shied GBGGG3 spied GGGGG4
+                                GGGGG3
+                   GBGGB2 spill GBGGG3 swill GGGGG4
+                                GGGGG3
+                   GBGGG2 smile GGGGG3
+                   GBGYB2 slimy GGGBB3 sling GGGGG4
+                                GGGGG3
+                   GBGYG2 slide GGGBG3 slime GGGGG4
+                                GGGGG3
+                   GBGYY2 spiel GGGGG3
+                   GBYBB2 sissy GGGGG3
+                                GYBBB3 squib GGGGG4
+                                GYGBB3 sushi GGGGG4
+                   GBYBG2 siege GGBGG3 singe GGGGG4
+                                GGGBG3 sieve GGGGG4
+                                GGGGG3
+                   GBYBY2 sinew GGGGG3
+                   GBYGB2 silly GGGGG3
+                   GBYYB2 solid GGGGG3
+                                GYYGB3 spoil GGGGG4
+                   GGBBB2 depot BBBBG3 stunt GGGGG4
+                                BBBBY3 stung GGGGG4
+                                BBBYG3 stout GGGGG4
+                                BBBYY3 stony GGGGG4
+                                BBYBY3 stump GGGGG4
+                                BBYGY3 stoop GGGGG4
+                                BBYYY3 stomp GGGGG4
+                                YBBBY3 study GGGGG4
+                                YBBGY3 stood GGGGG4
+                   GGBBG2 stone GGGBG3 stove GGGGG4
+                                GGGGG3
+                   GGBBY2 steed GGGGB3 steep GGGGG4
+                                GGGGG3
+                   GGBGG2 stole GGBGG3 style GGGGG4
+                                GGGGG3
+                   GGBYB2 stool GGGGG3
+                   GGBYY2 steel GGGGG3
+                   GGGBB2 sting GGGGB3 stint GGGGG4
+                                GGGGG3
+                   GGGGB2 still GGGGB3 stilt GGGGG4
+                                GGGGG3
+                   GGYBY2 stein GGGGG3
+                   GYBBB2 shunt GBBBY3 sooty GGGGG4
+                                GBYBG3 spout GGGGG4
+                                GBYYG3 snout GGGGG4
+                                GGBBG3 shoot GGGGG4
+                                GGGGG3
+                                GGYBG3 shout GGGGG4
+                                GYBBY3 sooth GGGGG4
+                                GYGBY3 south GGGGG4
+                   GYBBG2 smote GGGGG3
+                   GYBBY2 sweet GBGBG3 spent GGGGG4
+                                GBGGG3 sheet GGGGG4
+                                GBYBY3 setup GGGGG4
+                                GGGBG3 swept GGGGG4
+                                GGGGG3
+                   GYBGY2 smelt GBGGG3 spelt GGGGG4
+                                GGGGG3
+                   GYBYB2 sloth GGGGG3
+                   GYBYY2 sleet GGGBG3 slept GGGGG4
+                                GGGGG3
+                   GYGBB2 smith GGGGG3
+                   GYGBG2 suite GBGGG3 smite GBGGG4 spite GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GYGGB2 spilt GGGGG3
+                   GYYBB2 sight GGBBY3 sixty GGGGG4
+                                GGBYY3 sixth GGGGG4
+                                GGGGG3
+                   GYYYB2 split GGGGG3
+                   YBBBB2 mushy BBGBG3 bossy GGGGG4
+                                BBYBG3 gypsy GGGGG4
+                                BGGGG3 bushy BGGGG4 pushy GGGGG5
+                                             GGGGG4
+                                BGGYG3 hussy GGGGG4
+                                BYYBB3 bonus GGGGG4
+                                GBGBG3 mossy GGGGG4
+                                GGGGG3
+                                YBGBB3 bosom GGGGG4
+                                YGYYB3 humus GGGGG4
+                   YBBBG2 bonum BBBBB3 geese GGGGG4
+                                BBGBB3 dense GGGGG4
+                                BBYGB3 ensue GGGGG4
+                                BGBBB3 goose BGBGG4 posse GGGGG5
+                                             GGGGG4
+                                BGBBY3 moose GGGGG4
+                                BGBYB3 house GGGGG4
+                                BGBYY3 mouse GGGGG4
+                                BGYBB3 noose GGGGG4
+                                BYBBB3 whose GGGGG4
+                                YYBBB3 obese GGGGG4
+                   YBBBY2 bused BBGGB3 nosey GGGGG4
+                                BBYYB3 poesy GGGGG4
+                                BGYYB3 guess GGGGG4
+                                GGGGG3
+                   YBBYB2 blush BGBGB3 gloss GGGGG4
+                                BGGGG3 plush GGGGG4
+                                BYGGB3 lousy GGGGG4
+                                BYYYB3 lupus GGGGG4
+                                GGGGG3
+                   YBBYG2 loose GGBGG3 louse GGGGG4
+                                GGGGG3
+                                YBBGG3 pulse GGGGG4
+                   YBBYY2 bless BYYGB3 welsh GGGGG4
+                                GGGGG3
+                   YBGBB2 noisy GGGGG3
+                                YBGYB3 using GGGGG4
+                   YBGBG2 noise BBGGG3 guise GGGGG4
+                                BGGGG3 poise GGGGG4
+                                GGGGG3
+                   YBGYB2 bliss GGGGG3
+                   YBYBB2 missy BGBGG3 gipsy GGGGG4
+                                BGGBB3 bison GGGGG4
+                                BGGBG3 wispy GGGGG4
+                                GGGGG3
+                                GGYBB3 minus GGGGG4
+                   YBYBG2 issue GGGGG3
+                   YGBBY2 ethos GGGGG3
+                   YYBBB2 gusty BBYYB3 boost GGGGG4
+                                BGGGG3 dusty BGGGG4 musty GGGGG5
+                                             GGGGG4
+                                BYYYB3 joust GGGGG4
+                                GBYYB3 ghost GGGGG4
+                                GGGGB3 gusto GGGGG4
+                                GGGGG3
+                   YYBBG2 tense GBBGG3 those GGGGG4
+                                GGGGG3
+                                GYBGG3 these GGGGG4
+                   YYBBY2 nutty BBBGB3 pesto GGGGG4
+                                BBBGG3 zesty GGGGG4
+                                BBYBB3 beset GGGGG4
+                                BBYGG3 testy GGGGG4
+                                BGYBB3 guest BGGGG4 quest GGGGG5
+                                             GGGGG4
+                                BYYBB3 upset GGGGG4
+                                YBYBB3 onset GGGGG4
+                                YYYBB3 unset GGGGG4
+                   YYBYB2 lusty GGGGG3
+                   YYGBB2 moist BBGGG3 twist GGGGG4
+                                BGGGG3 hoist BGGGG4 joist GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   YYGBY2 exist GGGGG3
+                                YBGGG3 heist GGGGG4
+                   YYYBB2 midst BGBGY3 tipsy GGGGG4
+                                BGBYG3 visit GGGGG4
+                                BYBYG3 posit GGGGG4
+                                GGGGG3
+                   YYYYY2 islet GGGGG3
+      BBBBG1 slink BBGGG2 think GGGGG3
+                   BGBGG2 plunk GGGGG3
+                   BGGGG2 blink GGGGG3
+                   GBBBG2 shook GBGGG3 spook GGGGG4
+                                GGGGG3
+                   GBBGG2 stunk GBGGG3 skunk GBGGG4 spunk GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GBGGG2 stink GGGGG3
+                   GBYBG2 sheik GGGGG3
+                   GGBBG2 sleek GGGGG3
+                   GGBGG2 slunk GGGGG3
+                   GGGGG2
+                   GYBBG2 skulk GGGGG3
+                   YBGBG2 whisk GGGGG3
+                   YBYBG2 kiosk GGGGG3
+      BBBBY1 smile BBBBB2 hunky BBYYB3 known GGGGG4
+                                GGGGG3
+                   BBBBG2 evoke GGGGG3
+                   BBBBY2 token BBYGY3 kneed GGGGG4
+                                BBYYB3 geeky GGGGG4
+                                BGGGG3 woken GGGGG4
+                                GGGGG3
+                   BBBGB2 knoll GGGGG3
+                   BBBGY2 knelt GGGGG3
+                   BBBYB2 bulky GGGGG3
+                   BBBYG2 bloke GGGGG3
+                   BBBYY2 kneel GGGGG3
+                   BBGBY2 eking GGGGG3
+                   BBYBB2 kinky BGGGG3 pinky GGGGG4
+                                GGBBG3 kitty GGGGG4
+                                GGGGG3
+                   BBYYY2 liken GGGGG3
+                   BYYYB2 milky GGGGG3
+                   GBBBG2 spoke GBGGG3 stoke GGGGG4
+                                GGGGG3
+                   GBBGB2 skull GGGGG3
+                   GBBYB2 sulky GGGGG3
+                   GBGBB2 spiky GGGGG3
+                   GBGBG2 spike GGGGG3
+                   GBGGB2 skill GGGGG3
+                   GBYYB2 silky GGGGG3
+                   GGBBB2 smoky GGGGG3
+                   GGBBG2 smoke GGGGG3
+                   GYGBB2 skimp GGGGG3
+                   YBBBB2 dusky BGGGG3 husky GGGGG4
+                                GGGGG3
+                   YBBBY2 pesky GGGGG3
+                   YYBBB2 musky GGGGG3
+      BBBGB1 loipe BBBBB2 habit GBBBB3 hunch GGGGG4
+                                GBBBY3 hutch GGGGG4
+                                YBBBB3 munch GGGGG4
+                                YBBBY3 dutch GGGGG4
+                                YBYBB3 bunch GGGGG4
+                                YBYBY3 butch GGGGG4
+                   BBBBG2 deuce BGBGG3 hence GGGGG4
+                                GBYGG3 dunce GGGGG4
+                                GGGGG3
+                   BBBBY2 beech BYGGB3 eject GGGGG4
+                                GGBGG3 bench GGGGG4
+                                GGGGG3
+                   BBBYB2 punch GGGGG3
+                   BBBYG2 pence GGGGG3
+                   BBGBB2 juicy BBGGB3 which GGGGG4
+                                GGGGG3
+                   BBGBG2 juice BBGGG3 twice GGGGG4
+                                GGGGG3
+                   BBGBY2 edict GBGGG3 evict GGGGG4
+                                GGGGG3
+                   BBGYB2 spicy GGGGG3
+                   BBGYG2 spice GGGGG3
+                   BBYBB2 witch BGBGG3 cinch GGGGG4
+                                BGGGG3 ditch BGGGG4 hitch GGGGG5
+                                             GGGGG4
+                                GGBGG3 winch GGGGG4
+                                GGGGG3
+                   BBYBG2 wince BGGGG3 mince BGGGG4 since GGGGG5
+                                             GGGGG4
+                                BGYGG3 niece GGGGG4
+                                GGGGG3
+                   BBYYB2 pinch GGBGG3 pitch GGGGG4
+                                GGGGG3
+                   BBYYG2 piece GGGGG3
+                   BGBBB2 notch BGBGG3 couch BGGGG4 vouch GGGGG5
+                                             GGGGG4
+                                BGGGG3 botch GGGGG4
+                                BGYGG3 touch GGGGG4
+                                GGGGG3
+                                YGBGG3 conch GGGGG4
+                   BGBYB2 pooch GGBGG3 pouch GGGGG4
+                                GGGGG3
+                   BGGBG2 voice GGGGG3
+                   BYBBG2 ounce GGGGG3
+                   BYBYY2 epoch GGGGG3
+                   BYYBB2 disco GGGGG3
+                   GBBBB2 lunch GGGGG3
+                   GBBBY2 leech GGGGG3
+                   YBBBB2 gulch BGGGG3 mulch GGGGG4
+                                GGGGG3
+                   YBBBY2 belch BGGGG3 welch GGGGG4
+                                BYYGB3 elect GGGGG4
+                                GGGGG3
+                   YBGBG2 slice GGGGG3
+      BBBGG1 south BBBBB2 click GGGGG3
+                   BBBBY2 check GGBGG3 chick GGGGG4
+                                GGGGG3
+                   BBBYY2 thick GGGGG3
+                   BBGBB2 cluck BGGGG3 pluck GGGGG4
+                                GGGGG3
+                   BBGBY2 chuck GGGGG3
+                   BBYBB2 quick GGGGG3
+                   BYBBB2 block BBGGG3 knock GGGGG4
+                                BGGGG3 clock GGGGG4
+                                GGGGG3
+                   BYBBY2 chock GGGGG3
+                   GBBBB2 slick GBBGG3 speck GGGGG4
+                                GGGGG3
+                   GBBYB2 stick GGGGG3
+                   GBGBB2 snuck GGGGG3
+                   GBGBY2 shuck GGGGG3
+                   GBGYB2 stuck GGGGG3
+                   GYBBB2 smock GGGGG3
+                   GYBBY2 shock GGGGG3
+                   GYBYB2 stock GGGGG3
+      BBBYB1 noule BBBBB2 civic BGBGG3 mimic GGGGG4
+                                GGGGG3
+                                YYBBB3 itchy GGGGG4
+                   BBBBG2 chide GGGBG3 chime GGGGG4
+                                GGGGG3
+                                YBBBG3 emcee GGGGG4
+                   BBBBY2 medic BYBBY3 chess GGGGB4 chest GGGGG5
+                                             GGGGG4
+                                BYBGG3 ethic GGGGG4
+                                BYBYY3 bicep GGGGG4
+                                BYYYY3 dicey GGGGG4
+                                GGGGG3
+                   BBBGB2 icily BYGGB3 child GGGGB4 chill GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                                YYGGB3 chili GGGGG4
+                   BBBGG2 cycle GGGGG3
+                   BBBYB2 civil GGGGG3
+                                GYBBY3 climb GGGGG4
+                   BBBYY2 excel GGGGG3
+                   BBGBB2 chump GGGGG3
+                   BBGBG2 chute GGGGG3
+                   BBGYB2 clump GGGGG3
+                   BBGYY2 clued GGGGG3
+                   BBYBB2 pubic BGBBY3 duchy BGGBB4 mucus GGGGG5
+                                             GGGGG4
+                                BGBGG3 music GGGGG4
+                                BGGGG3 cubic GGGGG4
+                                GGGGG3
+                   BBYBG2 cutie GGGGG3
+                   BBYYB2 lucid GGGGG3
+                   BGBBB2 topic BGBGG3 comic GGGGG4
+                                GGBGG3 toxic GGGGG4
+                                GGGGG3
+                   BGBBG2 copse GGGGG3
+                   BGBBY2 comet GGBGB3 covey GGGGG4
+                                GGBGG3 covet GGGGG4
+                                GGGGG3
+                   BGBGB2 coyly GGGGG3
+                   BGBYB2 logic GGGGG3
+                   BGGBB2 cough GGGGG3
+                   BGGBG2 coupe GGGGG3
+                   BGGGB2 could GGGGG3
+                   BGYYB2 locus GGGGG3
+                   BYBBB2 optic GGGGG3
+                                YBYGG3 stoic GGGGG4
+                                YYBBY3 scoop GGGGG4
+                   BYBBG2 chose GGGGG3
+                                YBGYG3 scope GGGGG4
+                   BYBBY2 decoy BYYYB3 octet GGGGG4
+                                GGGGG3
+                   BYBGB2 scold GGGGG3
+                   BYBGY2 cello GGGGG3
+                   BYBYB2 cloth GGGGG3
+                                YYGBB3 scowl GGGGG4
+                   BYBYG2 close GGGBG3 clove GGGGG4
+                                GGGGG3
+                   BYYBB2 scout GGGGG3
+                   BYYYB2 cloud GGGGB3 clout GGGGG4
+                                GGGGG3
+                   GBBBG2 niche GGGGG3
+                   YBBBB2 cynic GGGGG3
+                                YBYYB3 icing GGGGG4
+                   YBBBG2 scene GGGGG3
+                   YBBBY2 scent GGGGG3
+                   YBBYB2 cling GGGGG3
+                   YBGYB2 clung GGGGG3
+                   YBYBB2 cumin GGGGG3
+                                YGBGY3 tunic GGGGG4
+                                YYBBY3 uncut GGGGG4
+                   YBYGG2 uncle GGGGG3
+                   YGBBB2 islet BBBBB3 condo GGGGG4
+                                GBBBB3 ionic GGGGG4
+                                YBBBB3 conic GGGGG4
+                                YBBBY3 tonic GGGGG4
+                                YYBBB3 sonic GGGGG4
+                   YGBBY2 coven GGGGG3
+                   YGBYB2 colon GGGGG3
+                   YGGBB2 count GGGGG3
+                   YYBBB2 scion GGGGG3
+                   YYBBG2 scone GGGGG3
+                   YYBYB2 clown GGGGG3
+                   YYBYG2 clone GGGGG3
+      BBBYG1 cheek GBBBG2 clink GGGGG3
+                   GGBBG2 chunk GGGGG3
+                   GGGGG2
+      BBBYY1 lucky BBGGB2 gecko GGGGG3
+                   BBGGG2 picky GGGGG3
+                   BBYGB2 choke GGGGG3
+                   BGGGG2 mucky GGGGG3
+                   GGGGG2
+      BBGBB1 spelt BBBBB2 again GGGGG3
+                                YYGBB3 guava GGGGG4
+                   BBBBG2 await BBGYG3 giant GGGGG4
+                                GGGGG3
+                   BBBBY2 twang GGGGG3
+                   BBBGB2 qualm GGGGG3
+                   BBBYB2 llama BGGBB3 bland BGGGG4 gland GGGGG5
+                                             GGGGG4
+                                GBGGB3 loamy GGGGG4
+                                GGGGG3
+                                YBGBB3 quail GGGGG4
+                                YBGBY3 avail GGGGG4
+                   BBBYY2 loath GGGGG3
+                   BBYBB2 hedge BBBBG3 amaze BBGBG4 inane GGGGG5
+                                             GGGGG4
+                                BBBGG3 image GGGGG4
+                                BBYGG3 adage GGGGG4
+                                BGBBG3 weave GGGGG4
+                                BGYBB3 beady GGGGG4
+                                BYYBG3 evade GGGGG4
+                                GGBBB3 heavy GGGGG4
+                                GGBBG3 heave GGGGG4
+                                GGYBB3 heady GGGGG4
+                   BBYBG2 meant GGGGG3
+                   BBYBY2 hobby BBBBB3 agate GGGGG4
+                                BBBBG3 meaty GGGGG4
+                                BBYBB3 abate GGGGG4
+                                BYBBB3 ovate GGGGG4
+                                GBBBB3 heath GGGGG4
+                                YBBBB3 death GGGGG4
+                   BBYGB2 mealy BYGGB3 whale GGGGG4
+                                GGGGG3
+                   BBYGG2 dealt BYGGG3 exalt GGGGG4
+                                GGGGG3
+                   BBYYB2 glaze BGGBG3 blade GGGBG4 blame GGGGG5
+                                             GGGGG4
+                                BGGGG3 blaze GGGGG4
+                                BYGBG3 leave GGGGG4
+                                BYGBY3 email GGGGG4
+                                GGGBG3 glade GGGGG4
+                                GGGGG3
+                   BBYYG2 leant GGGGG3
+                   BBYYY2 elate GGGGG3
+                   BYBBB2 piano GGGGG3
+                   BYBBG2 adapt GGGGG3
+                   BYBYB2 plaid GGGBB3 plaza GGGGG4
+                                GGGGB3 plain GGGGG4
+                                GGGGG3
+                   BYBYG2 plait GGGBG3 plant GGGGG4
+                                GGGGG3
+                   BYYBB2 agape GGGGG3
+                   BYYYB2 plane GGGGG3
+                   BYYYG2 leapt GGGGG3
+                   BYYYY2 plate GGGGG3
+                   GBBBB2 smash GBGBY3 shady GGGGG4
+                                GBGGG3 swash GGGGG4
+                                GGGGG3
+                                GYGBB3 swami GGGGG4
+                   GBBBY2 staid GGGBB3 stash GGGGG4
+                                GGGBG3 stand GGGGG4
+                                GGGGB3 stain GGGGG4
+                                GGGGG3
+                                GYGBB3 swath GGGGG4
+                   GBBGB2 shall GBGGG3 small GGGGG4
+                                GGGGG3
+                   GBBGG2 shalt GGGGG3
+                   GBBGY2 stall GGGGG3
+                   GBBYB2 slain GGGBB3 slash GGGGG4
+                                GGGBY3 slang GGGGG4
+                                GGGGG3
+                                GYGBB3 shawl GGGGG4
+                                GYGGY3 snail GGGGG4
+                   GBBYG2 slant GGGGG3
+                   GBYBB2 suave GBGBG3 shade GGGBG4 shame GGGGG5
+                                             GGGGG4
+                                GBGGG3 shave GGGGG4
+                                GGGGG3
+                   GBYBY2 stave GGGBG3 stage GGGBG4 state GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GBYGB2 shale GGGGG3
+                   GBYGY2 stale GGGGG3
+                   GBYYY2 slate GGGGG3
+                   GGBBB2 spasm GGGBB3 spawn GGGGG4
+                                GGGGG3
+                   GGYBB2 spade GGGGG3
+                   GYBBB2 soapy GBGYB3 swamp GGGGG4
+                                GGGGG3
+                   GYBBY2 stamp GGGGG3
+                   GYYBB2 shape GGGGG3
+                   YBBBB2 quash BBGGB3 amass GGGGG4
+                                BBGGG3 awash BBGGG4 gnash GGGGG5
+                                             GGGGG4
+                                GGGGB3 quasi GGGGG4
+                                GGGGG3
+                   YBBBG2 boast BGGGG3 toast GGGGG4
+                                GGGGG3
+                   YBBYB2 glass GGGGG3
+                   YBBYG2 blast GGGGG3
+                   YBYBB2 abase BBGYG3 usage GGGGG4
+                                GGGGG3
+                   YBYBG2 beast BGGGG3 yeast GGGGG4
+                                GGGGG3
+                   YBYBY2 tease GGGGG3
+                   YBYYB2 lease GGGGB3 leash GGGGG4
+                                GGGGG3
+                   YBYYG2 least GGGGG3
+                   YYBGB2 psalm GGGGG3
+                   YYYBB2 phase GGGGG3
+      BBGBG1 plush BBBBY2 thank GGGGG3
+                   BBBYB2 stank GGGGG3
+                   BBBYY2 shank GGGGG3
+                   BGBBB2 blank GGGGG3
+                   BYBYB2 stalk GGGGG3
+                   GGBBB2 plank GGGGG3
+                   YBBYB2 spank GGGGG3
+      BBGBY1 shake BBGGG2 awake BBGGG3 quake GGGGG4
+                                GGGGG3
+                   BBGGY2 leaky GGGGG3
+                   BBGYB2 koala GGGGG3
+                   BBGYG2 knave GGGGG3
+                   BGGGB2 khaki GGGGG3
+                   GBGGB2 snaky GGGGG3
+                   GBGGG2 snake GBGGG3 stake GGGGG4
+                                GGGGG3
+                   GBGYG2 skate GGGGG3
+                   GGGGB2 shaky GGGGG3
+                   GGGGG2
+      BBGGB1 betel BBBBB2 coach GGGGG3
+                   BGBBB2 peach GGGGG3
+                   BGBBY2 leach GGGGG3
+                   BGBYB2 peace GGGGG3
+                   BGYBB2 teach GGGGG3
+                   BYBBB2 space GGGGG3
+                   BYBBY2 place GGGGG3
+                   BYYBB2 enact GBGGG3 exact GGGGG4
+                                GGGGG3
+                   GGBBB2 beach GGGGG3
+      BBGGG1 shuln BBBBB2 aback GGGGG3
+                   BBBBY2 knack GGGGG3
+                   BBBYB2 black BGGGG3 clack GGGGG4
+                                GGGGG3
+                   BBYBB2 quack GGGGG3
+                   BGBBB2 whack GGGGG3
+                   GBBBB2 smack GBGGG3 stack GGGGG4
+                                GGGGG3
+                   GBBBY2 snack GGGGG3
+                   GBBYB2 slack GGGGG3
+                   GGBBB2 shack GGGGG3
+      BBGYB1 pelsh BBBBY2 chain GGGBY3 chant GGGGG4
+                                GGGGG3
+                   BBBGB2 coast GGGGG3
+                   BBBGY2 chasm GGGGG3
+                   BBBYB2 scant GGGGG3
+                   BBBYY2 chaos GGGGG3
+                   BBYBB2 claim GGGBB3 clang GGGGG4
+                                GGGGG3
+                   BBYGB2 class GGGGG3
+                   BBYGG2 clash GGGGG3
+                   BBYYB2 scald GGGGB3 scaly GGGGG4
+                                GGGGG3
+                   BGBGB2 cease GGGGG3
+                   BYBGY2 chase GGGGG3
+                   BYYYB2 scale GGGGG3
+                   YBBBY2 champ GGGGG3
+                   YBBYB2 scamp GGGGG3
+                   YBYBB2 clamp GGGGG3
+                   YBYGB2 clasp GGGGG3
+                   YBYYB2 scalp GGGGG3
+      BBGYG1 chalk GBGYG2 clank GGGGG3
+                   GGGGG2
+      BBYBB1 spelt BBBBB2 dingo BBBBB3 jazzy BGBBB4 mamma GGGGG5
+                                             BGBBG4 mammy GGGGG5
+                                             GGGGG4
+                                BBBBG3 mambo GGGGG4
+                                BBBBY3 bayou GGGGG4
+                                BBBGB3 baggy GGGGG4
+                                BBBYB3 gamma GGGGG4
+                                             YGYGG4 magma GGGGG5
+                                BBGBB3 nanny GGGGG4
+                                BBGBG3 banjo GGGGG4
+                                BBGBY3 annoy GGGGG4
+                                BBGGB3 manga GGGGB4 mangy GGGGG5
+                                             GGGGG4
+                                BBGGG3 mango GGGGG4
+                                BBYBB3 human GGGGG4
+                                BBYBY3 woman GGGGG4
+                                BBYYY3 agony GGGGG4
+                                             GYGGB4 among GGGGG5
+                                             YYYYB4 wagon GGGGG5
+                                BGGBB3 ninja GGGGG4
+                                BYBBB3 maxim GGGGG4
+                                BYBBY3 axiom GGGGG4
+                                BYGBB3 mania GGGGG4
+                                BYYBB3 avian GGGGG4
+                                BYYBY3 axion GGGGG4
+                                BYYYB3 aging GGGGG4
+                                GBBBB3 daddy GGGGG4
+                                GBBYY3 dogma GGGGG4
+                                GBGBB3 dandy GGGGG4
+                                YBBBB3 bawdy BGBYB4 madam GGGGG5
+                                             GGGGG4
+                                YBBYB3 gaudy GGGGG4
+                                YBGBB3 handy GGGGG4
+                                YBGYY3 gonad GGGGG4
+                                YBYBY3 nomad GGGGG4
+                                YYBBG3 audio GGGGG4
+                                YYBBY3 avoid GGGGG4
+                                YYYBB3 admin GGGGG4
+                   BBBBG2 dough BBBBB3 taint GGGGG4
+                                BBBBY3 habit GGGGG4
+                                BBGBB3 vaunt BGGGG4 jaunt BGGGG5 taunt GGGGG6
+                                                          GGGGG5
+                                             GGGGG4
+                                BBGBY3 haunt GGGGG4
+                                BBGYB3 gaunt GGGGG4
+                                BBYYB3 gamut GGGGG4
+                                BYBBB3 abbot GGGGG4
+                                BYYBB3 about GGGGG4
+                                GBGBB3 daunt GGGGG4
+                                YBBBB3 admit GGGGG4
+                                YBYBB3 audit GGGGG4
+                   BBBBY2 tangy GGBBB3 taboo GGGGG4
+                                GGBBG3 tabby GGBBG4 tatty GGGGG5
+                                             GGGGG4
+                                GGGGB3 tango GGGGG4
+                                GGGGG3
+                                GGYBG3 tawny GGGGG4
+                                GYBBB3 tibia GGGGG4
+                                GYBBG3 today GGGGG4
+                                GYGGB3 tonga GGGGG4
+                                GYYBB3 titan GGGGG4
+                                YGBBB3 datum GGGGG4
+                                YGBBG3 batty GGGGG4
+                                YGYBB3 baton GGGGG4
+                                YYBBB3 quota GGGGG4
+                                YYBBG3 amity GGGGG4
+                                YYGBB3 junta GGGGG4
+                                YYGBG3 aunty GGGGG4
+                   BBBGB2 bidon BBBBB3 gayly GGGGG4
+                                BBBBY3 manly GGGGG4
+                                BBGBB3 madly GGGGG4
+                                BBYBB3 dally GGGGG4
+                                BGBBB3 villa GGGGG4
+                                BGBYB3 viola GGGGG4
+                                BYBBB3 gaily GGGGG4
+                                BYBYB3 voila GGGGG4
+                                BYYBB3 daily GGGGG4
+                                GBGBB3 badly GGGGG4
+                   BBBGG2 adult GGGGG3
+                                YBGGG3 vault GGGGG4
+                   BBBGY2 atoll GGGGG3
+                                YYBGY3 tally GGGGG4
+                   BBBYB2 agony GBBBB3 album GGGGG4
+                                             GGYBB4 alibi GGGGG5
+                                             GYBBB4 axial GGGGG5
+                                GBBBG3 allay GGGGG4
+                                GBBYB3 annul GGBBG4 anvil GGGGG5
+                                             GGGGG4
+                                GBGBB3 aloud GGGGG4
+                                GBYBB3 allow GGGGG4
+                                GBYBG3 alloy GGGGG4
+                                GGYBB3 aglow GGGGG4
+                                GYBYB3 align GGGGG4
+                                GYGGB3 along GGGGG4
+                                YBBBB3 valid GGGGG4
+                                YBBBG3 balmy GGGGG4
+                                YBBBY3 bylaw GGGGG4
+                                YBBYB3 banal BGYGG4 naval GGGGG5
+                                             GGGGG4
+                                YBBYG3 inlay GGGGG4
+                                YBYBB3 modal GGGGG4
+                                YBYBY3 loyal GGGGG4
+                                YBYYB3 zonal GGGGG4
+                                YYBBB3 laugh GGGGG4
+                   BBBYG2 bloat BGGGG3 gloat GGGGG4
+                                BGYYG3 allot GGGGG4
+                                GGGGG3
+                   BBBYY2 tonal GBBGG3 tidal GBBGG4 tubal GGGGG5
+                                             GGGGG4
+                                GGBGG3 total GGGGG4
+                                GGGGG3
+                                GYYYY3 talon GGGGG4
+                                YBBGG3 vital GGGGG4
+                                YBBYY3 waltz GGGGG4
+                                YBYGG3 natal GGGGG4
+                   BBGBB2 amend GBGBG3 ahead GGGGG4
+                                GGGGG3
+                                YBGGB3 hyena GGGGG4
+                                YGGBB3 omega GGGGG4
+                                YYGYB3 enema GGGGG4
+                   BBGBG2 agent GGGGG3
+                                YBGBG3 wheat GGGGG4
+                   BBGBY2 theta GGGGG3
+                   BBGYB2 gleam BYGGB3 ideal GGGGG4
+                                GGGGB3 glean GGGGG4
+                                GGGGG3
+                   BBGYG2 bleat GGGGG3
+                   BBYBB2 naive BGBBG3 badge BGBGG4 gauge GGGGG5
+                                             BGBYG4 gauze GGGGG5
+                                             GGGGG4
+                                             YGBBG4 maybe GGGGG5
+                                BGBGG3 mauve GGGGG4
+                                BGBYG3 vague GGGGG4
+                                BGGBG3 maize GGGGG4
+                                BGGGG3 waive GGGGG4
+                                BYBBG3 abode GGGGG4
+                                             GYGYG4 adobe GGGGG5
+                                BYBBY3 abbey GGGGG4
+                                BYBGG3 above GGGGG4
+                                BYGBG3 abide GGGGG4
+                                BYYBY3 media GGGGG4
+                                GGGGG3
+                                YGBBG3 mange GGGGG4
+                                YGBBY3 waxen GGGGG4
+                                YGBYY3 haven GGGGG4
+                                YYBBG3 anode GGGGG4
+                                YYBBY3 annex GGGGG4
+                                             YYBYB4 began GGGGG5
+                                YYBYY3 vegan GGGGG4
+                                YYGBG3 anime GGGGG4
+                   BBYBG2 begat GGGGG3
+                   BBYBY2 eaten BGGGB3 matey GGGGG4
+                                GGGGG3
+                                YGGBB3 bathe GGGGG4
+                                YGYBB3 haute GGGGG4
+                                YYYBY3 atone GGGGG4
+                   BBYGB2 agile GBBGG3 amble GGGGG4
+                                GGGGG3
+                                GYBGG3 angle GGGGG4
+                                YBBGG3 ladle GGGGG4
+                                YYBGG3 eagle GGGGG4
+                   BBYGY2 table GGGGG3
+                   BBYYB2 allan BBGGB3 delay GGGGG4
+                                BYBGB3 equal GGGGG4
+                                             YBBGG4 medal GGGGG5
+                                BYYGB3 legal GGGGG4
+                                GBGBB3 abled GGGGG4
+                                GGBBB3 alive GGGGG4
+                                GGBBG3 alien GGGGG4
+                                GGBBY3 alone GGGGG4
+                                GGBGB3 algae GGGGG4
+                                GGGBB3 alley GGGGG4
+                                GYBBY3 angel GGGGG4
+                                YBGBB3 halve BGGGG4 valve GGGGG5
+                                             BGGYG4 value GGGGG5
+                                             GGGGG4
+                                YYBBB3 bagel BGBGG4 hazel GGGGG5
+                                             BGYGG4 gavel GGGGG5
+                                             GGGGG4
+                                YYBBG3 laden GGGGG4
+                                YYBBY3 navel GGGGG4
+                                YYYBB3 label GGGGG4
+                   BBYYG2 valet GGGGG3
+                   BBYYY2 delta BGYYY3 metal GGGGG4
+                                BYYGY3 latte GGGGG4
+                                BYYYY3 lathe GGGGG4
+                                GGGGG3
+                   BGBBB2 aphid GGBYB3 aping GGGGG4
+                                GGGGG3
+                   BGBGB2 apply GGGGG3
+                   BGBGY2 aptly GGGGG3
+                   BGYBB2 apnea GGGGG3
+                   BGYGB2 apple GGGGG3
+                   BYBBB2 happy BGGBB3 vapid GGGGG4
+                                BGYBB3 pagan GGGGG4
+                                BGYBG3 paddy GGGGG4
+                                BYYBB3 pizza GGGGG4
+                                GGGGG3
+                   BYBBG2 adopt GGGGG3
+                                YBBYG3 paint GGGGG4
+                   BYBBY2 patio GGGBB3 patty GGGGG4
+                                GGGGG3
+                                YYYBY3 topaz GGGGG4
+                   BYBGB2 amply GGGGG3
+                   BYBYB2 alpha GGGGG3
+                                YYGBY3 papal GGGGG4
+                   BYGBG2 adept GGGGG3
+                   BYGYB2 plead GGGGG3
+                   BYGYG2 pleat GGGGG3
+                   BYYBB2 payee GGGGG3
+                   BYYGB2 ample GGGGG3
+                                YYGGG3 maple GGGGG4
+                   BYYYB2 panel GGGGG3
+                                GYBYG3 pedal GGGGG4
+                                GYGYG3 penal GGGGG4
+                                YGBGG3 lapel GGGGG4
+                   BYYYY2 petal GGGGG3
+                   GBBBB2 noisy BBBGG3 sassy GGGGG4
+                                BBBYB3 squad GGGGG4
+                                BBBYG3 savvy GGGGG4
+                                BBYYB3 sigma GGGGG4
+                                BYBYG3 savoy GGGGG4
+                                YBBYB3 sauna GGGGG4
+                                YBBYG3 sandy GGGGG4
+                   GBBBG2 saint GGGGG3
+                                GYBBG3 squat GGGGG4
+                   GBBBY2 satin GGGGG3
+                   GBBGB2 sadly GGBGG3 sally GGGGG4
+                                GGGGG3
+                   GBBYB2 shoal GBBGY3 salad GGGGG4
+                                GBBYY3 salsa GGGGG4
+                                GBYYY3 salon GGGGG4
+                                             GGGYB4 salvo GGGGG5
+                                GGGGG3
+                   GBBYY2 salty GGGGG3
+                   GBGBG2 sweat GGGGG3
+                   GBGBY2 stead GGGGB3 steam GGGGG4
+                                GGGGG3
+                   GBGYY2 steal GGGGG3
+                   GBYBB2 sedan GGGGG3
+                   GBYBY2 saute GGGGG3
+                   GBYYB2 salve GGGGG3
+                   GGBYG2 splat GGGGG3
+                   GYBBB2 sappy GGGGG3
+                   GYYBB2 sepia GGGGG3
+                   YBBBB2 abyss GBBGG3 amiss GGGGG4
+                                GBYYY3 assay GGGGG4
+                                GGGGG3
+                                YBBYB3 mason GGGGG4
+                                YBYGB3 daisy GGGGG4
+                                YBYGY3 gassy GGGGG4
+                                YYBYB3 basin GGGGG4
+                                YYBYG3 basis GGGGG4
+                   YBBBG2 angst GGGGG3
+                                YBBGG3 waist GGGGG4
+                   YBBBY2 tasty BGGGG3 hasty BGGGG4 nasty GGGGG5
+                                             GGGGG4
+                                BYGGB3 vista GGGGG4
+                                GGGGG3
+                   YBBYB2 basal BBYGG3 usual GGGGG4
+                                BGGBY3 lasso GGGGG4
+                                BGGGG3 nasal GGGGG4
+                                GGGBG3 basil GGGGG4
+                                GGGGG3
+                   YBYBB2 abuse GBBYG3 aside GGGGG4
+                                GBBYY3 ashen GGGGG4
+                                GBGGG3 amuse GGGGG4
+                                GGGGG3
+                                YBBGG3 masse GGGGG4
+                                YBBYY3 essay GGGGG4
+                   YBYBG2 asset GGGGG3
+                   YBYBY2 threw GBBYB3 taste GGGGG4
+                                YBBYB3 baste GGGGG4
+                                YBBYY3 waste GGGGG4
+                                YYBYB3 haste GGGGG4
+                   YBYGB2 aisle GGGGG3
+                   YBYYB2 easel GGGGG3
+                   YYBBB2 pansy GGGGG3
+                   YYBBY2 pasta GGGGB3 pasty GGGGG4
+                                GGGGG3
+                                GGYYB3 patsy GGGGG4
+                   YYBYB2 palsy GGGGG3
+                   YYYBB2 pause GGGGG3
+                   YYYBY2 paste GGGGG3
+                   YYYYB2 lapse GGGGG3
+      BBYBG1 steak BBBGG2 kayak GGGGG3
+                   BBGGG2 bleak GGGGG3
+                   BYGGG2 tweak GGGGG3
+                   GBGGG2 sneak GBGGG3 speak GGGGG4
+                                GGGGG3
+                   GGGGG2
+      BBYBY1 lowan BBBGB2 kebab GGGGG3
+                   BBBGY2 knead GGGGG3
+                   BBBYB2 kappa GGGGG3
+                   BBBYG2 taken GGGGG3
+                   BBGYB2 gawky GGGGG3
+                   BBYYB2 askew GGGGG3
+                   BGBYB2 vodka GGGGG3
+                   BYBYG2 oaken GGGGG3
+                   BYYYB2 awoke GGGGG3
+                   GBBYY2 lanky GGGGG3
+                   YBBYB2 alike GGGGG3
+                   YBBYY2 ankle GGGGG3
+                   YGBYB2 polka GGGGG3
+      BBYGB1 plume BBBBB2 howbe GBBBB3 hatch GGGGG4
+                                YBBBB3 catch GGGGG4
+                                YBBYB3 batch GGGGG4
+                                YBYBB3 watch GGGGG4
+                   BBBBG2 dance GGGGG3
+                   BBBYB2 match GGGGG3
+                   BBBYY2 mecca GGGGG3
+                   BBGBB2 saucy GGGGG3
+                   BBGBG2 sauce GGGGG3
+                   BYBBB2 latch GGGGG3
+                   BYBBG2 lance GGGGG3
+                   GBBBB2 patch GGGGG3
+      BBYYB1 lacet BGGBB2 cacao BGGBG3 macho GGGGG4
+                                BGGBY3 bacon GGGGG4
+                                BGGGB3 macaw GGGGG4
+                                GGGGG3
+                   BGGBG2 tacit BGGBG3 yacht GGGGG4
+                                GGGGG3
+                   BGGBY2 cacti GGGGG3
+                   BGGYB2 cache GGGGG3
+                   BGYBB2 modin BBBBB3 cabby GGGGG4
+                                BBBBY3 canny GGGGG4
+                                BBBGB3 basic GGGGG4
+                                BBBGG3 cabin GGGGG4
+                                BBBGY3 panic GGGGG4
+                                BBGBB3 caddy GGGGG4
+                                BBYBY3 candy GGGGG4
+                                BYBBB3 havoc GGGGG4
+                                BYBBG3 canon GGGGG4
+                                GBBGB3 magic GGGGG4
+                                GBBGY3 manic GGGGG4
+                   BGYBG2 caput GGGGG3
+                   BGYBY2 catty GGGGG3
+                   BGYGB2 cagey GGBGB3 cameo GGGGG4
+                                GGGGG3
+                   BGYGG2 cadet GGGGG3
+                   BGYYB2 canoe GGBBG3 cause GGGGG4
+                                GGGGG3
+                   BGYYY2 caste GGGGG3
+                   BYGBB2 cocoa BGGBG3 mocha GGGGG4
+                                GGGGG3
+                   BYGBG2 ascot GGGGG3
+                   BYGYB2 decay BGGGB3 pecan GGGGG4
+                                GGGGG3
+                   BYYBB2 china GBBBG3 comma GGGGG4
+                                GGGGG3
+                                YBBBG3 scuba GGGGG4
+                                YBBBY3 sumac GGGGG4
+                   BYYBY2 antic GBGGG3 attic GGGGG4
+                                GGGGG3
+                   BYYYB2 cheap GGGGG3
+                                YBGGB3 ocean GGGGG4
+                   BYYYG2 cheat GGGGG3
+                   BYYYY2 acute GGGGG3
+                   GYGBB2 local GGGGG3
+                   GYYBB2 lilac GGGGG3
+                   YGYBB2 cabal GGBBG3 cavil GGGGG4
+                                GGBGG3 canal GGGGG4
+                                GGGGG3
+                   YGYGB2 camel GGGGG3
+                   YGYYB2 cable GGGGG3
+                   YYGBB2 vocal GGGGG3
+                   YYGYB2 decal GGGGG3
+                   YYYBB2 iliac GGGGG3
+                   YYYBY2 octal GGGGG3
+                   YYYYB2 clean GGGGG3
+                   YYYYG2 cleat GGGGG3
+                                YYYGG3 eclat GGGGG4
+      BBYYG1 caulk GGGGG2
+                   GYBYG2 cloak GGGGG3
+      BBYYY1 tacky BGGGG2 wacky GGGGG3
+                   GGGGG2
+      BGBBB1 piend BBBBB2 gluts BBBBB3 broom GGGGG4
+                                BBBGB3 broth GGGGG4
+                                BBBYY3 tryst GGGGG4
+                                BBGBY3 brush GGGGG4
+                                BBGGB3 truth GGGGG4
+                                BBGYG3 truss GGGGG4
+                                BBGYY3 trust GGGGG4
+                                BBYYB3 trout GGGGG4
+                                BYBBB3 wryly GGGGG4
+                                BYBYB3 troll GGGGG4
+                                BYGYB3 truly GGGGG4
+                                GBBBB3 groom GGGGG4
+                                GBBBG3 gross GGGGG4
+                                GBYYB3 grout GGGGG4
+                                GYBBB3 growl GGGGG4
+                   BBBBG2 brood GGGGG3
+                   BBBBY2 droll GGBGB3 dryly GGGGG4
+                                GGGBB3 dross GGGGG4
+                                GGGBG3 drool GGGGG4
+                                GGGGG3
+                   BBBGB2 brunt BGBGB3 wrong GGGGG4
+                                BGGGB3 wrung GGGGG4
+                                BGGGG3 grunt GGGGG4
+                                GGGGG3
+                   BBBYB2 brown BGGGG3 grown GGGGG4
+                                GGGGG3
+                   BBBYY2 drown GGGGG3
+                   BBGBB2 greet BGGBG3 wrest GGGGG4
+                                GGGGG3
+                   BBGBG2 breed BGGGG3 greed GGGGG4
+                                GGGGG3
+                   BBGBY2 dress GGGGG3
+                   BBGGG2 trend GGGGG3
+                   BBGYB2 green GGGGG3
+                   BBYBB2 brute BGBBG3 grove GGGGG4
+                                BGBBY3 error GGGGG4
+                                BGBGG3 wrote GGGGG4
+                                BGBYG3 trove GGGGG4
+                                BGGBY3 gruel GGGGG4
+                                BGGYY3 truer GGGGG4
+                                GGGGG3
+                   BBYBY2 drove GGBBY3 dryer GGGGG4
+                                GGGGG3
+                                YGGBG3 erode GGGGG4
+                                YGYBY3 order GGGGG4
+                   BBYGY2 drone GGGGG3
+                   BYBBB2 grill BGGBB3 wrist GGGGG4
+                                BGYBB3 orbit GGGGG4
+                                BGYBG3 broil GGGGG4
+                                GGGBB3 grimy GGGGG4
+                                GGGGG3
+                   BYBBG2 druid GGGGG3
+                   BYBBY2 drill GGGGG3
+                                GGYBB3 droit GGGGG4
+                   BYBGB2 bring BGGGG3 wring GGGGG4
+                                BGYGB3 irony GGGGG4
+                                GGGGB3 briny GGGGG4
+                                GGGGG3
+                   BYBGG2 grind GGGGG3
+                   BYBYB2 groin GGGGG3
+                   BYYBB2 tribe BGGBG3 grime GGGGG4
+                                BGGGG3 bribe GGGGG4
+                                GGGBG3 trite GGGGG4
+                                GGGGG3
+                                YGGBG3 write GGGGG4
+                   BYYBG2 dried BGGGG3 tried GGGGG4
+                                GGGGG3
+                   BYYBY2 bride BGGYG3 drive GGGGG4
+                                BGGYY3 drier GGGGG4
+                                GGGGG3
+                   BYYGB2 brine BGGGG3 urine GGGGG4
+                                GGGGG3
+                   GBBBB2 prowl GGGBB3 proxy GGGGG4
+                                GGGGG3
+                   GBBBG2 proud GGGGG3
+                   GBBGB2 prong GGGGG3
+                   GBGBB2 press GGGGG3
+                   GBGYB2 preen GGGGG3
+                   GBYBB2 prove GGGBG3 probe GGGBG4 prose GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GBYBY2 prude GGGGG3
+                   GBYGB2 prone GGBGG3 prune GGGGG4
+                                GGGGG3
+                   GYBBB2 primo GGGBB3 privy GGGGG4
+                                GGGBY3 prior GGGGG4
+                                GGGGG3
+                                GGGYB3 prism GGGGG4
+                   GYBGB2 print GGGGG3
+                   GYYBB2 prime GGGBG3 prize GGGGG4
+                                GGGGG3
+                   GYYBG2 pried GGGGG3
+                   GYYBY2 pride GGGGG3
+                   YBBBB2 group BGBYG3 trump GGGGG4
+                                BGGBG3 troop GGGGG4
+                                GGGGG3
+                   YBBBY2 droop GGGGG3
+                   YBYBB2 erupt GGGGG3
+                                YGBGB3 grope GGGGG4
+                                YGBGY3 trope GGGGG4
+                   YYYBB2 gripe BGGGG3 tripe GGGGG4
+                                GGGGG3
+      BGBBG1 drink BGBBG2 brook GGGGG3
+                   BGBGG2 trunk GGGGG3
+                   BGGBG2 brisk GGGGG3
+                   BGGGG2 brink GGGGG3
+                   GGBGG2 drunk GGGGG3
+                   GGGGG2
+      BGBBY1 broke BGBYB2 krill GGGGG3
+                   GGGGG2
+      BGBGB1 price BGBGG2 truce GGGGG3
+                   BGBGY2 erect GGGGG3
+                   BGGGG2 trice GGGGG3
+                   GGGGG2
+      BGBGG1 clipt GBBBB2 crock GGGGG3
+                   GBGBB2 crick GGGGG3
+                   YBBBB2 wreck GGGGG3
+                   YBBBY2 truck GGGGG3
+                   YBGBB2 brick GGGGG3
+                   YBGBY2 trick GGGGG3
+                   YBGYB2 prick GGGGG3
+      BGBYB1 stupe BBBBB2 crony GGGBB3 crowd GGGGG4
+                                GGGGG3
+                                GGGYB3 crown GGGGG4
+                   BBBBG2 creme GGBBG3 crone GGGGG4
+                                GGBGG3 crime GGGGG4
+                                GGGGG3
+                   BBBBY2 credo GGGGG3
+                                GGGYB3 creed GGGGG4
+                                GGYBB3 crier GGGGG4
+                                GGYYB3 cried GGGGG4
+                   BBBGG2 crepe GGGGG3
+                   BBBYB2 crimp GGGGG3
+                   BBBYY2 creep GGGGG3
+                   BBGBB2 crumb GGGGG3
+                   BBGBG2 crude GGGGG3
+                   BBGBY2 cruel GGGGG3
+                   BBGYB2 crump GGGGG3
+                   BBYYB2 croup GGGGG3
+                   BYBGB2 crypt GGGGG3
+                   BYBGY2 crept GGGGG3
+                   YBBBB2 cross GGGGG3
+                   YBBBY2 cress GGGGG3
+                   YBBYB2 crisp GGGGG3
+                   YBGBB2 crush GGGGG3
+                   YYBBY2 crest GGGGG3
+                   YYGBB2 crust GGGGG3
+      BGBYG1 creek GGBBG2 crook GGGGG3
+                   GGGGG2
+      BGGBB1 debit BBBBB2 grasp BGGBY3 prawn GGGGG4
+                                GGGBB3 gravy GGGGG4
+                                GGGBY3 graph GGGGG4
+                                GGGGB3 grass GGGGG4
+                                GGGGG3
+                   BBBBG2 grant GGGGG3
+                   BBBBY2 wrath BGGYB3 tramp GGGGG4
+                                BGGYG3 trash GGGGG4
+                                GGGGG3
+                                YGGYB3 trawl GGGGG4
+                   BBBGB2 grail GGGGB3 grain GGGGG4
+                                GGGGG3
+                   BBBGG2 trait GGGGG3
+                   BBBGY2 trail GGGGB3 train GGGGG4
+                                GGGGG3
+                   BBYBB2 bonus GBBBB3 brawl GGGGG4
+                                GBBBG3 brass GGGGG4
+                                GBBBY3 brash GGGGG4
+                                GBYBB3 brawn GGGGG4
+                                GYBBB3 bravo GGGGG4
+                   BBYGB2 brain GGGGG3
+                   BYBBB2 graze BGGBG3 erase GGGGG4
+                                GGGBG3 grape GGGBG4 grave GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   BYBBY2 grate GGGGG3
+                   BYBYY2 irate GGGGG3
+                   BYYBB2 brave GGGGG3
+                   GBBBB2 drawl GGGBB3 drama GGGGG4
+                                GGGGB3 drawn GGGGG4
+                                GGGGG3
+                   GBBGB2 drain GGGGG3
+                   GYBBB2 drape GGGGG3
+                   YBBBB2 grand GGGGG3
+                   YBYBB2 brand GGGGG3
+                   YBYGB2 braid GGGGG3
+                   YYBBB2 grade GGGGG3
+                   YYBBY2 trade GGGGG3
+      BGGBG1 drank BGGGG2 prank GGGGG3
+                   GGGGG2
+      BGGBY1 brake BGGGG2 drake GGGGG3
+                   GGGGG2
+      BGGGB1 tract BGGGB2 brace BGGGG3 grace GGGGG4
+                                GGGGG3
+                   GGGGB2 trace GGGGG3
+                   GGGGG2
+      BGGGG1 wrack BGGGG2 crack BGGGG3 track GGGGG4
+                                GGGGG3
+                   GGGGG2
+      BGGYB1 ments BBBBB2 crawl GGGBB3 crazy GGGGG4
+                                GGGGG3
+                   BBBBG2 crass GGGGG3
+                   BBBBY2 crash GGGGG3
+                   BYBBB2 crave GGGBG3 craze GGGGG4
+                                GGGGG3
+                   BYBGB2 crate GGGGG3
+                   BYYBB2 crane GGGGG3
+                   YBBBB2 cramp GGGGG3
+      BGGYG1 crank GGGGG2
+      BGYBB1 abode GBBBB2 array GGBBG3 artsy GGGGG4
+                                GGGGG3
+                   GBBBG2 argue GGBBG3 arise GGGGG4
+                                GGGGG3
+                   GBBBY2 arena GGGGG3
+                   GBGBB2 aroma GGGGG3
+                   GBGBG2 arose GGGGG3
+                   GBYBB2 armor GGBGB3 arson GGGGG4
+                                GGBGY3 arrow GGGGG4
+                                GGGGG3
+                   GBYYB2 ardor GGGGG3
+                   GYYBB2 arbor GGGGG3
+                   YBBBB2 trial GGGGG3
+                   YBBBY2 great BGGGG3 treat GGGGG4
+                                GGGGG3
+                   YBBYB2 triad GGGGG3
+                   YBBYY2 dread BGGGG3 tread GGGGG4
+                                GGGGB3 dream GGGGG4
+                                GGGGG3
+                   YBGBB2 groan GGGGG3
+                   YBYBB2 organ GGGGG3
+                   YYBBB2 briar GGGGG3
+                                YGBGB3 urban GGGGG4
+                   YYBYY2 bread GGGGG3
+                   YYGYB2 broad GGGGG3
+      BGYBG1 break BGGGG2 wreak GGGGG3
+                   GGGGG2
+      BGYYB1 cream GGGGG2
+      BGYYG1 creak GGBGG2 croak GGGGG3
+                   GGGGG2
+      BYBBB1 notes BBBBB2 blurb BBBGB3 myrrh GGGGG4
+                                BBBYB3 rigid GGGGG4
+                                BBYGB3 hurry GGGGG4
+                                BBYYB3 ruddy GGGGG4
+                                BYBGB3 whirl GGGGG4
+                                BYBYB3 girly GGGGG4
+                                BYYYB3 lurid GGGGG4
+                                GGGGG3
+                                GYYYB3 burly GGGGG4
+                                YBYYB3 rugby GGGGG4
+                   BBBBG2 virus GGGGG3
+                   BBBBY2 shrub GBGBB3 sprig GGGGG4
+                                GBGGB3 syrup GGGGG4
+                                GBGYB3 surly GGGGG4
+                                GBYBB3 swirl GGGGG4
+                                GBYYB3 slurp GGGGG4
+                                GGGGB3 shrug GGGGG4
+                                GGGGG3
+                                YBYYB3 usurp GGGGG4
+                   BBBGB2 pugil BBBBB3 ember GGGGG4
+                                BBBBG3 rebel GGBGG4 revel GGGGG5
+                                             GGGGG4
+                                BBBBY3 elder GGGGG4
+                                             YYBGG4 lever GGGGG5
+                                BBBYB3 rider BGGGG4 wider GGGGG5
+                                             BGYGG4 diver GGGGG5
+                                             GGBGG4 river GGGGG5
+                                             GGGGG4
+                                BBBYY3 idler GGGGG4
+                                             YBYGG4 liver GGGGG5
+                                BBYYB3 giver GGGGG4
+                                BGBBB3 ruder BGBGG4 buyer BGBGG5 queer GGGGG6
+                                                          GGGGG5
+                                             GGGGG4
+                                BGBBY3 ruler GGGGG4
+                                BYBBB3 udder GGGGG4
+                                BYBBY3 bluer GGGGG4
+                                GBBYB3 piper GGGGG4
+                                GBBYY3 plier GGGGG4
+                                GGBBB3 puree GGGGB4 purer GGGGG5
+                                             GGGGG4
+                                YBBBB3 hyper GGGGG4
+                                YBBBG3 repel GGGGG4
+                                YBBBY3 leper GGGGG4
+                                YBBYB3 riper BGGGG4 viper GGGGG5
+                                             GGGGG4
+                                YGBBB3 rupee GGGGG4
+                                YYBBB3 upper GGGGG4
+                   BBBGY2 whirr BBBBG3 sever GBBGG4 super GGGGG5
+                                             GGGGG4
+                                BBBYB3 spree GGGGG4
+                                BBBYG3 surer GGGGG4
+                                BBYBG3 miser GGGGG4
+                                BBYYG3 riser GGGGG4
+                                BGBBG3 sheer GGGGG4
+                                BYBBG3 usher GGGGG4
+                                GBYBG3 wiser GGGGG4
+                                YBBBG3 sewer GGGGG4
+                                YGBYB3 shrew GGGGG4
+                   BBBYB2 merde BBGBG3 purge GGGGG4
+                                BBGYG3 dirge GGGGG4
+                                BBYYG3 ridge GGGGG4
+                                BGGBB3 berry BGGBB4 peril GGGGG5
+                                             GGGGG4
+                                BGGBG3 verge BGGBG4 eerie GGGGG5
+                                             GGGBG4 verve GGGGG5
+                                             GGGGG4
+                                BGGYB3 derby GGGGG4
+                                BGYBB3 reply GGGGG4
+                                BGYBG3 revue GGGGG4
+                                BGYBY3 leery GGGGG4
+                                BGYGY3 reedy GGGGG4
+                                BGYYB3 weird GGGGG4
+                                BYYBB3 query GGGGG4
+                                BYYBG3 where GGGGG4
+                                BYYBY3 every GGGGG4
+                                GGGBB3 merry GGGGG4
+                                GGGBG3 merge GGGGG4
+                                YBYBG3 rhyme GGGGG4
+                                YGYBB3 lemur GGGGG4
+                                YGYYB3 demur GGGGG4
+                   BBBYG2 rebus GGGGG3
+                   BBBYY2 purse BBGGG3 verse GGGGG4
+                                BBGYG3 serve GGGGG4
+                                BBYYG3 shire GGGGG4
+                                BGGYG3 surge GGGGG4
+                                BYGYY3 serum GGGGG4
+                                BYYGG3 reuse GGGGG4
+                                GGGGG3
+                                YBYYG3 spire GGGGG4
+                                YBYYY3 sperm GGGGG4
+                   BBGGB2 deter BBGGG3 utter GGGGG4
+                                BGGGG3 meter GGGGG4
+                                GGGGG3
+                   BBGGY2 ester GGGGG3
+                   BBGYB2 retry GGGGG3
+                   BBYBB2 thrum GBYBB3 twirl GGGGG4
+                                GGGGG3
+                                GGYBB3 third GGGGG4
+                                YBGBB3 dirty GGGGG4
+                                YBYYB3 blurt GGGGG4
+                                YYGBB3 birth BGGGG4 girth GGGGG5
+                                             GGGGG4
+                                YYGBY3 mirth GGGGG4
+                                YYYBB3 right GGGGG4
+                   BBYBY2 burst BBGYY3 strip GGGGG4
+                                BBYYG3 shirt GGGGG4
+                                BGYYY3 rusty GGGGG4
+                                BYGYG3 strut GGGGG4
+                                BYYYG3 spurt GGGGG4
+                                GGGGG3
+                   BBYGB2 tiger GBBGG3 tuber GGGGG4
+                                GBBGY3 three GGGGB4 threw GGGGG5
+                                             GGGGG4
+                                GGBGG3 timer GGGGG4
+                                GGGGG3
+                                YBBGG3 ether GGGGG4
+                                YBBGY3 beret GGGGG4
+                                YBYGY3 egret GGGGG4
+                                YGBGY3 rivet GGGGG4
+                   BBYGY2 reset GGGGG3
+                                YYYGY3 steer GGGGG4
+                   BBYYB2 merit BGGBY3 berth GGGGG4
+                                BGYBG3 rebut GGGGG4
+                                BYYBG3 exert GGGGG4
+                                BYYBY3 there GGGGG4
+                                BYYGY3 their GGGGG4
+                                GGGGG3
+                                YGYGG3 remit GGGGG4
+                   BBYYY2 terse GGGGG3
+                   BGBBB2 rowdy GGBBB3 rough GGGGG4
+                                GGBBG3 roomy GGGGG4
+                                GGGGG3
+                                YGBBB3 morph GGGGG4
+                                YGBBG3 lorry GGGGG4
+                                YGBYB3 gourd GGGGG4
+                                YGGYG3 dowry GGGGG4
+                                YGYBG3 worry GGGGG4
+                                YGYGG3 wordy GGGGG4
+                                YGYYB3 world GGGGG4
+                   BGBBY2 sorry GGGGG3
+                   BGBGB2 whelm BBYBB3 roger BGBGG4 boxer GGGGG5
+                                             GGBGB4 rodeo GGGGG5
+                                             GGBGG4 rover GGGGG5
+                                             GGGGG4
+                                BBYBY3 mover GGGGG4
+                                BBYYB3 lover GGGGG4
+                                BYYBB3 hover GGGGG4
+                                BYYBY3 homer GGGGG4
+                                GBYBB3 wooer GGGGG4
+                                YBYBB3 power BGGGG4 rower GGGGG5
+                                             GGGGG4
+                                YBYBY3 mower GGGGG4
+                                YBYYB3 lower GGGGG4
+                   BGBGY2 sower GGBGG3 sober GGGGG4
+                                GGGGG3
+                                YGBGG3 loser BGGGG4 poser GGGGG5
+                                             GGGGG4
+                   BGBYB2 gorge BGGBG3 horde GGGGG4
+                                BGYGG3 rouge GGGGG4
+                                GGGGG3
+                                YGYBG3 rogue GGGGG4
+                   BGBYY2 horse BGGGG3 worse GGGGG4
+                                BGYGG3 rouse GGGGG4
+                                GGGGG3
+                   BGGBB2 motor BGGGG3 rotor GGGGG4
+                                GGGGG3
+                   BGGGB2 voter GGGGG3
+                   BGYBB2 robot GGGGG3
+                                YGBBY3 worth GGGGG4
+                   BGYBG2 torus GGGGG3
+                   BGYBY2 roost GGGGG3
+                                YGBGG3 worst GGGGG4
+                                YGYGY3 torso GGGGG4
+                   BGYGB2 tower GGGGG3
+                   BGYYB2 route GGGGG3
+                   BYBBB2 rigor BBBGG3 humor GGGGG4
+                                BGGGG3 vigor GGGGG4
+                                GBBGG3 rumor GGGGG4
+                                GGGGG3
+                                YBBGG3 juror GGGGG4
+                                YBBYB3 hydro GGGGG4
+                                YBYYB3 glory GGGGG4
+                                YYBYB3 ivory GGGGG4
+                   BYBBY2 sword GGGGG3
+                                YBYYB3 visor GGGGG4
+                   BYBGB2 odder GBGGG3 older GGGGG4
+                                GGGGG3
+                   BYBYB2 ombre GGGGG3
+                   BYBYY2 swore GBGGG3 shore GBGGG4 spore GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                                YBYYY3 verso GGGGG4
+                   BYGBB2 tutor GGGGG3
+                   BYGGB2 otter GBGGG3 outer GGGGG4
+                                GGGGG3
+                   BYGYB2 metro BGGGG3 retro GGGGG4
+                                GGGGG3
+                   BYYBB2 throb GBGYY3 turbo GGGGG4
+                                GBYGB3 tumor GGGGG4
+                                GGGGB3 throw GGGGG4
+                                GGGGG3
+                   BYYBY2 story GGGGB3 storm GGGGG4
+                                GGGGG3
+                                GYGGB3 short GBGGG4 sport GGGGG5
+                                             GGGGG4
+                   BYYGB2 other GGGGG3
+                   BYYYB2 overt GGGGG3
+                   BYYYY2 store GGGGG3
+                   GBBGB2 never GGBGG3 newer GGGGG4
+                                GGGGG3
+                   GBBYB2 nerdy GGGBB3 nerve GGGGG4
+                                GGGGG3
+                   GBBYY2 nurse GGGGG3
+                   GGYBB2 north GGGGG3
+                   YBBBY2 spurn GGGGG3
+                   YBBGB2 miner BBGGY3 renew GGGGG4
+                                BBYGG3 under GGGGG4
+                                BGGGG3 diner BGGGG4 liner GGGGG5
+                                             GGGGG4
+                                BGYGY3 ripen GGGGG4
+                                BYGGG3 inner GGGGG4
+                                GGGGG3
+                   YBBGY2 risen GGGGG3
+                                YBYGY3 sneer GGGGG4
+                                YGYGG3 siren GGGGG4
+                   YBBYB2 genre BGYYB3 rerun GGGGG4
+                                GGGGG3
+                                YGYYB3 reign GGGGG4
+                   YBBYY2 resin GGGGG3
+                                GYYYY3 rinse GGGGG4
+                   YBGGB2 enter BGGGG3 inter GGGGG4
+                                GGGGG3
+                   YBGYB2 entry GGGGG3
+                   YBYBB2 burnt GGGGG3
+                   YBYYB2 inert GGGGG3
+                   YBYYY2 stern GGGGG3
+                   YGBBB2 round GGBYB3 robin GGGGG4
+                                GGGGG3
+                                YGBGB3 horny GGGGG4
+                                YGBYB3 honor BGYGY4 moron GGGGG5
+                                             GGGGG4
+                                YGBYY3 donor GGGGG4
+                                YGGYB3 mourn GGGGG4
+                   YGBGB2 goner GGGGG3
+                   YGBYB2 borne GGGGG3
+                   YYBBB2 minor BYYYY3 rhino GGGGG4
+                                GGGGG3
+                   YYBBY2 shorn GBGGG3 sworn GGGGG4
+                                GGGGG3
+                   YYBGB2 owner GGGGG3
+                   YYBYB2 heron GGGGG3
+                   YYBYY2 snore GGGGG3
+                   YYGBB2 intro GGGGG3
+                   YYYBB2 thorn GGGGG3
+                   YYYBY2 snort GGGGG3
+                   YYYYB2 tenor GGGGG3
+      BYBBG1 shirk BBGGG2 quirk GGGGG3
+                   GBBGG2 stork GGGGG3
+                   GBGGG2 smirk GGGGG3
+                   GGGGG2
+      BYBBY1 perky BBGGG2 murky GGGGG3
+                   BBYGG2 risky GGGGG3
+                   BBYYB2 skirt GGGGG3
+                   BGGGG2 jerky GGGGG3
+                   BYYYB2 joker BBYGG3 skier GGGGG4
+                                GGGGG3
+                   GGGGG2
+                   GYYYB2 poker GGGGG3
+      BYBGB1 porch BBGGB2 mercy GGGGG3
+                   BBGGG2 birch BBGGG3 lurch GGGGG4
+                                GGGGG3
+                   BBYGG2 retch GGGGG3
+                   BGGGG2 torch GGGGG3
+                   GBGGG2 perch GGGGG3
+                   GGGGG2
+      BYBYB1 corer GBBGG2 cyber GBBGG3 cheer GBBGG4 cider GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GBGBB2 curly GGGBG3 curvy GGGGG4
+                                GGGGG3
+                   GBGBY2 curry GGGGG3
+                   GBGYB2 curse GGGBG3 curve GGGGG4
+                                GGGGG3
+                   GBYBB2 chirp GGBGB3 churn GGGGG4
+                                GGGGG3
+                   GGBBG2 color GGGGG3
+                   GGBGG2 cover GGBGG3 cower GGGGG4
+                                GGGGG3
+                   GGGBB2 corny GGGGG3
+                   GGGGG2
+                   GGYBB2 court GGGGG3
+                   GYBBG2 choir GGGGG3
+                   GYGBB2 curio GGGGG3
+                   GYYBB2 chord GGGGG3
+                   GYYYB2 chore GGGGG3
+                   YBBBG2 incur GGGGG3
+                   YBBGG2 nicer BBGGG3 ulcer GGGGG4
+                                GGGGG3
+                   YBGBB2 scrub BYGBB3 lyric GGGGG4
+                                GGGGB3 scrum GGGGG4
+                                GGGGG3
+                   YBGGB2 scree GGGGB3 screw GGGGG4
+                                GGGGG3
+                   YBYYB2 decry BGGYB3 recut GGGGG4
+                                BGYYB3 relic GGGGG4
+                                GGGGG3
+                   YBYYG2 recur GGGGG3
+                   YYBBG2 occur GGGGG3
+                                YGBGG3 scour GGGGG4
+                   YYBYG2 decor GGGGG3
+                   YYYBB2 micro BBYGY3 scorn GGGGG4
+                                GGGGG3
+                   YYYYB2 score GGGGG3
+      BYBYG1 clerk GGGGG2
+      BYBYY1 rocky GGGGG2
+      BYGBB1 swept BBBBB2 board BBGGB3 alarm GGGGG4
+                                BBGGG3 guard GGGGG4
+                                BBGGY3 diary GGGGG4
+                                BGGGG3 hoard GGGGG4
+                                BYGGB3 ovary GGGGG4
+                                GGGGG3
+                   BBBBG2 quart GGGGG3
+                   BBBBY2 tiara GGGGG3
+                   BBBYG2 apart GGGGG3
+                   BBYBB2 bland BBGBB3 rearm GGGGG4
+                                BBGBG3 heard GGGGG4
+                                BBGBY3 ready GGGGG4
+                                BBGYB3 yearn GGGGG4
+                                BGGBB3 glare GGGGG4
+                                BYGBB3 realm GGGGG4
+                                BYGYB3 learn GGGGG4
+                                GBGBG3 beard GGGGG4
+                                GGGBB3 blare GGGGG4
+                   BBYBG2 heart GGGGG3
+                   BBYBY2 teary GGGGG3
+                   BBYYB2 pearl GGGGG3
+                   BGBBB2 award GGGGG3
+                   BGYBB2 aware GGGGG3
+                   BYYBB2 weary GGGGG3
+                   GBBBB2 shard GBGGB3 snarl GGGGG4
+                                GGGGG3
+                   GBBBG2 smart GBGGG3 start GGGGG4
+                                GGGGG3
+                   GBBBY2 stair GGGGG3
+                   GBBYB2 sharp GGGGG3
+                   GBYBB2 share GBGGG3 snare GGGGG4
+                                GGGGG3
+                   GBYBY2 stare GGGGG3
+                   GBYYB2 spare GGGGG3
+                   GGBBB2 swarm GGGGG3
+                   YBBBG2 roast GGGGG3
+      BYGBG1 stark BBGGG2 quark GGGGG3
+                   GBGGG2 shark GBGGG3 spark GGGGG4
+                                GGGGG3
+                   GGGGG2
+      BYGGB1 reach GBGGG2 roach GGGGG3
+                   GGGGB2 react GGGGG3
+                   GGGGG2
+      BYGYB1 deity BBBBB2 charm GGGGG3
+                   BBBBG2 scary GGGGG3
+                   BBBYB2 chart GGGGG3
+                   BBYBB2 chair GGGGG3
+                   BYBBB2 scare GGGGG3
+                   YBBBB2 chard GGGGG3
+      BYYBB1 palet BGBBB2 rorid BBGBB3 harsh BGGGG4 marsh GGGGG5
+                                             GGGGG4
+                                BBGBY3 hardy GGGGG4
+                                BYGBB3 baron GGGGG4
+                                GBBBB3 rajah GGGGG4
+                                GBBBY3 randy GGGGG4
+                                GBBGG3 rabid GGGGG4
+                                GBBGY3 radii GGGGG4
+                                GBBYB3 rabbi GGBBY4 rainy GGGGG5
+                                             GGGGG4
+                                GBYBY3 radar GGGGG4
+                                GYBBB3 rayon GGGGG4
+                                GYBGY3 radio GGGGG4
+                                GYYBB3 razor GGGGG4
+                                YBBGY3 nadir GGGGG4
+                                YBBYB3 hairy GGGGG4
+                                YBBYY3 dairy GGGGG4
+                                YBGBB3 harry BGGGG4 marry GGGGG5
+                                             GGGGG4
+                                YYBBB3 mayor BGBGG4 savor GGGGG5
+                                             GGBGG4 major GGBGG5 manor GGGGG6
+                                                          GGGGG5
+                                             GGGGG4
+                   BGBBG2 tarot GGGGG3
+                   BGBBY2 ratty GGGBB3 ratio GGGGG4
+                                GGGGG3
+                                YGBGG3 warty GGGGG4
+                                YGGBY3 satyr GGGGG4
+                                YGYBG3 tardy GGGGG4
+                   BGBGB2 gamin BGBBB3 rarer BGBGG4 waver GGGGG5
+                                             GGGGG4
+                                BGBBG3 raven GGGGG4
+                                BGBBY3 saner GGGGG4
+                                BGGBG3 ramen GGGGG4
+                                BGYBB3 harem GGGGG4
+                                GGBBB3 gayer GGBGG4 gazer GGGGG5
+                                             GGGGG4
+                                GGGBB3 gamer GGGGG4
+                                YGBBB3 eager BGGGG4 wager GGGGG5
+                                             GGGGG4
+                   BGBGY2 water BGGGG3 eater BGGGG4 hater GGGGG5
+                                             GGGGG4
+                                BGYGG3 tamer GGGGG4
+                                GGGGG3
+                   BGBYB2 barge BGYBG3 raise GGGGG4
+                                BGYGG3 range GGGGG4
+                                GGGGG3
+                   BGBYY2 earth GGGGG3
+                   BGGBB2 rally GGGGG3
+                                YGGBB3 valor GGGGG4
+                   BGGGB2 baler GGGGG3
+                   BGYBB2 labor GGBBY3 larva GGGGG4
+                                GGGGG3
+                   BGYGB2 lager GGBGG3 layer GGGGG4
+                                GGGGG3
+                   BGYGY2 later GGGGG3
+                   BGYYB2 early GGGGG3
+                                YGGYB3 large GGGGG4
+                   BYBBB2 augur GBBBG3 abhor GGGGG4
+                                GBBBY3 adorn GGGGG4
+                                GBGBY3 angry GGGGG4
+                                GGGGG3
+                                YBBBG3 sonar GGGGG4
+                                YBBBY3 borax GGGGG4
+                                YGBBY3 rumba GGGGG4
+                                YGGBG3 sugar GGGGG4
+                                YYBBY3 umbra GGGGG4
+                   BYBBG2 abort GGGGG3
+                   BYBBY2 straw BYGYB3 aorta GGGGG4
+                                GGGGB3 stray GGGGG4
+                                GGGGG3
+                   BYBGB2 anger GBBGG3 aider GBBGG4 amber GGGGG5
+                                             GGGGG4
+                                GBYGY3 agree GGGGG4
+                                GGGGG3
+                   BYBYB2 ahead BBGGB3 smear GBGGG4 swear GGGGG5
+                                             GGGGG4
+                                BBYGB3 rebar GGGGG4
+                                BBYGY3 debar GGGGG4
+                                BGGGB3 shear GGGGG4
+                                BYYGB3 rehab GGGGG4
+                                GBYBB3 azure GGGGG4
+                                GBYBY3 adore GGGGG4
+                                YBYBB3 zebra GGGGG4
+                   BYBYG2 avert GGGGG3
+                   BYBYY2 extra GGGGG3
+                                YBYGG3 terra GGGGG4
+                   BYGBB2 molar BGGGG3 solar GGGGG4
+                                GGGGG3
+                   BYGYB2 relax GGGGB3 relay GGGGG4
+                                GGGGG3
+                   BYYBB2 mural BBGGG3 viral GGGGG4
+                                BBYGG3 rival GBBGG4 royal GGGGG5
+                                             GGGGG4
+                                BGGGG3 rural GGGGG4
+                                BGYGY3 lunar GGGGG4
+                                GBGGG3 moral GGGGG4
+                                GGGGG3
+                   BYYBY2 altar GGGGG3
+                                YGGBY3 ultra GGGGG4
+                   BYYGY2 alter GGGGG3
+                   BYYYB2 regal GGBGG3 renal GGGGG4
+                                GGGGG3
+                   BYYYG2 alert GGGGG3
+                   GGBBB2 parry GGGGG3
+                   GGBBY2 party GGGGG3
+                   GGBGB2 payer GGBGG3 paper GGBGG4 parer GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   GGBYB2 parse GGGGG3
+                   GGGGB2 paler GGGGG3
+                   GYGBB2 polar GGGGG3
+                   YGBBB2 rapid GGGGG3
+                                GGYBB3 raspy GGGGG4
+                                YGGBB3 vapor GGGGG4
+                                YGYBB3 harpy GGGGG4
+                   YGBBY2 tapir GGGGG3
+                   YGBGY2 taper GGGGG3
+                   YGGBB2 ralph GGGGG3
+                   YYBBB2 apron GGGGG3
+                                YGGBB3 spray GGGGG4
+                   YYBBY2 strap GGGGG3
+                   YYBYB2 opera BGGYY3 spear GGGGG4
+                                BYYYY3 repay GGGGG4
+                                GGGGG3
+      BYYBY1 maker BGGGG2 baker BGGGG3 taker GGGGG4
+                                GGGGG3
+                   BGYBY2 parka GGGGG3
+                   GGGGG2
+                   YGYBY2 karma GGGGG3
+      BYYGB1 circa BBGGY2 march GGGGG3
+                   BBYGY2 ranch GGGGG3
+                   GGGGG2
+      BYYYB1 corer GBBBG2 cigar GGGGG3
+                   GBBGG2 caper GGBGG3 cater GGGGG4
+                                GGGGG3
+                   GBBYG2 cedar GGGGG3
+                                GYBGG3 clear GGGGG4
+                   GBGBB2 carat GGGGG3
+                   GBGBY2 carry GGGGG3
+                   GBGYB2 carve GGGGG3
+                   GBYBB2 cairn GGGGG3
+                   GGGBB2 coral GGGGG3
+                   GGYBB2 cobra GGGGG3
+                   GYGBB2 cargo GGGBY3 carol GGGGG4
+                                GGGGG3
+                   YBBBG2 vicar GGGGG3
+                   YBGBB2 scram BGGYB3 acrid GGGGG4
+                                GGGGB3 scrap GGGGG4
+                                GGGGG3
+                   YBYGG2 racer GGGGG3
+                   YBYYB2 recap GGGGG3
+                   YYBBG2 actor GGGGG3
+                   YYYBB2 acorn GGGGG3
+                                YYYGB3 macro GGGGG4
+      GBBBB1 tiles BBBBB2 found GBYBB3 fuzzy GGGGG4
+                                GBYGB3 funny GGGGG4
+                                GGBBB3 foggy GGGGG4
+                                GGGGG3
+                   BBBBY2 fussy GGGGG3
+                   BBBYB2 fudge GBBBG3 femme GGGGG4
+                                GGBYG3 fugue GGGGG4
+                                GGGGG3
+                   BBGBB2 folly GBGGG3 fully GGGGG4
+                                GGGGG3
+                   BBGYB2 felon GGGGG3
+                   BBYBB2 flown GGBBB3 fluff GGGGG4
+                                GGBBY3 flung GGGGG4
+                                GGGBB3 flood GGGGG4
+                                GGGGG3
+                   BBYBG2 floss GGGGG3
+                   BBYBY2 flush GGGGG3
+                   BBYYB2 flume GGGGG3
+                   BBYYY2 flesh GGGGG3
+                   BGBBB2 fizzy GGGGG3
+                   BGBBY2 fishy GGGGG3
+                   BGBYB2 fiend GGGGG3
+                   BGGBB2 filly GGGBG3 filmy GGGGG4
+                                GGGGG3
+                   BGYYB2 field GGGGG3
+                   BYBBB2 fungi GGGGG3
+                   BYBYB2 feign GGGGG3
+                   BYGBB2 folio GGGGG3
+                   BYYBB2 fling GGGGG3
+                                GGYBB3 fluid GGGGG4
+                   YBBYG2 fetus GGGGG3
+                   YBYBB2 flout GGGGG3
+                   YBYGB2 fleet GGGGG3
+                   YBYYB2 flute GGGGG3
+                   YGBBB2 fifth GGBYY3 fight GGGGG4
+                                GGGGB3 fifty GGGGG4
+                                GGGGG3
+                   YGGBB2 filth GGGGG3
+                   YGGGB2 filet GGGGG3
+                   YYBBY2 foist GGGGG3
+                   YYBYB2 fetid GGGGG3
+                   YYYBB2 flint GGGGG3
+      GBBBG1 flunk GGGGG2
+      GBBBY1 fluke GBYGB2 funky GGGGG3
+                   GGGGG2
+      GBBGB1 fence GBGGB2 finch GGGGG3
+                   GGBGB2 fetch GGGGG3
+                   GGGGG2
+      GBBGG1 flock GGBGG2 fleck GGBGG3 flick GGGGG4
+                                GGGGG3
+                   GGGGG2
+      GBBYB1 ficus GBGGG2 focus GGGGG3
+                   GGGGG2
+      GBGBB1 flash GBGBB2 foamy GGGGG3
+                   GBGGB2 feast GGGGG3
+                   GGGBB2 flail GGGBB3 flame GGGGG4
+                                GGGGG3
+                   GGGGG2
+      GBGBG1 flank GGGBG2 flask GGGGG3
+                   GGGGG2
+      GBGBY1 flake GGGGB2 flaky GGGGG3
+                   GGGGG2
+      GBGGG1 flack GGGGG2
+      GBYBB1 fault GGBBB2 fanny GGGGG3
+                   GGBBG2 faint GGGGG3
+                   GGBBY2 faith GGBGB3 fatty GGGGG4
+                                GGGGG3
+                   GGBGB2 fable GGGGG3
+                   GGBYB2 false GGGGG3
+                   GGBYY2 fatal GGGGG3
+                   GGGBB2 fauna GGGGG3
+                   GGGGG2
+                   GYBGB2 fella GGGGG3
+                   GYBYB2 final GGGGG3
+                   GYBYG2 float GGGGG3
+                   GYBYY2 fetal GGGGG3
+      GBYGB1 fancy GGGGG2
+      GBYYB1 facet GGGGG2
+                   GYGBB2 focal GGGGG3
+                   GYGYB2 fecal GGGGG3
+      GGBBB1 diets BBBBB2 frown GGGGG3
+                   BBBGB2 froth GGGGG3
+                   BBBYB2 front GGGGG3
+                   BBBYY2 frost GGGGG3
+                   BBGBB2 freer GGGGG3
+                   BBGBY2 fresh GGGGG3
+                   BBYBB2 froze GGGGG3
+                   BYBBB2 frill GGGGG3
+                   BYBGB2 fritz GGGGG3
+                   BYBYB2 fruit GGGGG3
+                   YBBBB2 frond GGGGG3
+                   YBGBB2 freed GGGGG3
+                   YYYBB2 fried GGGGG3
+      GGBBG1 frisk GGGGG2
+      GGBGG1 frock GGGGG2
+      GGGBB1 fraud GGGBB2 frail GGGBB3 frame GGGGG4
+                                GGGGG3
+                   GGGGG2
+      GGGBG1 frank GGGGG2
+      GGYBB1 friar GGGGG2
+      GGYBG1 freak GGGGG2
+      GYBBB1 ulyie BBBBB2 forgo GGGBB3 forth GGGGG4
+                                GGGGG3
+                                GYYBB3 fjord GGGGG4
+                   BBBBG2 forge GGGBG3 forte GGGGG4
+                                GGGGG3
+                   BBBBY2 fever GGBGG3 fewer GGGGG4
+                                GGGGG3
+                   BBBYB2 first GGGGG3
+                   BBBYY2 fixer GGBGG3 fiber GGBGG4 finer GGGGG5
+                                             GGGGG4
+                                GGGGG3
+                   BBGBY2 foyer GGGGG3
+                   BBYBB2 forty GGGGG3
+                   BBYBY2 ferry GGGGG3
+                   BBYYY2 fiery GGGGG3
+                   BGBBB2 floor GGGGG3
+                   BGBYB2 flirt GGGGG3
+                   BGBYY2 flier GGGGG3
+                   BGGBY2 flyer GGGGG3
+                   BYBYY2 filer GGGGG3
+                   YBBBB2 forum GGGGG3
+                                GYGYB3 furor GGGGG4
+                   YBBBY2 femur GGGGG3
+                   YBYBB2 furry GGGGG3
+                   YGBBB2 flour GGGGG3
+      GYBGB1 force GGGGG2
+      GYGBB1 flair GGGBY2 flare GGGGG3
+                   GGGGG2
+      GYYBB1 fairy GGBYB2 favor GGGGG3
+                   GGGGG2
+                   GYBGB2 flora GGGGG3
+                   GYBYB2 feral GGGGG3
+                   GYBYG2 foray GGGGG3
+      GYYGB1 farce GGGGG2
+      YBBBB1 thief BBBBG2 bluff BBBBG3 spoof GGGGG4
+                                BBGGG3 snuff GGGGG4
+                                GGGGG3
+                   BBBBY2 goofy BBBGG3 puffy GGGGG4
+                                GGGGG3
+                   BBBGY2 unfed GGGGG3
+                   BBBYY2 beefy GGGGG3
+                   BBGBG2 sniff GGGGG3
+                   BBGBY2 unify GGGGG3
+                   BBGYY2 edify GGGGG3
+                   BBYBY2 jiffy GGGGG3
+                   BBYYY2 elfin GGGGG3
+                   BGBYG2 shelf GGGGG3
+                   BGGBG2 whiff GGGGG3
+                   GGBYY2 theft GGGGG3
+                   GGGGG2
+                   YBBBG2 stuff GGGGG3
+                   YBBBY2 lofty GGGGG3
+                   YBBGY2 often GGGGG3
+                   YBBYY2 lefty GGGGG3
+                   YBGBG2 stiff GGGGG3
+                   YBGBY2 swift GGGGG3
+                   YBYBG2 motif GGGGG3
+                   YBYBY2 unfit GGGGG3
+                   YBYYY2 befit GGGGG3
+                   YGGBY2 shift GGGGG3
+                   YYBYY2 hefty GGGGG3
+      YBBBY1 knife GGGGG2
+                   YBGGB2 skiff GGGGG3
+      YBBYB1 chief GBBBY2 comfy GGGGG3
+                   GBBYY2 cleft GGGGG3
+                   GBGBG2 cliff GGGGG3
+                   GGGGG2
+                   YBBBG2 scoff GGGGG3
+      YBGBB1 shaft BBGGB2 leafy GGGGG3
+                   GBGGY2 staff GGGGG3
+                   GGGGG2
+      YBGYB1 chafe GGGGB2 chaff GGGGG3
+                   GGGGG2
+      YBYBB1 aloft GBBYB2 affix GGGGG3
+                   GBGYG2 afoot GGGGG3
+                   GGGGG2
+                   GGGYB2 aloof GGGGG3
+                   GYBYB2 awful GGGGG3
+                   GYGYB2 afoul GGGGG3
+                   YBBGB2 gaffe GGGGG3
+                   YBBGY2 taffy GGGGG3
+                   YBBYB2 mafia GGGGG3
+                   YYYYB2 offal GGGGG3
+      YGBBB1 grief BGBBG2 proof GGGGG3
+                   BGGBY2 drift GGGGG3
+                   BGGGG2 brief GGGGG3
+                   GGBBG2 gruff GGGGG3
+                   GGGGG2
+      YGGBB1 draft BGGGG2 graft GGGGG3
+                   GGGGG2
+      YGGYB1 craft GGGGG2
+      YYBBB1 refit GGGBB2 refer GGGGG3
+                   GGGGG2
+                   GYGYB2 rifle GGGGG3
+                   YGGBB2 defer GGGGG3
+                   YGYGB2 serif GGGGG3
+                   YYGBB2 offer GGGGG3
+                   YYGYB2 infer GGGGG3
+      YYGBB1 dwarf BYGGG2 wharf GGGGG3
+                   GGGGG2
+      YYGYB1 scarf GGGGG2
+      YYYBB1 safer BGGGG2 wafer GGGGG3
+                   BYYGG2 after GGGGG3
+                   BYYYY2 afire GGGGG3
+                   GGGGG2
