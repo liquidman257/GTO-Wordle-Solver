@@ -1462,7 +1462,7 @@ function renderKeyboard(): string {
                 const className =
                   key.length === 1 ? `key ${classForMark(mark)}` : "key key-wide";
 
-                const label = key === "backspace" ? "⌫" : key.toUpperCase();
+                const label = key === "backspace" ? "BACK" : key.toUpperCase();
 
                 return `
                   <button class="${className}" data-key="${key}">
@@ -1765,7 +1765,7 @@ function renderInspectorPanel(): string {
 
   return `
     <details class="inspect-panel" ${shouldOpen ? "open" : ""}>
-      <summary class="inspect-summary">Check Word</summary>
+      <summary class="inspect-summary"><span class="inspect-summary-label">Check Word</span><span class="inspect-summary-hint">Click to expand</span></summary>
       <div class="inspect-panel-body">
         <div class="inspect-controls">
           <input
@@ -1922,8 +1922,8 @@ function renderBottomActions(): string {
 function renderControlsBubble(): string {
   return `
     <div class="controls-shell">
-      <button class="controls-bubble" id="controls-bubble" title="Controls">
-        ⚙
+      <button class="controls-bubble" id="controls-bubble" title="Help & Controls">
+        ?
       </button>
 
       ${
@@ -1950,6 +1950,13 @@ function renderControlsBubble(): string {
 
             <div><span class="sample-dot unknown-dot"></span> Enter</div>
             <div>Calculate guesses</div>
+          </div>
+
+          <div class="wordle-help-note">
+            <strong>Wordle colors</strong>
+            <div><span class="sample-dot absent-dot"></span> Gray = letter is not in the word.</div>
+            <div><span class="sample-dot present-dot"></span> Yellow = letter is in the word, but in a different spot.</div>
+            <div><span class="sample-dot correct-dot"></span> Green = letter is in the correct spot.</div>
           </div>
         </div>
       `
